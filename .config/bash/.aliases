@@ -1,0 +1,105 @@
+#! /usr/bin/env bash
+
+############ Dotfiles ################
+# How to init a bare repo for the first time: 
+# git init --bare ~/.dotfiles
+# dotfiles config status.showUntrackedFiles no
+alias dotfiles='/usr/bin/git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME"'
+
+# On a new system like:
+# git clone --bare <git-repo-url> $HOME/.dotfiles
+# alias dotfiles='/usr/bin/git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME"'
+# dotfiles checkout
+# dotfiles config --local status.showUntrackedFiles no
+
+
+## Cd and ll
+alias ll='ls -lAth'
+alias ..='cd ..'
+
+############################### GIT ###############################
+alias gst='git status'
+alias gca='git commit --amend'
+alias gcan='gca --no-edit'
+alias g-='git switch -'
+alias gl1='git log --oneline'
+alias gl='git lol'
+alias gl15='git log -5 --oneline'
+alias gl5='git lol -5'
+alias gl10='git lol -10'
+alias gsw-='git switch -'
+alias gpr='git pull --rebase origin master'
+
+function gau() {
+  git add -u
+  echo -e ${GREEN}"- Added files to commit"${DEFAULT}
+  gst
+}
+function gbc() {
+  git blame --color-by-age $1
+}
+
+alias gdc='git diff HEAD^ HEAD'
+
+#######################
+# Functions
+
+
+function run_startup() {
+	read -n1 -s -r -p $'Press enter to enter tmux ...\n' key
+
+	if [ "$key" = '' ]; then
+		# Enter pressed, do something
+		# echo [$key] is empty when SPACE is pressed # uncomment to trace
+		tmuxa
+		# echo "pressed enter"
+	else
+		echo "leaving script"
+		# Anything else pressed, do whatever else.
+		# echo [$key] not empty
+	fi
+}
+
+# If arg given, create a folder with current date with formatting and arg: DD<Month>_hhmm_<arg>
+# else just date DDMM_hhmm
+function mkdird(){
+	folder_name=$(date +"%d%h_%H%M")
+	if [ -n "$1" ]; then
+		folder_name+="_${1}"
+	fi
+	mkdir "${folder_name}"
+	ll
+}
+
+# Testing stuff 
+
+###############################################################
+###### RETURNING A VALUE IN BASH THROUGH:
+###### -> 	echo "${value}"
+
+## Get value by:
+	## -> 	val2=$(get_value)
+
+function retVal() {
+	value=$1
+	echo "${value}"
+}
+
+function getVal() {
+	val1=$1
+	val=$(retVal ${val1})
+	echo "$val"
+}
+###############################################################
+
+# RED="\e[31m"
+# GREEN="\e[32m"
+# ENDCOLOR="\e[0m"
+
+function test_color() {
+	echo ""
+	echo "${BLACK_NORMAL} GREEN_BOLD ${CYAN_UNDERLINE} CYAN_UNDERLINE"
+	echo -e "${BLACK_NORMAL} GREEN_BOLD ${CYAN_UNDERLINE} CYAN_UNDERLINE"
+	echo -ne "${BLACK_NORMAL} GREEN_BOLD ${CYAN_UNDERLINE} CYAN_UNDERLINE"
+}
+
