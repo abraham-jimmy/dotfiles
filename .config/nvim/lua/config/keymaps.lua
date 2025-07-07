@@ -20,11 +20,11 @@ map('n', '<leader>dh', ':diffget //2<CR>')
 map('n', '<leader>dl', ':diffget //3<CR>')
 map('n', '<leader>do', ':only<CR>')
 
--- TMUX
-map('n', '<C-h>', [[<cmd>lua require('tmux').move_left()<cr>]], { silent = true })
-map('n', '<C-l>', [[<cmd>lua require('tmux').move_right()<cr>]], { silent = true })
-map('n', '<C-k>', [[<cmd>lua require('tmux').move_up()<cr>]], { silent = true })
-map('n', '<C-j>', [[<cmd>lua require('tmux').move_down()<cr>]], { silent = true })
+-- -- TMUX
+-- map('n', '<C-h>', [[<cmd>lua require('tmux').move_left()<cr>]], { silent = true })
+-- map('n', '<C-l>', [[<cmd>lua require('tmux').move_right()<cr>]], { silent = true })
+-- map('n', '<C-k>', [[<cmd>lua require('tmux').move_up()<cr>]], { silent = true })
+-- map('n', '<C-j>', [[<cmd>lua require('tmux').move_down()<cr>]], { silent = true })
 
 -- Resize window using <ctrl> arrow keys
 map("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
