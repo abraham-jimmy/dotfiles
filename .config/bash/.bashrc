@@ -1,6 +1,6 @@
 
 
-############################### Source all files in bash_stuff folder ###############################
+############################### Source all files in a folder ###############################
 # str="$(find ~/.jimmy_bash_stuff/ -type f -print)"
 # arr=( $str )
 # for f in "${arr[@]}"; do
@@ -34,14 +34,8 @@ fi
 # echo "alias ALIAS_NAME='COMMAND_AND_OR_SCRIPT_DIR'"&>> ~/.bashrc.user
 
 # Examples
-# echo "alias ALIAS_NAME='/proj/crbs/user/TeamCore/scripts/sdc_script.sh'"&>> ~/.bashrc.user
-# echo "alias comp_db='/proj/crbs/user/TeamCore/enilseb/scripts/compile_commands_cd.sh'"&>> ~/.bashrc.user
+# echo "alias ALIAS_NAME='/path/to/script/or/thing'"&>> ~/.bashrc.user
 
-
-###### vs-code hook #####
-# VSCODE_IPC_HOOK_CLI="/run/$USER/7472306/vscode-ipc-553a1c67-c5da-432f-8bbe-c14d79c5f132.sock"
-# source ~/.connect_vscode.sh
-# alias code=$'VSCODE_IPC_HOOK_CLI=/run/user/`id -u`/$(ls -lt /run/user/`id -u`/ | egrep \.sock$ | head -1 | awk \'END {print $NF}\') `ls -lt ~/.vscode-server/bin/** | fgrep bin/remote-cli/code | head -1 | awk \'END {print $NF}\'`'
 
 ############################### cd stuff ###############################
 # zoxide

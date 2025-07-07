@@ -30,6 +30,13 @@ alias gl10='git lol -10'
 alias gsw-='git switch -'
 alias gpr='git pull --rebase origin master'
 
+alias gdc='git diff HEAD^ HEAD'
+
+
+#######################
+# Functions
+
+# Git
 function gau() {
   git add -u
   echo -e ${GREEN}"- Added files to commit"${DEFAULT}
@@ -39,10 +46,17 @@ function gbc() {
   git blame --color-by-age $1
 }
 
-alias gdc='git diff HEAD^ HEAD'
+############################### TMUX start ###############################
 
-#######################
-# Functions
+function tmuxa(){
+	if [[ -z "$1" ]]; then
+		tmux attach-session
+	else
+		tmux attach-session -t $1
+	fi
+}
+
+
 
 
 function run_startup() {
