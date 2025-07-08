@@ -1,5 +1,9 @@
 return {
-
+  {
+    'echasnovski/mini.trailspace',
+    version = '*',
+    opts = {},
+  },
   -- Custom text objects
   {
     'echasnovski/mini.ai',
