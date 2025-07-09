@@ -1,37 +1,11 @@
 #! /usr/bin/env bash
 
-############ Dotfiles ################
-# How to init a bare repo for the first time: 
-# git init --bare ~/.dotfiles
-# dotfiles config status.showUntrackedFiles no
-alias dotfiles='/usr/bin/git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME"'
-
-# On a new system like:
-# git clone --bare <git-repo-url> $HOME/.dotfiles
-# alias dotfiles='/usr/bin/git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME"'
-# dotfiles checkout
-# dotfiles config --local status.showUntrackedFiles no
-
 
 ## Cd and ll
 alias ll='ls -lAth'
 alias ..='cd ..'
 
 ############################### GIT ###############################
-alias gst='git status'
-alias gca='git commit --amend'
-alias gcan='gca --no-edit'
-alias g-='git switch -'
-alias gl1='git log --oneline'
-alias gl='git lol'
-alias gl15='git log -5 --oneline'
-alias gl5='git lol -5'
-alias gl10='git lol -10'
-alias gsw-='git switch -'
-alias gpr='git pull --rebase origin master'
-
-alias gdc='git diff HEAD^ HEAD'
-
 
 #######################
 # Functions
