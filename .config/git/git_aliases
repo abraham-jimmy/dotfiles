@@ -3,7 +3,7 @@
 
 #export GIT_CONFIG_GLOBAL="~/.config/git/"
 
-#Regular bash/szh aliases 
+#Regular bash/szh aliases
 alias gl1='git log --oneline'
 alias gl='git lol'
 alias gl15='git log -5 --oneline'
@@ -26,10 +26,9 @@ alias gdc='git diff HEAD^ HEAD'
 
 
 ######################### Dotfiles #########################
-# How to init a bare repo for the first time: 
+# How to init a bare repo for the first time:
 # git init --bare ~/.dotfiles
 # dotfiles config status.showUntrackedFiles no
-alias dotfiles='/usr/bin/git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME"'
 
 # On a new system like:
 # git clone --bare <git-repo-url> $HOME/.dotfiles
@@ -37,9 +36,23 @@ alias dotfiles='/usr/bin/git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME"'
 # dotfiles checkout
 # dotfiles config --local status.showUntrackedFiles no
 
-alias dotc='dotfiles commit -m'
+alias dotfiles='/usr/bin/git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME"'
+
 alias dots='dotfiles status'
-alias dotau='dotfiles add -u'
-alias dota='dotfiles add'
 alias dotl='dotfiles lol2 -5'
 alias dotlog="dotfiles lol2"
+alias dotpush="dotfiles push origin main"
+alias dotcan="dotfiles commit --amend --no-edit"
+
+function dotc(){
+    dotfiles commit -m "${1}"
+    dots
+  }
+function dotau(){
+    dotfiles add -u
+    dots
+  }
+function dotadd(){
+    dotfiles add
+    dots
+  }
