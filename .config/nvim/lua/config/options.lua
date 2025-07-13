@@ -1,6 +1,7 @@
 -- [[ Setting options ]]
 local opt = vim.opt
 
+opt.cmdheight = 0 -- Remove command line always showing, it will still show when you enter :
 opt.hlsearch = false
 opt.number = true
 opt.relativenumber = true

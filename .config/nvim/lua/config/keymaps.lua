@@ -7,8 +7,10 @@ end
 local util = require("util")
 
 map({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
-map('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-map('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+-- map('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+-- map('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 map('n', 'q:', '<nop>')
 map('n', '<C-d>', '<C-d>zz', { desc = "Scroll window down and center" })
 map('n', '<C-u>', '<C-u>zz', { desc = "Scroll window up and center" })
@@ -19,12 +21,12 @@ map('n', '<C-c>', '<Esc>')
 map('n', '<leader>dh', ':diffget //2<CR>')
 map('n', '<leader>dl', ':diffget //3<CR>')
 map('n', '<leader>do', ':only<CR>')
-
--- -- TMUX
--- map('n', '<C-h>', [[<cmd>lua require('tmux').move_left()<cr>]], { silent = true })
--- map('n', '<C-l>', [[<cmd>lua require('tmux').move_right()<cr>]], { silent = true })
--- map('n', '<C-k>', [[<cmd>lua require('tmux').move_up()<cr>]], { silent = true })
--- map('n', '<C-j>', [[<cmd>lua require('tmux').move_down()<cr>]], { silent = true })
+-- Rebind j/k to gj/gk!!!!!!!!!!!!
+-- TMUX
+map('n', '<C-h>', [[<cmd>lua require('tmux').move_left()<cr>]], { silent = true })
+map('n', '<C-l>', [[<cmd>lua require('tmux').move_right()<cr>]], { silent = true })
+map('n', '<C-k>', [[<cmd>lua require('tmux').move_up()<cr>]], { silent = true })
+map('n', '<C-j>', [[<cmd>lua require('tmux').move_down()<cr>]], { silent = true })
 
 -- Resize window using <ctrl> arrow keys
 map("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
