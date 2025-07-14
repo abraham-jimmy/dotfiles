@@ -53,6 +53,6 @@ function dotau(){
     dots
   }
 function dotadd(){
-    dotfiles add
+    dotfiles add $1
     dots
   }
