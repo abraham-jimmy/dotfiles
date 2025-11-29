@@ -13,7 +13,7 @@ alias glog="git lol2"
 
 # General git stuff
 alias gst="git status"
-alias fix='!${EDITOR} +/HEAD $(git diff --name-only --relative --diff-filter=U | uni'
+alias fix='!${EDITOR} +/HEAD $(git diff --name-only --relative --diff-filter=U | uniq)'
 alias sb='!git switch $(git branch | fzf)'
 alias gst='git status'
 alias gca='git commit --amend'

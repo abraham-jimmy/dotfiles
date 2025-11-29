@@ -86,7 +86,7 @@ my_PS1(){
 	# PS1+="${BP_DEFAULT}\n└─▶ "
 	PS1+="${BP_DEFAULT}\n▶ "
 
-    export PS1
+  export PS1
 }
 
 PROMPT_COMMAND=my_PS1

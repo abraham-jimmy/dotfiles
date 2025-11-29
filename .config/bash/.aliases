@@ -4,6 +4,7 @@
 ## Cd and ll
 alias ll='ls -lAth'
 alias ..='cd ..'
+alias n='nvim'
 
 ############################### GIT ###############################
 
@@ -14,7 +15,7 @@ alias ..='cd ..'
 function gau() {
   git add -u
   echo -e ${GREEN}"- Added files to commit"${DEFAULT}
-  gst
+  git status
 }
 function gbc() {
   git blame --color-by-age $1
@@ -22,7 +23,7 @@ function gbc() {
 
 ############################### TMUX start ###############################
 
-function tmuxa(){
+function t(){
 	if [[ -z "$1" ]]; then
 		tmux attach-session
 	else
