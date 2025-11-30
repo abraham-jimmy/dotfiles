@@ -46,6 +46,8 @@ require('lazy').setup({ import = "plugins" },
     }
   })
 
+vim.lsp.enable('clangd')
+vim.lsp.enable('luals')
 
 -- [[ Setting options ]]
 require('config.options')

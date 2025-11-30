@@ -22,7 +22,7 @@ return
     },
   },
   config = function(_, opts)
-    local lspconfig = require('lspconfig')
+    -- local lspconfig = require('lspconfig')
 
 
     local on_attach = function(_, bufnr)
@@ -71,7 +71,7 @@ return
     require('neodev').setup()
 
 
-    lspconfig.clangd.setup({
+    vim.lsp.config('clangd', {
       capabilities = capabilities,
       on_attach = on_attach,
       settings = {
@@ -85,7 +85,7 @@ return
       }
     })
 
-    lspconfig["lua_ls"].setup({
+    vim.lsp.config('luals', {
       capabilities = capabilities,
       on_attach = on_attach,
       settings = {

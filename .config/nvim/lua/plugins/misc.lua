@@ -7,5 +7,5 @@ return {
 
   -- Adding icons??
   { "nvim-tree/nvim-web-devicons", opts = {} },
-
+  { "norcalli/nvim-colorizer.lua" },
 }
