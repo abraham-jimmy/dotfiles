@@ -11,6 +11,7 @@ source ~/.config/bash/.colors
 source ~/.config/bash/.aliases
 source ~/.config/bash/.bashprompt.sh
 source ~/.config/bash/.git-prompt.sh
+source ~/.config/git/git_aliases
 
 ############################### Save history through all tmux ###############################
 # avoid duplicates..
