@@ -10,6 +10,10 @@ return
     },
   },
   keys = {
+    { 'gr',         "<cmd>FzfLua lsp_references<cr>",        desc = '[G]oto [R]eferences' },
+    { 'gI',         "<cmd>FzfLua lsp_implementations<cr>",   desc = '[G]oto [I]mplementation' },
+    { '<leader>ds', "<cmd>FzfLua lsp_document_symbols<cr>",  desc = '[D]ocument [S]ymbols' },
+    { '<leader>ws', "<cmd>FzfLua lsp_workspace_symbols<cr>", desc = '[W]orkspace [S]ymbols' },
     { "<leader>b",  "<Cmd>FzfLua buffers<CR>",                  desc = "FzfLua buffers" },
     { "<leader>ff", "<Cmd>FzfLua files<CR>",                    desc = "FzfLua files" },
     { "<leader>fp", "<Cmd>FzfLua files cwd=~/.config/nvim<CR>", desc = "FzfLua files" },

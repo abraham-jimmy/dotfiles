@@ -7,19 +7,19 @@ return {
   },
   {
     "rcarriga/nvim-notify",
-    lazy = true, -- load only when required
+    lazy = false, -- load only when required
     dependencies = { "telescope.nvim" },
     config = function()
       require("notify").setup({
         stages = "fade",
-        timeout = 1500,
+        timeout = 3500,
         background_colour = "#1e1e2e",
       })
       vim.notify = require("notify")
     end,
     keys = {
       {
-        "<leader>nc",
+        "<leader>nq",
         function()
           require("notify").dismiss({ silent = true, pending = true })
         end,
