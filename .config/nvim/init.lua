@@ -46,6 +46,9 @@ require('lazy').setup({ import = "plugins" },
     }
   })
 
+vim.lsp.enable('clangd')
+vim.lsp.enable('luals')
+vim.lsp.enable('bash')
 
 -- [[ Setting options ]]
 require('config.options')
