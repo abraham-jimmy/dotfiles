@@ -21,3 +21,16 @@
 	enabled = true
 [core]
 	editor = nvim
+  excludesfile = ~/.config/git/ignore
+
+[color "status"]
+	added = green
+	changed = yellow
+	deleted = red
+	untracked = cyan
+  status = auto
+	branch = magenta
+[color]
+	ui = auto
+[status]
+	renames = true

@@ -1,0 +1,10 @@
+# tmux plugins
+.config/tmux/plugins/
+
+# nvim lockfile
+.config/nvim/lazy-lock.json
+
+# common noise
+.cache/
+.local/share/
+.local/state/

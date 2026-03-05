@@ -84,7 +84,7 @@ alias gundo='git reset --soft HEAD~1'
 alias dotfiles='/usr/bin/git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME"'
 
 # Convenience aliases
-alias dots='dotfiles status'
+alias dots='dotfiles status -sb'
 alias dotl='dotfiles lol2 -5'
 alias dotlog='dotfiles lol2'
 
@@ -94,6 +94,8 @@ alias dotpull='dotfiles pull origin main'
 alias dotcan='dotfiles commit --amend --no-edit'
 alias dotdiff='dotfiles diff'
 alias dotreset='dotfiles reset --hard'
+
+alias dotundo='dotfiles reset --soft HEAD~1'
 
 #########################
 # Dotfiles tracked dirs
@@ -120,17 +122,16 @@ dotc() {
 
 # Add tracked updates + configured dirs
 dotau() {
-  dotfiles add -u
+  /usr/bin/git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" add -u
 
   for dir in "${DOTDIRS[@]}"; do
     if [[ -d "$HOME/$dir" ]]; then
-      dotfiles add "$dir"
+      /usr/bin/git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" add "$HOME/$dir"
     fi
   done
 
   dots
 }
-
 # Add specific files
 dotadd() {
   dotfiles add "$@"
