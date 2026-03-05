@@ -24,7 +24,7 @@ setup_10_dotfiles() {
     run "dotfiles remote set-url origin $repo_ssh"
   fi
 
-  if [ ! -d "$bootstrap_dotfiles" ]; then
-    rm -rf $bootstrap_dotfiles
+  if [ -d "$bootstrap_dotfiles" ]; then
+    run "rm -rf $bootstrap_dotfiles"
   fi
 }
