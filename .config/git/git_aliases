@@ -1,58 +1,158 @@
+#########################
+# GIT
+#########################
 
-######################### GIT ########################
-
-#export GIT_CONFIG_GLOBAL="~/.config/git/"
-
-#Regular bash/szh aliases
+# Logs
 alias gl1='git log --oneline'
-alias gl='git lol'
 alias gl15='git log -5 --oneline'
+alias gl='git lol'
 alias gl5='git lol2 -5'
 alias gl10='git lol -10'
-alias glog="git lol2"
+alias glog='git lol2'
 
-# General git stuff
-alias gst="git status"
-alias fix='!${EDITOR} +/HEAD $(git diff --name-only --relative --diff-filter=U | uniq)'
-alias sb='!git switch $(git branch | fzf)'
+# Status
 alias gst='git status'
-alias gca='git commit --amend'
-alias gcan='gca --no-edit'
+
+#########################
+# Diff helpers
+#########################
+
+# Unstaged changes
+alias gd='git diff'
+
+# Staged changes
+alias gds='git diff --staged'
+
+# Everything since last commit
+alias gdh='git diff HEAD'
+
+# Diff last commit
+gdc() {
+  git rev-parse HEAD^ >/dev/null 2>&1 \
+    && git diff HEAD^ HEAD \
+    || git diff
+}
+
+#########################
+# Branch / switching
+#########################
+
 alias g-='git switch -'
 alias gsw-='git switch -'
-alias gpr='git pull --rebase origin master'
 
-alias gdc='git diff HEAD^ HEAD'
+# Fuzzy branch switch
+sb() {
+  git switch "$(git branch --format="%(refname:short)" | fzf)"
+}
 
+#########################
+# Commit helpers
+#########################
 
-######################### Dotfiles #########################
-# How to init a bare repo for the first time:
+alias gca='git commit --amend'
+alias gcan='git commit --amend --no-edit'
+
+# Fix conflicts by opening files at conflict marker
+alias fix='!${EDITOR} +/HEAD $(git diff --name-only --relative --diff-filter=U | uniq)'
+
+#########################
+# Pull / sync
+#########################
+
+# Pull with rebase from default branch
+gpr() {
+  local branch
+  branch=$(git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null | sed 's@^origin/@@')
+  git pull --rebase origin "${branch:-main}"
+}
+
+#########################
+# WIP helpers
+#########################
+
+# Quick "work in progress" commit
+alias gwip='git add -A && git commit -m "WIP"'
+
+# Undo last commit but keep changes
+alias gundo='git reset --soft HEAD~1'
+
+#########################
+# DOTFILES
+#########################
+
+# Bare repo wrapper
+alias dotfiles='/usr/bin/git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME"'
+
+# Convenience aliases
+alias dots='dotfiles status'
+alias dotl='dotfiles lol2 -5'
+alias dotlog='dotfiles lol2'
+
+alias dotpush='dotfiles push origin main'
+alias dotpull='dotfiles pull origin main'
+
+alias dotcan='dotfiles commit --amend --no-edit'
+alias dotdiff='dotfiles diff'
+alias dotreset='dotfiles reset --hard'
+
+#########################
+# Dotfiles tracked dirs
+#########################
+
+DOTDIRS=(
+  .config/nvim
+  .config/tmux
+  .config/git
+  .config/bash
+  .config/zsh
+  .config/wezterm
+)
+
+#########################
+# Dotfiles helpers
+#########################
+
+# Commit with message
+dotc() {
+  dotfiles commit -m "$1"
+  dots
+}
+
+# Add tracked updates + configured dirs
+dotau() {
+  dotfiles add -u
+  dotfiles add "${DOTDIRS[@]}"
+  dots
+}
+
+# Add specific files
+dotadd() {
+  dotfiles add "$@"
+  dots
+}
+
+# Add → commit → push workflow
+dotsync() {
+  dotau
+
+  read -r "msg?Commit message (enter = auto): "
+  [[ -z "$msg" ]] && msg="Dotfiles updated $(date +'%Y-%m-%d %H:%M')"
+
+  dotfiles commit -m "$msg" || return
+  dotpush
+  dotl
+}
+
+#########################
+# DOTFILES SETUP REMINDER
+#########################
+
+# Initialize bare repo
 # git init --bare ~/.dotfiles
 # dotfiles config status.showUntrackedFiles no
 
-# On a new system like:
+# On a new system
 # git clone --bare <git-repo-url> $HOME/.dotfiles
 # alias dotfiles='/usr/bin/git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME"'
 # dotfiles checkout
 # dotfiles config --local status.showUntrackedFiles no
-
-alias dotfiles='/usr/bin/git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME"'
-
-alias dots='dotfiles status'
-alias dotl='dotfiles lol2 -5'
-alias dotlog="dotfiles lol2"
-alias dotpush="dotfiles push origin main"
-alias dotcan="dotfiles commit --amend --no-edit"
-
-function dotc(){
-    dotfiles commit -m "${1}"
-    dots
-  }
-function dotau(){
-    dotfiles add -u
-    dots
-  }
-function dotadd(){
-    dotfiles add $1
-    dots
-  }
