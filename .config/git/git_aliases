@@ -121,7 +121,13 @@ dotc() {
 # Add tracked updates + configured dirs
 dotau() {
   dotfiles add -u
-  dotfiles add "${DOTDIRS[@]}"
+
+  for dir in "${DOTDIRS[@]}"; do
+    if [[ -d "$HOME/$dir" ]]; then
+      dotfiles add "$dir"
+    fi
+  done
+
   dots
 }
 
