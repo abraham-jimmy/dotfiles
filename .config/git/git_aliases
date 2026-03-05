@@ -84,7 +84,7 @@ alias gundo='git reset --soft HEAD~1'
 alias dotfiles='/usr/bin/git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME"'
 
 # Convenience aliases
-alias dots='dotfiles status -sb'
+alias dots='dotfiles status -s'
 alias dotl='dotfiles lol2 -5'
 alias dotlog='dotfiles lol2'
 
@@ -141,6 +141,12 @@ dotadd() {
 # Add → commit → push workflow
 dotsync() {
   dotau
+
+  # Stop if nothing is staged
+  if dotfiles diff --cached --quiet; then
+    echo "No changes staged."
+    return
+  fi
 
   read -r "msg?Commit message (enter = auto): "
   [[ -z "$msg" ]] && msg="Dotfiles updated $(date +'%Y-%m-%d %H:%M')"
