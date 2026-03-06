@@ -24,7 +24,8 @@ setup_10_dotfiles() {
     run "dotfiles remote set-url origin $repo_ssh"
   fi
 
-  if [ -d "$bootstrap_dotfiles" ]; then
-    run "rm -rf $bootstrap_dotfiles"
-  fi
+  # Can't delete before installation is complete, not sure how to solve
+  # if [ -d "$bootstrap_dotfiles" ]; then
+  #   run "rm -rf $bootstrap_dotfiles"
+  # fi
 }

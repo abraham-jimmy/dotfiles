@@ -108,6 +108,7 @@ DOTDIRS=(
   .config/bash
   .config/zsh
   .config/wezterm
+  .config/opencode
 )
 
 #########################
@@ -141,12 +142,13 @@ dotadd() {
 # Add → commit → push workflow
 dotsync() {
   dotau
-
-  # Stop if nothing is staged
   if dotfiles diff --cached --quiet; then
     echo "No changes staged."
     return
   fi
+
+
+  # Stop if nothing is staged
 
   read -r "msg?Commit message (enter = auto): "
   [[ -z "$msg" ]] && msg="Dotfiles updated $(date +'%Y-%m-%d %H:%M')"

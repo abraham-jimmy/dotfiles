@@ -6,6 +6,9 @@ local on_attach = function(client, bufnr)
 			group = vim.api.nvim_create_augroup("LspFormatOnSave", {}),
 			buffer = bufnr,
 			callback = function()
+				if vim.bo[bufnr].filetype == "lua" then
+					return
+				end
 				vim.lsp.buf.format({ async = false })
 			end,
 		})
@@ -36,14 +39,6 @@ return {
 					},
 				},
 
-				stylua = {
-					-- settings = {
-					--   Lua = {
-					--     workspace = { checkThirdParty = false },
-					--     telemetry = { enable = false },
-					--   },
-					-- },
-				},
 				bashls = {},
 				pyright = {},
 			},
