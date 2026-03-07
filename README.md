@@ -1,30 +1,49 @@
 # dotfiles
 
-# How to init a bare repo for the first time: 
-Initialize the git repo in hidden files in your home folder
+Personal config with a one-command bootstrap for new machines.
+
+## New machine setup
+
+Run this on a fresh system:
+
 ```bash
-git init --bare ~/.dotfiles
-```
-Make it so no files are tracked by default
-```bash
-dotfiles config status.showUntrackedFiles no
-```
-Add alias to your .bashrc or .zshrc:
-```bash
-alias dotfiles='/usr/bin/git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME"'
+curl -fsSL https://raw.githubusercontent.com/abraham-jimmy/dotfiles/main/.dotfiles_setup/bootstrap.sh | bash
 ```
 
-On a new system clone this repo with:
+What this does:
+
+- Detects distro (`arch`, `debian/ubuntu`, or `fedora` families).
+- Installs bootstrap requirements (`curl`, `git`) if missing.
+- Clones or updates this repo into `~/.dotfiles-src`.
+- Runs `.dotfiles_setup/setup.sh` to install programs and apply modules.
+
+## Tracked modules
+
+These map to `DOTDIRS` in `.config/git/git_aliases`.
+
+- [Neovim](.config/nvim/README.md)
+- [tmux](.config/tmux/README.md)
+- [Git](.config/git/README.md)
+- [Bash](.config/bash/README.md)
+- [Zsh](.config/zsh/README.md)
+- [WezTerm](.config/wezterm/README.md)
+- [OpenCode](.config/opencode/README.md)
+- [Bootstrap/setup scripts](.dotfiles_setup/README.md)
+
+## Daily workflow
+
+Most helper commands are in `.config/git/git_aliases`.
+
 ```bash
-git clone --bare git@github.com:abraham-jimmy/dotfiles.git $HOME/.dotfiles
-alias dotfiles='/usr/bin/git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME"'
-dotfiles checkout
-dotfiles config --local status.showUntrackedFiles no
+dotfiles status -s
+dotau
+dotsync
 ```
 
-Then you can use it to update and add files like:
+Common direct commands:
+
 ```bash
-dotfiles add <file>
-dotfiles commit -m "Commit message"
+dotfiles add <path>
+dotfiles commit -m "message"
 dotfiles push origin main
 ```

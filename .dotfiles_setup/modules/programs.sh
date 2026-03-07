@@ -13,7 +13,6 @@ PROGRAMS=(
   "fzf:fzf:30"
   "zoxide:zoxide:30"
   "rg:ripgrep:30"
-  "opencode:opencode:30"
 )
 
 install_all_programs() {
