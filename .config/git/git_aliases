@@ -142,7 +142,7 @@ dotadd() {
 
 # Hybrid smart commit message (Conventional Commits + fast heuristics)
 dot_smart_commit_message() {
-  local file_status p1 p2 path scope type action subject scope_text scope_list file_label
+  local file_status p1 p2 path scope type action subject scope_text scope_list file_label stats stat_parts
   local -i docs_only=1
   local -i add_count=0 del_count=0 mod_count=0 file_count=0
   local -a scopes=()
@@ -249,11 +249,22 @@ dot_smart_commit_message() {
 
   file_label="files"
   (( file_count == 1 )) && file_label="file"
+  stat_parts=""
+  (( add_count > 0 )) && stat_parts+=" +${add_count}"
+  (( mod_count > 0 )) && stat_parts+=" ~${mod_count}"
+  (( del_count > 0 )) && stat_parts+=" -${del_count}"
+  stat_parts="${stat_parts# }"
+
+  if [[ -n "$stat_parts" ]]; then
+    stats="(${file_count} ${file_label}: ${stat_parts})"
+  else
+    stats="(${file_count} ${file_label})"
+  fi
 
   DOTSMART_UNMAPPED_PATHS=("${unmapped_paths[@]}")
   DOTSMART_UNMAPPED_COUNT=${#unmapped_paths[@]}
 
-  echo "${type}(${scope_text}): ${action} ${subject} (${file_count} ${file_label})"
+  echo "${type}(${scope_text}): ${action} ${subject} ${stats}"
 }
 
 # Add → commit → push workflow
@@ -275,8 +286,12 @@ dotsync() {
 
   # Stop if nothing is staged
 
-  local suggested_msg msg
+  local suggested_msg msg action_choice edited_msg
   suggested_msg="$(dot_smart_commit_message)"
+
+  if (( ${#suggested_msg} > 72 )); then
+    printf "%b\n" "${c_yellow}Recommendation:${c_reset} subject is long (${#suggested_msg} chars). Consider shortening scope text before commit."
+  fi
 
   if (( DOTSMART_UNMAPPED_COUNT > 0 )); then
     local preview
@@ -286,8 +301,34 @@ dotsync() {
     printf "%b\n" "${c_yellow}Tip:${c_reset} add a scope mapping in dot_smart_commit_message for better commit scopes."
   fi
 
-  printf "%b" "${c_cyan}Commit message${c_reset} [${c_green}${suggested_msg}${c_reset}] (enter = use suggested): "
-  read -r msg
+  printf "%b\n" "${c_cyan}Suggested message${c_reset}: ${c_green}${suggested_msg}${c_reset}"
+  printf "%b" "${c_cyan}Action${c_reset} [enter=use, e=edit, n=new]: "
+  read -r action_choice
+
+  case "${action_choice:l}" in
+    "")
+      msg="$suggested_msg"
+      ;;
+    e|edit)
+      msg="$suggested_msg"
+      if whence vared >/dev/null 2>&1; then
+        vared -p "Edit commit message: " -c msg
+      else
+        printf "%b" "${c_cyan}Edited message${c_reset} (enter keeps suggested): "
+        read -r edited_msg
+        [[ -n "$edited_msg" ]] && msg="$edited_msg"
+      fi
+      ;;
+    n|new)
+      printf "%b" "${c_cyan}New commit message${c_reset}: "
+      read -r msg
+      ;;
+    *)
+      msg="$suggested_msg"
+      printf "%b\n" "${c_yellow}Unknown action '${action_choice}', using suggested message.${c_reset}"
+      ;;
+  esac
+
   [[ -z "$msg" ]] && msg="$suggested_msg"
   printf "%b\n" "${c_green}Using message:${c_reset} $msg"
 
