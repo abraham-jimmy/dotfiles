@@ -21,7 +21,7 @@
 	enabled = true
 [core]
 	editor = nvim
-  excludesfile = ~/.config/git/ignore
+  excludesfile = ~/.config/git/gitignore
 
 [color "status"]
 	added = green

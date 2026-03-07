@@ -60,7 +60,8 @@ alias fix='!${EDITOR} +/HEAD $(git diff --name-only --relative --diff-filter=U |
 #########################
 
 # Pull with rebase from default branch
-gpr() {
+unalias gpr 2>/dev/null
+  gpr() {
   local branch
   branch=$(git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null | sed 's@^origin/@@')
   git pull --rebase origin "${branch:-main}"
