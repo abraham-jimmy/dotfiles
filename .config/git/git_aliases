@@ -110,6 +110,7 @@ DOTDIRS=(
   .config/zsh
   .config/wezterm
   .config/opencode
+  .dotfiles_setup/
 )
 
 #########################
