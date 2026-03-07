@@ -4,6 +4,10 @@
 # nvim lockfile
 .config/nvim/lazy-lock.json
 
+# zsh completion cache
+.zcompdump*
+.zcompdump*.zwc
+
 # common noise
 .cache/
 .local/share/

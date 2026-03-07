@@ -13,7 +13,7 @@ refresh_pkg_index_once() {
   fi
 
   case "$DISTRO" in
-    ubuntu|debian)
+    debian)
       run "sudo apt update"
       ;;
     arch)
@@ -42,7 +42,7 @@ pkg_name() {
         *) echo "$program" ;;
       esac
       ;;
-    ubuntu|debian)
+    debian)
       case "$program" in
         openssh) echo openssh-client ;;
         nodejs) echo nodejs ;;
@@ -75,7 +75,7 @@ install_package() {
   refresh_pkg_index_once
 
   case "$DISTRO" in
-    ubuntu|debian)
+    debian)
       sudo apt install -y "$pkg"
       ;;
     arch)

@@ -5,6 +5,7 @@ PROGRAMS=(
   "git:git:10"
   "curl:curl:10"
   "ssh:openssh:10"
+  "zsh:zsh:20"
   "node:nodejs:20"
   "npm:npm:20"
   "nvim:nvim:30"
