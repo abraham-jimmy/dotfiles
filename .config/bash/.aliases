@@ -1,5 +1,8 @@
 #! /usr/bin/env bash
 
+alias vi='nvim'
+alias oc='opencode'
+
 
 ## Cd and ll
 alias ll='ls -lAth'
