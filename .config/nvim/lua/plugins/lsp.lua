@@ -17,6 +17,17 @@ end
 
 return {
 	{
+		"WhoIsSethDaniel/mason-tool-installer.nvim",
+		lazy = false,
+		dependencies = {
+			"williamboman/mason.nvim",
+		},
+		opts = {
+			ensure_installed = { "black" },
+		},
+	},
+
+	{
 		"neovim/nvim-lspconfig",
 		event = { "BufReadPre", "BufNewFile" },
 
@@ -24,7 +35,6 @@ return {
 			{ "williamboman/mason.nvim", config = true },
 			{ "williamboman/mason-lspconfig.nvim" },
 			{ "j-hui/fidget.nvim", tag = "legacy", opts = {} },
-			"hrsh7th/cmp-nvim-lsp",
 		},
 
 		opts = {

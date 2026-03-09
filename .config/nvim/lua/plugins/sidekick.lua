@@ -1,6 +1,9 @@
 return {
 	"folke/sidekick.nvim",
 	opts = {
+		nes = {
+			enabled = false,
+		},
 		cli = {
 			mux = {
 				backend = "tmux",
@@ -10,29 +13,26 @@ return {
 	},
 	keys = {
 		{
-			"<tab>",
-			function()
-				if not require("sidekick").nes_jump_or_apply() then
-					return "<Tab>"
-				end
-			end,
-			expr = true,
-			desc = "Goto/Apply Next Edit Suggestion",
-		},
-		{
 			"<c-.>",
 			function()
-				require("sidekick.cli").toggle()
+				require("sidekick.cli").toggle({ name = "opencode", focus = true })
 			end,
 			mode = { "n", "t", "i", "x" },
-			desc = "Sidekick Toggle",
+			desc = "OpenCode Toggle",
 		},
 		{
 			"<leader>aa",
 			function()
-				require("sidekick.cli").toggle()
+				require("sidekick.cli").toggle({ name = "opencode", focus = true })
 			end,
-			desc = "Sidekick Toggle CLI",
+			desc = "OpenCode Toggle",
+		},
+		{
+			"<leader>ao",
+			function()
+				require("sidekick.cli").focus({ name = "opencode" })
+			end,
+			desc = "OpenCode Focus",
 		},
 		{
 			"<leader>as",
@@ -46,7 +46,7 @@ return {
 			function()
 				require("sidekick.cli").send({ msg = "{diagnostics}" })
 			end,
-			desc = "AI Send Diagnostics",
+			desc = "OpenCode Send Diagnostics",
 		},
 		{
 			"<leader>at",
@@ -54,14 +54,14 @@ return {
 				require("sidekick.cli").send({ msg = "{this}" })
 			end,
 			mode = { "x", "n" },
-			desc = "Send This",
+			desc = "OpenCode Send This",
 		},
 		{
 			"<leader>af",
 			function()
 				require("sidekick.cli").send({ msg = "{file}" })
 			end,
-			desc = "Send File",
+			desc = "OpenCode Send File",
 		},
 		{
 			"<leader>av",
@@ -69,7 +69,7 @@ return {
 				require("sidekick.cli").send({ msg = "{selection}" })
 			end,
 			mode = { "x" },
-			desc = "Send Visual Selection",
+			desc = "OpenCode Send Visual Selection",
 		},
 		{
 			"<leader>ap",
@@ -77,14 +77,7 @@ return {
 				require("sidekick.cli").prompt()
 			end,
 			mode = { "n", "x" },
-			desc = "Sidekick Select Prompt",
-		},
-		{
-			"<leader>ac",
-			function()
-				require("sidekick.cli").toggle({ name = "claude", focus = true })
-			end,
-			desc = "Sidekick Toggle Claude",
+			desc = "OpenCode Select Prompt",
 		},
 	},
 }
