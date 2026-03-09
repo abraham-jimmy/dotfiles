@@ -33,6 +33,6 @@ config.font = wezterm.font_with_fallback({
 })
 
 config.color_scheme = "Catppuccin Mocha"
-config.enable_wayland = false
+config.hide_mouse_cursor_when_typing = false
 -- Finally, return the configuration to wezterm:
 return config

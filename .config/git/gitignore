@@ -8,6 +8,9 @@
 .zcompdump*
 .zcompdump*.zwc
 
+# wezterm error file
+nohup.out
+
 # common noise
 .cache/
 .local/share/
