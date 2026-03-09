@@ -26,9 +26,10 @@ Use this file as the first context when working on my dotfiles.
 
 ## Tracked Modules
 
-Defined by `DOTDIRS` in `.config/git/git_aliases`:
+Defined by `DOTDIRS` in `.config/shell/dotfiles.sh`:
 
 - `.config/nvim`
+- `.config/shell`
 - `.config/tmux`
 - `.config/git`
 - `.config/bash`
@@ -58,6 +59,8 @@ From `.dotfiles_setup/modules/programs.sh`:
 - Prefer editing files inside tracked modules.
 - Do not change unrelated files outside tracked modules unless explicitly requested.
 - Before edits, inspect current tracked state with `status -s`.
+- If you add or reorganize a tracked config directory, update `DOTDIRS` in `.config/shell/dotfiles.sh`.
+- If you change workflow, ownership, or layout, update the affected README/context docs in the same change unless told not to.
 
 ## If More Detail Is Needed
 

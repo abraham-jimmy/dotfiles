@@ -12,8 +12,9 @@ if [[ -r "$ZSH/oh-my-zsh.sh" ]]; then
 fi
 
 source ~/.config/bash/.colors
-source ~/.config/bash/.aliases
+source ~/.config/shell/aliases.sh
 source ~/.config/git/git_aliases
+source ~/.config/shell/dotfiles.sh
 
 export PATH="$PATH:$HOME/.local/share/gem/ruby/3.4.0/bin"
 
@@ -26,7 +27,7 @@ setopt appendhistory
 bindkey -v
 
 if [[ -o interactive ]] && [[ -z "$TMUX" ]] && [[ -n "$SSH_TTY" ]]; then
-  tmux attach-session || tmux new-session
+  t
 fi
 
 if command -v zoxide >/dev/null 2>&1; then

@@ -6,9 +6,11 @@ Git config plus helper aliases for normal repos and dotfiles.
 
 - `config`: core Git defaults and aliases.
 - `gitignore`: global excludes file used via `core.excludesfile`.
-- `git_aliases`: shell aliases/functions for Git and dotfiles.
+- `git_aliases`: shell aliases/functions for Git repos.
 
 ## Dotfiles command
+
+Dotfiles shell helpers and `DOTDIRS` now live in `~/.config/shell/dotfiles.sh`.
 
 Main wrapper:
 

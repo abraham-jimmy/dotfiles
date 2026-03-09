@@ -34,9 +34,10 @@ Useful read-only commands:
 
 ## 2) Tracked Scope
 
-Primary tracked config scope is defined by `DOTDIRS` in `.config/git/git_aliases`:
+Primary tracked config scope is defined by `DOTDIRS` in `.config/shell/dotfiles.sh`:
 
 - `.config/nvim`
+- `.config/shell`
 - `.config/tmux`
 - `.config/git`
 - `.config/bash`
@@ -95,6 +96,7 @@ Supported distro families (normalized in `.dotfiles_setup/modules/distro.sh`):
 ## 5) High-Level Module Map
 
 - `.config/nvim` - Neovim setup (`lazy.nvim`, plugins, config modules)
+- `.config/shell` - shared aliases and cross-shell helper files
 - `.config/tmux` - tmux base config + TPM plugins + popup workflows
 - `.config/git` - Git config and shell helpers for dotfiles workflow
 - `.config/bash` - Bash prompt, aliases, shell behavior
@@ -111,6 +113,8 @@ Supported distro families (normalized in `.dotfiles_setup/modules/distro.sh`):
 - Keep edits scoped to requested modules.
 - Prefer module README files for local conventions.
 - If setup behavior is relevant, inspect `.dotfiles_setup` files first.
+- If you add or reorganize a tracked config directory, update `DOTDIRS` in `.config/shell/dotfiles.sh`.
+- If you change module layout, ownership, or workflow behavior, update the relevant README/context docs in the same change unless the user says not to.
 
 ## 7) Suggested Task Startup Checklist
 

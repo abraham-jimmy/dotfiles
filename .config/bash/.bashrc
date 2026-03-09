@@ -8,10 +8,11 @@
 # done
 
 source ~/.config/bash/.colors
-source ~/.config/bash/.aliases
+source ~/.config/shell/aliases.sh
 source ~/.config/bash/.bashprompt.sh
 source ~/.config/bash/.git-prompt.sh
 source ~/.config/git/git_aliases
+source ~/.config/shell/dotfiles.sh
 
 ############################### Save history through all tmux ###############################
 # avoid duplicates..
@@ -28,7 +29,7 @@ export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 # run_startup
 
 if [[ $- =~ i ]] && [[ -z "$TMUX" ]] && [[ -n "$SSH_TTY" ]]; then
-  tmux attach-session || tmux new-session
+  t
 fi
 
 ############################### one-liner to add alias in .bashrc ###############################
