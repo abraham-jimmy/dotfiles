@@ -1,11 +1,38 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "theme": "catppuccin",
-  "keybinds": {
-    "app_exit": "ctrl+c,<leader>q",
-    "messages_page_up": "ctrl+alt+u",
-    "messages_page_down": "ctrl+alt+d",
-    "messages_line_up": "alt+k",
-    "messages_line_down": "alt+j"
+  "permission": {
+    "edit": {
+      "~/.config/bash/**": "allow",
+      "~/.config/git/**": "allow",
+      "~/.config/nvim/**": "allow",
+      "~/.config/opencode/**": "allow",
+      "~/.config/shell/**": "allow",
+      "~/.config/tmux/**": "allow",
+      "~/.config/wezterm/**": "allow",
+      "~/.config/zsh/**": "allow",
+      "~/.dotfiles_setup/**": "allow"
+    },
+    "external_directory": {
+      "~/.config/bash/**": "allow",
+      "~/.config/git/**": "allow",
+      "~/.config/nvim/**": "allow",
+      "~/.config/opencode/**": "allow",
+      "~/.config/shell/**": "allow",
+      "~/.config/tmux/**": "allow",
+      "~/.config/wezterm/**": "allow",
+      "~/.config/zsh/**": "allow",
+      "~/.dotfiles_setup/**": "allow"
+    },
+    "read": {
+      "~/.config/bash/**": "allow",
+      "~/.config/git/**": "allow",
+      "~/.config/nvim/**": "allow",
+      "~/.config/opencode/**": "allow",
+      "~/.config/shell/**": "allow",
+      "~/.config/tmux/**": "allow",
+      "~/.config/wezterm/**": "allow",
+      "~/.config/zsh/**": "allow",
+      "~/.dotfiles_setup/**": "allow"
+    }
   }
 }

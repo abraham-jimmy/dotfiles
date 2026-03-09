@@ -107,7 +107,7 @@ Supported distro families (normalized in `.dotfiles_setup/modules/distro.sh`):
 
 ## 6) Operational Guidance for LLM Agents
 
-- Start with `.config/opencode/dotfiles-context.md`.
+- Start with `.config/opencode/docs/dotfiles/context.md`.
 - Use full bare-repo command form, not aliases, unless explicitly requested.
 - Confirm file is tracked (or intentionally untracked) before editing.
 - Keep edits scoped to requested modules.

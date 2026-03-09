@@ -64,4 +64,4 @@ From `.dotfiles_setup/modules/programs.sh`:
 
 ## If More Detail Is Needed
 
-Read `@/home/jimmy/.config/opencode/dotfiles-reference.md`.
+Read `@/home/jimmy/.config/opencode/docs/dotfiles/reference.md`.
