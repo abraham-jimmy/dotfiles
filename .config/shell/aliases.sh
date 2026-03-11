@@ -16,6 +16,10 @@ alias nvs='nvim ~/.dotfiles_setup/setup.sh'
 alias nvt='nvim ~/.config/tmux/tmux.conf'
 alias nvz='nvim ~/.config/zsh/.zshrc'
 
+nnew() {
+  NVIM_APPNAME=nvim-new nvim "$@"
+}
+
 [ -r "$HOME/.config/shell/ndot.sh" ] && source "$HOME/.config/shell/ndot.sh"
 
 unalias gau 2>/dev/null

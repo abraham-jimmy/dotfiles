@@ -15,7 +15,9 @@ alias dotreset='dotfiles reset --hard'
 alias dotundo='dotfiles reset --soft HEAD~1'
 
 DOTDIRS=(
+  .config/bob
   .config/nvim
+  .config/nvim-new
   .config/shell
   .config/tmux
   .config/git
@@ -132,7 +134,9 @@ dot_smart_commit_message() {
     esac
 
     case "$path" in
+      .config/bob/*)     scope="bob" ;;
       .config/nvim/*)    scope="nvim" ;;
+      .config/nvim-new/*) scope="nvim-new" ;;
       .config/shell/*)   scope="shell" ;;
       .config/tmux/*)    scope="tmux" ;;
       .config/git/*)     scope="git" ;;

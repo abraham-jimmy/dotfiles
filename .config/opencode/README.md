@@ -15,3 +15,4 @@ OpenCode CLI/TUI personal preferences.
 - Message navigation keybinds for page and line scrolling.
 - Dotfiles context lives under `docs/dotfiles/` and is loaded by `/df`.
 - `opencode.json` keeps persistent read/edit/external-directory allowlists for trusted dotfiles paths.
+- `.dotfiles_setup/modules/shell.sh` installs OpenCode with the official installer, defaulting to `OPENCODE_VERSION=latest` unless pinned.

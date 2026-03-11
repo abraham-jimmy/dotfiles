@@ -109,7 +109,7 @@ Current feature buckets:
 - git: `gitsigns`, `codediff`, `snacks` for `lazygit`
 - LSP/tools: `nvim-lspconfig`, `mason`, `mason-lspconfig`, `mason-tool-installer`, `lazydev`, `clangd_extensions`, `conform`
 - syntax/completion: `nvim-treesitter`, `nvim-ts-autotag`, `blink.cmp`, `nvim-cmp`
-- debugging: `nvim-dap`, `nvim-dap-view`, `nvim-dap-virtual-text`, `hydra`
+- debugging: `nvim-dap`, `nvim-dap-view`, `nvim-dap-virtual-text`, `hydra` (if still needed after the minimal C/C++ DAP slice)
 - workflow: `sidekick.nvim`, `tmux.nvim`, `nvim-colorizer`, `web-devicons`
 
 ## Important Findings About the Current Setup
@@ -215,16 +215,26 @@ Goal: make the new setup pleasant enough for regular editing.
 
 Goal: restore day-to-day navigation and workflow commands.
 
-### Phase 5 - Port Syntax, LSP, and Formatting
+### Phase 5 - Port Syntax and Per-Language Tooling
 
 - `nvim-treesitter`
 - `nvim-ts-autotag`
 - `nvim-lspconfig`
+- `nvim-lint`
 - `lazydev.nvim`
 - `clangd_extensions.nvim`
 - `conform.nvim`
 
-At this stage, explicitly avoid Mason and wire LSP servers directly.
+At this stage, explicitly avoid Mason and wire language tools directly.
+
+For each language, review and decide:
+
+- primary LSP server
+- linting tool / diagnostics source
+- formatter
+- any language-specific extras worth keeping (for example `lazydev.nvim`, `clangd_extensions.nvim`, autotag support, test adapters, or compiler helpers)
+
+Prefer organizing `nvim-new` around per-language toolchain modules so LSP, linting, formatting, and language-specific helpers stay together.
 
 ### Phase 6 - Resolve Completion Strategy
 
@@ -246,6 +256,12 @@ Goal: avoid carrying both completion systems into the new setup.
 
 Keep debugging separate from the first usable milestone unless it is part of daily work.
 
+Current direction:
+
+- start with a minimal C/C++ DAP setup using `codelldb`
+- keep `.vscode/launch.json` support
+- defer hydra until the base flow proves worth keeping
+
 ### Phase 8 - Bootstrap / Docs / Final Switch
 
 If `nvim-new` becomes the real setup:
@@ -264,6 +280,7 @@ If `nvim-new` becomes the real setup:
 - manual lazy-loading should be introduced carefully; overdoing it can make the config harder to maintain than just eagerly loading a few extra plugins.
 - `notify` currently uses a short dependency name (`"telescope.nvim"`) that should be made explicit in a fresh config.
 - `render-markdown.nvim` currently references `echasnovski/mini.nvim`, while the rest of the config mostly uses standalone `mini.*` plugins; that should be rationalized.
+- per-language tool ownership should be explicit so LSP, linting, diagnostics, and formatting do not drift apart.
 - LSP naming/setup should be cleaned up during the rewrite, especially server naming consistency.
 
 ## Suggested Success Criteria
@@ -284,6 +301,7 @@ When restarting this work, the model should assume:
 - the desired package manager is native `vim.pack`, not `lazy.nvim`
 - Mason is probably being removed unless a concrete reason appears to keep it
 - `.dotfiles_setup/` is the source of truth for machine bootstrap and external tool installation
+- `.dotfiles_setup/modules/neovim_tools.sh` should own the `nvim-new` external toolchain once language choices stabilize, preferring source-first user-local installs over distro package managers for Neovim-specific tools
 - the current `~/.config/nvim` is a reference implementation and should not be broken during migration
 - user already expressed interest in preserving current keybinds, settings, and useful plugin behavior, not necessarily exact implementation details
 - completion stack should be simplified rather than duplicated if possible

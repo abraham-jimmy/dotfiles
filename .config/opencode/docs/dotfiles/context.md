@@ -28,7 +28,9 @@ Use this file as the first context when working on my dotfiles.
 
 Defined by `DOTDIRS` in `.config/shell/dotfiles.sh`:
 
+- `.config/bob`
 - `.config/nvim`
+- `.config/nvim-new`
 - `.config/shell`
 - `.config/tmux`
 - `.config/git`
@@ -45,20 +47,30 @@ New machine entrypoint:
 curl -fsSL https://raw.githubusercontent.com/abraham-jimmy/dotfiles/main/.dotfiles_setup/bootstrap.sh | bash
 ```
 
+- `setup.sh --dry-run` prints grouped module/task output with `PLAN` lines for pending actions and ends with a summary block.
+- Setup modules increasingly short-circuit cleanly when state is already correct (dotfiles repo config, Bob install, tmux reloads, repo fast-forwards).
+- tmux restarts are now confirmation-based when plugin changes are detected and a server is running, with yes as the default answer.
+
 ## Core Dependencies
 
-From `.dotfiles_setup/modules/programs.sh`:
+From `.dotfiles_setup/modules/programs.sh` and related setup modules:
 
 - `git`, `curl`, `openssh`, `zsh`
 - `nodejs`, `npm`
-- `nvim`, `tmux`
+- `unzip`, `tmux`
 - `fzf`, `zoxide`, `ripgrep`
+- `opencode` via official installer (`latest` by default, optional pin)
+- `nvim` via Bob (`nightly` by default, optional pin)
+- Neovim external tools via `.dotfiles_setup/modules/neovim_tools.sh` (source-first and user-local)
+- Some LLVM/system-style tools like `clangd` and `clang-format` may still be intentionally manual prerequisites.
 
 ## Working Rules
 
 - Prefer editing files inside tracked modules.
 - Do not change unrelated files outside tracked modules unless explicitly requested.
 - Before edits, inspect current tracked state with `status -s`.
+- For Neovim migration work, treat `.config/nvim` as the stable reference and test the parallel rewrite with `NVIM_APPNAME=nvim-new nvim`.
+- For `nvim-new`, treat `.dotfiles_setup/modules/neovim_tools.sh` as the source of truth for external LSP, formatter, linter, and debug-adapter binaries.
 - If you add or reorganize a tracked config directory, update `DOTDIRS` in `.config/shell/dotfiles.sh`.
 - If you change workflow, ownership, or layout, update the affected README/context docs in the same change unless told not to.
 

@@ -4,41 +4,76 @@ set -euo pipefail
 write_if_changed() {
   local path="$1"
   local content="$2"
-  local tmp
+  local tmp action
 
-  if [ "${DRY_RUN:-0}" -eq 1 ]; then
-    echo "[dry-run] write $path"
-    return
-  fi
-
-  mkdir -p "$(dirname "$path")"
   tmp="$(mktemp)"
   printf '%s' "$content" >"$tmp"
 
   if [ -f "$path" ] && cmp -s "$tmp" "$path"; then
     rm -f "$tmp"
+    skip "unchanged file: $path"
     return
   fi
 
+  if [ -e "$path" ]; then
+    action="update"
+  else
+    action="create"
+  fi
+
+  if [ "${DRY_RUN:-0}" -eq 1 ]; then
+    plan "would $action file: $path"
+    rm -f "$tmp"
+    return
+  fi
+
+  mkdir -p "$(dirname "$path")"
+
   mv "$tmp" "$path"
+
+  case "$action" in
+    create) done_log "created file: $path" ;;
+    update) done_log "updated file: $path" ;;
+  esac
 }
 
 git_clone_or_update() {
   local repo="$1"
   local dest="$2"
+  local head upstream
 
   if [ -d "$dest/.git" ]; then
+    if [ "${DRY_RUN:-0}" -eq 1 ]; then
+      plan "would check remote updates for repo: $dest"
+      return 0
+    fi
+
+    if git -C "$dest" rev-parse --abbrev-ref --symbolic-full-name '@{u}' >/dev/null 2>&1; then
+      run "git -C \"$dest\" fetch --quiet --all --prune"
+
+      head="$(git -C "$dest" rev-parse HEAD 2>/dev/null || true)"
+      upstream="$(git -C "$dest" rev-parse '@{u}' 2>/dev/null || true)"
+
+      if [ -n "$head" ] && [ "$head" = "$upstream" ]; then
+        skip "repo already up to date: $dest"
+        return 1
+      fi
+    fi
+
+    info "fast-forwarding repo: $dest"
     run "git -C \"$dest\" pull --ff-only"
-    return
+    return 0
   fi
 
   if [ -e "$dest" ]; then
-    log "Skipping $dest (exists but is not a git repository)"
-    return
+    skip "leaving path alone: $dest exists but is not a git repository"
+    return 1
   fi
 
+  info "cloning repo: $dest"
   run "mkdir -p \"$(dirname "$dest")\""
   run "git clone \"$repo\" \"$dest\""
+  return 0
 }
 
 setup_15_shell_stubs() {
@@ -67,51 +102,53 @@ setup_17_default_shell() {
   zsh_path="$(command -v zsh || true)"
 
   if [ -z "$zsh_path" ]; then
-    log "zsh is not installed; skipping default shell update"
+    skip "zsh is not installed; leaving default shell unchanged"
     return
   fi
 
   if [ "$current_shell" = "$zsh_path" ]; then
-    log "Default shell already set to zsh"
+    skip "default shell already set to zsh"
     return
   fi
 
+  info "updating default shell to $zsh_path"
   run "chsh -s \"$zsh_path\" \"$USER\""
 }
 
 setup_18_opencode() {
-  local install_flag npm_pkg="opencode-ai"
+  local install_flag opencode_version install_cmd
 
   install_flag="${INSTALL_OPENCODE:-auto}"
   case "$install_flag" in
     0|false|FALSE|no|NO)
-      log "Skipping optional OpenCode install (INSTALL_OPENCODE=$install_flag)"
+      skip "skipping optional OpenCode install (INSTALL_OPENCODE=$install_flag)"
       return
       ;;
   esac
 
-  if command -v opencode >/dev/null 2>&1; then
-    log "opencode already installed"
+  opencode_version="${OPENCODE_VERSION:-latest}"
+  export PATH="$HOME/.opencode/bin:$HOME/.local/bin:$PATH"
+  info "OpenCode target version: $opencode_version"
+
+  if [ "$opencode_version" = "latest" ]; then
+    install_cmd='curl -fsSL "https://opencode.ai/install" | bash -s -- --no-modify-path'
+  else
+    install_cmd="curl -fsSL \"https://opencode.ai/install\" | bash -s -- --version \"$opencode_version\" --no-modify-path"
+  fi
+
+  if [ "${DRY_RUN:-0}" -eq 1 ]; then
+    run "$install_cmd"
     return
   fi
 
-  if ! command -v npm >/dev/null 2>&1; then
-    log "npm is missing; skipping optional OpenCode install"
-    return
-  fi
-
-  run "mkdir -p \"$HOME/.local/bin\""
-
-  if run "npm install -g --prefix \"$HOME/.local\" \"$npm_pkg\""; then
-    export PATH="$HOME/.local/bin:$PATH"
-
+  if run "$install_cmd"; then
     if command -v opencode >/dev/null 2>&1; then
-      log "Installed opencode via npm ($npm_pkg)"
+      done_log "OpenCode ready ($opencode_version)"
     else
-      log "Installed $npm_pkg, but opencode is not on PATH yet"
+      warn "OpenCode installer completed, but opencode is not on PATH yet"
     fi
     return
   fi
 
-  log "Optional OpenCode install failed; continuing setup"
+  warn "optional OpenCode install failed; continuing setup"
 }

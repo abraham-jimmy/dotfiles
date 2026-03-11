@@ -12,6 +12,7 @@ if [[ -r "$ZSH/oh-my-zsh.sh" ]]; then
 fi
 
 source ~/.config/bash/.colors
+source ~/.config/shell/path.sh
 source ~/.config/shell/aliases.sh
 source ~/.config/git/git_aliases
 source ~/.config/shell/dotfiles.sh
@@ -41,6 +42,3 @@ fi
 [[ -r "$HOME/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] && source "$HOME/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
 [[ -f ~/.config/zsh/.p10k.zsh ]] && source ~/.config/zsh/.p10k.zsh
-
-# opencode
-export PATH=/home/jimmy/.opencode/bin:$PATH

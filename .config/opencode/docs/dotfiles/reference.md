@@ -36,7 +36,9 @@ Useful read-only commands:
 
 Primary tracked config scope is defined by `DOTDIRS` in `.config/shell/dotfiles.sh`:
 
+- `.config/bob`
 - `.config/nvim`
+- `.config/nvim-new`
 - `.config/shell`
 - `.config/tmux`
 - `.config/git`
@@ -74,6 +76,22 @@ What each stage does:
   - Installs required programs
   - Sources remaining modules
   - Runs all `setup_*` functions in sorted order
+  - Prints grouped module/task output with colored status labels on interactive terminals
+  - Ends with a compact summary block for modules, tasks, planned actions, runs, skips, warnings, and errors
+
+Dry-run behavior:
+
+- `setup.sh --dry-run` shows `PLAN` lines instead of executing commands or writing files
+- Output is grouped by module file and setup function so it is easier to scan
+- A final summary block shows how many modules, tasks, plans, runs, skips, warnings, and errors occurred
+- Set `NO_COLOR=1` to force plain output
+
+Rerun behavior:
+
+- Dotfiles checkout/config in `.dotfiles_setup/modules/dotfiles.sh` short-circuits when the bare repo and expected config are already in place
+- Git-based framework repos in `.dotfiles_setup/modules/shell.sh` only fast-forward after a fetch when the upstream changed; otherwise they log a skip
+- Bob in `.dotfiles_setup/modules/neovim.sh` is installed if missing, then reused on later runs
+- tmux restart in `.dotfiles_setup/modules/tmux.sh` only happens when TPM or plugin state changed, and setup asks before calling `tmux kill-server` unless `RESTART_TMUX_ON_PLUGIN_CHANGE=yes|no` is set; empty input defaults to yes
 
 ## 4) Dependencies
 
@@ -82,10 +100,17 @@ Base dependency list comes from `.dotfiles_setup/modules/programs.sh`:
 - `git`, `curl`, `openssh`
 - `zsh`
 - `nodejs`, `npm`
-- `nvim`, `tmux`
+- `unzip`, `tmux`
 - `fzf`, `zoxide`, `ripgrep`
 
 Distro/package handling is in `.dotfiles_setup/modules/installer.sh`.
+
+Managed tool installs outside the distro package list:
+
+- OpenCode via the official installer in `.dotfiles_setup/modules/shell.sh` (`OPENCODE_VERSION=latest` by default)
+- Neovim via Bob in `.dotfiles_setup/modules/neovim.sh` (`NVIM_VERSION=nightly` by default)
+- Neovim external tools in `.dotfiles_setup/modules/neovim_tools.sh` (source-first, user-local `npm`, and upstream binary ownership)
+- Some tools are intentionally still manual when they are better treated as system LLVM/toolchain dependencies, notably `clangd` and `clang-format`
 
 Supported distro families (normalized in `.dotfiles_setup/modules/distro.sh`):
 
@@ -95,7 +120,9 @@ Supported distro families (normalized in `.dotfiles_setup/modules/distro.sh`):
 
 ## 5) High-Level Module Map
 
-- `.config/nvim` - Neovim setup (`lazy.nvim`, plugins, config modules)
+- `.config/nvim` - current Neovim setup (`lazy.nvim`, plugins, config modules)
+- `.config/nvim-new` - parallel Neovim 0.12 rewrite using native `vim.pack`
+- `.config/bob` - Bob config for Neovim version management
 - `.config/shell` - shared aliases and cross-shell helper files
 - `.config/tmux` - tmux base config + TPM plugins + popup workflows
 - `.config/git` - Git config and shell helpers for dotfiles workflow
@@ -112,6 +139,8 @@ Supported distro families (normalized in `.dotfiles_setup/modules/distro.sh`):
 - Confirm file is tracked (or intentionally untracked) before editing.
 - Keep edits scoped to requested modules.
 - Prefer module README files for local conventions.
+- For Neovim migration work, treat `.config/nvim` as the stable reference and `.config/nvim-new` as the active rewrite target; test with `NVIM_APPNAME=nvim-new nvim`.
+- For `nvim-new`, treat `.dotfiles_setup/modules/neovim_tools.sh` as the ownership point for external LSP, formatter, linter, and debug-adapter binaries.
 - If setup behavior is relevant, inspect `.dotfiles_setup` files first.
 - If you add or reorganize a tracked config directory, update `DOTDIRS` in `.config/shell/dotfiles.sh`.
 - If you change module layout, ownership, or workflow behavior, update the relevant README/context docs in the same change unless the user says not to.

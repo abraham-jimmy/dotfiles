@@ -8,6 +8,7 @@
 # done
 
 source ~/.config/bash/.colors
+source ~/.config/shell/path.sh
 source ~/.config/shell/aliases.sh
 source ~/.config/bash/.bashprompt.sh
 source ~/.config/bash/.git-prompt.sh

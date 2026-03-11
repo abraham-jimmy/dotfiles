@@ -2,12 +2,19 @@
 
 Neovim config based on `lazy.nvim` with a simple module layout.
 
+This remains the current reference config during the parallel rewrite in `~/.config/nvim-new`, which is being rebuilt around Neovim 0.12 native `vim.pack`.
+
+The runtime itself is provisioned by Bob through `.dotfiles_setup/modules/neovim.sh`, with `NVIM_VERSION=nightly` as the default target.
+The new `nvim-new` toolchain expects external binaries to come from `.dotfiles_setup/modules/neovim_tools.sh` instead of Mason, using source-first user-local installs where practical.
+
 ## Layout
 
 - `init.lua`: bootstrap and startup.
 - `lua/config/`: core behavior (options, keymaps, autocmds, diagnostics).
 - `lua/plugins/`: plugin specs.
 - `lua/util/`: shared helpers.
+
+For the parallel rewrite, see `~/.config/nvim-new/README.md`.
 
 ## Highlights
 

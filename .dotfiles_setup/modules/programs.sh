@@ -4,11 +4,11 @@ set -euo pipefail
 PROGRAMS=(
   "git:git:10"
   "curl:curl:10"
+  "unzip:unzip:10"
   "ssh:openssh:10"
   "zsh:zsh:20"
   "node:nodejs:20"
   "npm:npm:20"
-  "nvim:nvim:30"
   "tmux:tmux:30"
   "fzf:fzf:30"
   "zoxide:zoxide:30"
