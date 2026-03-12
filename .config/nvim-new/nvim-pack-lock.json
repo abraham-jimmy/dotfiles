@@ -77,6 +77,10 @@
       "rev": "27acb69562a4742256ab3e4b0127391fcb49dbb3",
       "src": "https://github.com/nvim-mini/mini.trailspace.git"
     },
+    "nvim": {
+      "rev": "12c004cde3f36cb1d57242f1e6aac46b09a0e5b4",
+      "src": "https://github.com/catppuccin/nvim.git"
+    },
     "nvim-dap": {
       "rev": "a9d8cb68ee7184111dc66156c4a2ebabfbe01bc5",
       "src": "https://github.com/mfussenegger/nvim-dap.git"

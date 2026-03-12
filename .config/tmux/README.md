@@ -14,7 +14,7 @@ tmux setup with base config, plugins, and popup helpers.
 
 - Prefix is `C-a`.
 - Mouse support is enabled.
-- Popups: `M-m` (generic), `M-o` (OpenCode), `M-N` (quick note).
+- Popups: `M-m` (generic), `M-o` (toggle OpenCode), `M-N` (quick note).
 
 ## Plugins (TPM)
 
