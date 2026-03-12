@@ -26,6 +26,7 @@ DOTDIRS=(
   .config/wezterm
   .config/opencode
   .config/themes
+  .config/alacritty
   .dotfiles_setup/
 )
 
