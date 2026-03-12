@@ -19,8 +19,6 @@ tmux setup with base config, plugins, and popup helpers.
 ## Plugins (TPM)
 
 - `tmux-plugins/tpm`
-- `2kabhishek/tmux2k`
 - `tmux-plugins/tmux-resurrect`
 - `tmux-plugins/tmux-continuum`
 
-Theme is Catppuccin via `tmux2k`.

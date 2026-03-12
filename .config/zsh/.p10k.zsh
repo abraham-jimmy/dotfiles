@@ -39,11 +39,11 @@
 
   # Prompt colors.
   local grey='242'
-  local red='#FF5C57'
+  local red='#c4746e'
   local yellow='#F3F99D'
-  local blue='#57C7FF'
-  local magenta='#FF6AC1'
-  local cyan='#9AEDFE'
+  local blue='#8ba4b0'
+  local magenta='#625e5a'
+  local cyan='#625e5a'
   local white='#F1F1F0'
 
   # Left prompt segments.

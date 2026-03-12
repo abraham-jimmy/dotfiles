@@ -25,6 +25,7 @@ DOTDIRS=(
   .config/zsh
   .config/wezterm
   .config/opencode
+  .config/themes
   .dotfiles_setup/
 )
 

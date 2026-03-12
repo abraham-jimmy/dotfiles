@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/tui.json",
-  "theme": "catppuccin",
+  "theme": "kanagawa-dragon",
   "keybinds": {
     "app_exit": "ctrl+c,ctrl+d,<leader>q",
     "messages_page_up": "ctrl+alt+u",

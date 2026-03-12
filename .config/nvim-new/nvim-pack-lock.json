@@ -9,6 +9,10 @@
       "src": "https://github.com/Saghen/blink.cmp.git",
       "version": "'v1.9.1'"
     },
+    "catppuccin": {
+      "rev": "12c004cde3f36cb1d57242f1e6aac46b09a0e5b4",
+      "src": "https://github.com/catppuccin/nvim.git"
+    },
     "codediff.nvim": {
       "rev": "d21a9a3ec5b46c92b38f4ad2e950b76b152151d5",
       "src": "https://github.com/esmuellert/codediff.nvim.git"
@@ -80,6 +84,10 @@
     "nvim": {
       "rev": "12c004cde3f36cb1d57242f1e6aac46b09a0e5b4",
       "src": "https://github.com/catppuccin/nvim.git"
+    },
+    "nvim-colorizer.lua": {
+      "rev": "a065833f35a3a7cc3ef137ac88b5381da2ba302e",
+      "src": "https://github.com/norcalli/nvim-colorizer.lua.git"
     },
     "nvim-dap": {
       "rev": "a9d8cb68ee7184111dc66156c4a2ebabfbe01bc5",

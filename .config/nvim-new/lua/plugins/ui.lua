@@ -23,21 +23,28 @@ local function leader_group_clues()
 end
 
 function M.setup()
-  local kanagawa_ok, kanagawa = pcall(require, "kanagawa")
-  if not kanagawa_ok then
-    vim.schedule(function()
-      vim.notify("kanagawa.nvim is unavailable", vim.log.levels.WARN, { title = "nvim-new" })
-    end)
-  else
-    kanagawa.setup({
-      theme = "dragon",
-      background = {
-        dark = "dragon",
-        light = "lotus",
-      },
-    })
+  local theme_notify_background = "#181616"
+  local theme_ok, theme = pcall(dofile, vim.fn.expand("~/.config/themes/generated/nvim-new.lua"))
 
-    vim.cmd.colorscheme("kanagawa-dragon")
+  if not theme_ok or type(theme) ~= "table" then
+    vim.schedule(function()
+      vim.notify("generated nvim-new theme is unavailable; using default", vim.log.levels.WARN, { title = "nvim-new" })
+    end)
+    pcall(vim.cmd.colorscheme, "default")
+  else
+    if type(theme.notify_background) == "string" and theme.notify_background ~= "" then
+      theme_notify_background = theme.notify_background
+    end
+
+    if type(theme.apply) == "function" then
+      local applied, err = theme.apply()
+      if not applied then
+        vim.schedule(function()
+          vim.notify(err or "failed to apply generated nvim-new theme; using default", vim.log.levels.WARN, { title = "nvim-new" })
+        end)
+        pcall(vim.cmd.colorscheme, "default")
+      end
+    end
   end
 
   local notify_ok, notify = pcall(require, "notify")
@@ -47,7 +54,7 @@ function M.setup()
     end)
   else
     notify.setup({
-      background_colour = "#181616",
+      background_colour = theme_notify_background,
       render = "compact",
       stages = "fade",
       timeout = 3000,

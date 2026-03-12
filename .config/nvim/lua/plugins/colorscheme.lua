@@ -1,52 +1,30 @@
-return {
-  -- {
-  --   -- Theme inspired by Atom
-  --   'navarasu/onedark.nvim',
-  --   priority = 1000,
-  --   config = function()
-  --     vim.cmd.colorscheme 'onedark'
-  --   end,
-  -- },
-  --
-  -- {
-  --   "rebelot/kanagawa.nvim",
-  --   name = "kanagawa",
-  --   priority = 1000,
-  --   lazy = false,
-  --   config = function()
-  --     vim.cmd.colorscheme 'kanagawa-wave' --Opts: -wave, -dragon, -lotus
-  --   end,
-  -- },
+local function use_default_colorscheme()
+  pcall(vim.cmd.colorscheme, "default")
+end
 
-  -- catppuccin theme
-  {
-    "catppuccin/nvim",
-    name = "catppuccin",
-    priority = 1000,
-    config = function()
-      vim.cmd.colorscheme 'catppuccin'
-    end,
-  },
+local ok, spec = pcall(dofile, vim.fn.expand("~/.config/themes/generated/nvim.lua"))
+if not ok or type(spec) ~= "table" or vim.tbl_isempty(spec) then
+  vim.schedule(function()
+    vim.notify("generated nvim theme is unavailable; using default", vim.log.levels.WARN, { title = "nvim" })
+  end)
+  use_default_colorscheme()
+  return {}
+end
 
-  -- Gruvbox theme
-  -- {
-  --   "ellisonleao/gruvbox.nvim",
-  --   priority = 1000,
-  --   opts = {
-  --     overrides = {
-  --       -- Add highlight for vim-illuminate instead of underline
-  --       IlluminatedWordText = { bg = "#3c3836" },
-  --       IlluminatedWordRead = { bg = "#3c3836" },
-  --       IlluminatedWordWrite = { bg = "#3c3836" },
-  --     },
-  --   },
-  --   config = function()
-  --     vim.cmd.colorscheme 'gruvbox'
-  --     -- set normal to a default if not already set
-  --     if vim.api.nvim_get_hl_by_name("Normal", true).background == nil then
-  --       vim.api.nvim_set_hl(0, "Normal", { background = 0x171717 })
-  --       vim.api.nvim_set_hl(0, "NormalFloat", { background = 0x171717 })
-  --     end
-  --   end,
-  -- }
-}
+local theme = spec[1]
+if type(theme) == "table" and type(theme.config) == "function" then
+  local original_config = theme.config
+  theme.config = function(...)
+    local applied, err = pcall(original_config, ...)
+    if applied then
+      return
+    end
+
+    vim.schedule(function()
+      vim.notify(err or "failed to apply generated nvim theme; using default", vim.log.levels.WARN, { title = "nvim" })
+    end)
+    use_default_colorscheme()
+  end
+end
+
+return spec
