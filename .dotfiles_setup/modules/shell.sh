@@ -56,7 +56,7 @@ git_clone_or_update() {
 
       if [ -n "$head" ] && [ "$head" = "$upstream" ]; then
         skip "repo already up to date: $dest"
-        return 1
+        return 0
       fi
     fi
 
@@ -67,7 +67,7 @@ git_clone_or_update() {
 
   if [ -e "$dest" ]; then
     skip "leaving path alone: $dest exists but is not a git repository"
-    return 1
+    return 0
   fi
 
   info "cloning repo: $dest"

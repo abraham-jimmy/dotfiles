@@ -2,7 +2,11 @@
 set -euo pipefail
 
 ensure_bob() {
+  local bob_path expected_bin expected_dir install_cmd
+
   export PATH="$HOME/.local/bin:$PATH"
+  expected_bin="$HOME/.local/bin/bob"
+  expected_dir="$HOME/.local/share/bob_bin"
 
   if command -v bob >/dev/null 2>&1; then
     skip "bob already installed: $(command -v bob)"
@@ -16,17 +20,29 @@ ensure_bob() {
     return 0
   fi
 
-  if run 'curl -fsSL "https://raw.githubusercontent.com/MordechaiHadad/bob/master/scripts/install.sh" | bash'; then
-    if command -v bob >/dev/null 2>&1; then
+  install_cmd='curl -fsSL "https://raw.githubusercontent.com/MordechaiHadad/bob/master/scripts/install.sh" | bash'
+
+  if run "$install_cmd"; then
+    bob_path="$(command -v bob || true)"
+
+    if [ -n "$bob_path" ] && [ -x "$bob_path" ]; then
       done_log "bob ready"
-    else
-      warn "bob installer completed, but bob is not on PATH yet"
+      return 0
     fi
-    return
+
+    if [ -x "$expected_bin" ]; then
+      done_log "bob ready: $expected_bin"
+      return 0
+    fi
+
+    error "bob installer completed, but bob is still unavailable"
+    error "checked: $expected_bin"
+    error "expected install dir: $expected_dir"
+    error "PATH: $PATH"
+    task_fail "bob installer completed, but bob is still unavailable"
   fi
 
-  warn "bob install failed; skipping Neovim setup"
-  return 1
+  task_fail "bob install failed; skipping Neovim setup"
 }
 
 setup_19_neovim() {

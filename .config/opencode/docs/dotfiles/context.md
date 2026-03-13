@@ -47,7 +47,9 @@ New machine entrypoint:
 curl -fsSL https://raw.githubusercontent.com/abraham-jimmy/dotfiles/main/.dotfiles_setup/bootstrap.sh | bash
 ```
 
-- `setup.sh --dry-run` prints grouped module/task output with `PLAN` lines for pending actions and ends with a summary block.
+- `setup.sh --dry-run` prints grouped module/task output with `PLAN` lines for pending actions and ends with a horizontal summary table with `SUMMARY` inside the table.
+- If warnings occurred, setup prints them in yellow after the summary and groups them by module/task; if errors or failed tasks occurred, setup also prints a separate issues table and failure details after the summary.
+- Setup tasks now run independently: normal no-op states short-circuit cleanly, and a failed task logs its context and reason before setup continues.
 - Setup modules increasingly short-circuit cleanly when state is already correct (dotfiles repo config, Bob install, tmux reloads, repo fast-forwards).
 - tmux restarts are now confirmation-based when plugin changes are detected and a server is running, with yes as the default answer.
 

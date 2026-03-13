@@ -76,22 +76,26 @@ What each stage does:
   - Installs required programs
   - Sources remaining modules
   - Runs all `setup_*` functions in sorted order
+  - Isolates each task so later tasks still run after an earlier task failure
   - Prints grouped module/task output with colored status labels on interactive terminals
-  - Ends with a compact summary block for modules, tasks, planned actions, runs, skips, warnings, and errors
+  - Ends with a horizontal summary table with `SUMMARY` inside the table for modules, tasks, planned actions, runs, skips, and warnings, with separate colors for labels and numeric values
+  - Prints a separate issues table for errors and failed tasks only when they occurred, then shows warnings grouped by module/task and failure details after the tables when needed
 
 Dry-run behavior:
 
 - `setup.sh --dry-run` shows `PLAN` lines instead of executing commands or writing files
 - Output is grouped by module file and setup function so it is easier to scan
-- A final summary block shows how many modules, tasks, plans, runs, skips, warnings, and errors occurred
+- A final horizontal summary table shows how many modules, tasks, plans, runs, skips, and warnings occurred
+- If any errors or failed tasks occurred, setup prints a separate issues table afterward
 - Set `NO_COLOR=1` to force plain output
 
 Rerun behavior:
 
 - Dotfiles checkout/config in `.dotfiles_setup/modules/dotfiles.sh` short-circuits when the bare repo and expected config are already in place
 - Git-based framework repos in `.dotfiles_setup/modules/shell.sh` only fast-forward after a fetch when the upstream changed; otherwise they log a skip
-- Bob in `.dotfiles_setup/modules/neovim.sh` is installed if missing, then reused on later runs
+- Bob in `.dotfiles_setup/modules/neovim.sh` is installed if missing, verified before Neovim commands continue, then reused on later runs
 - tmux restart in `.dotfiles_setup/modules/tmux.sh` only happens when TPM or plugin state changed, and setup asks before calling `tmux kill-server` unless `RESTART_TMUX_ON_PLUGIN_CHANGE=yes|no` is set; empty input defaults to yes
+- A failed task now reports the task name, module, exit code, and best-known failing command or reason, then setup continues to the next task
 
 ## 4) Dependencies
 
