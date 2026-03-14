@@ -29,6 +29,7 @@ Bootstrap and provisioning scripts for new machine setup.
 - A final summary prints a horizontal table with `SUMMARY` inside the table plus module, task, plan, run, skip, and warning counts, using one calm color for labels and another for numeric values.
 - When any errors or failed tasks occur, setup prints a separate issues table after the main summary, then shows warning and failure details underneath.
 - Warnings are printed in yellow after the summary and grouped as a tree by module and task.
+- Successful install commands now stay quiet; setup only replays captured command output when a command fails.
 - Each task now runs in isolation: if one task fails, setup logs the failing task, module, exit code, and best-known reason, then continues to later tasks.
 - Set `NO_COLOR=1` to force plain output.
 
@@ -39,6 +40,7 @@ Bootstrap and provisioning scripts for new machine setup.
 - Neovim is managed with Bob instead of the distro package list; Bob itself is only installed if missing.
 - Bob install is verified before Neovim commands continue, so a successful installer that leaves no usable `bob` now fails clearly inside the Neovim task.
 - Neovim external tools are managed in `modules/neovim_tools.sh`, preferring user-local `npm` installs and upstream release binaries in `~/.local/bin` / `~/.local/opt/neovim-tools`.
+- Rerunning setup now self-heals broken managed Neovim tool links or non-executable targets and validates expected archive layouts before linking binaries into `~/.local/bin`.
 - Some tools still remain manual prerequisites when there is no clean source-first installer in the setup flow yet (for example `clangd`, `clang-format`, `jq`, `shellcheck`, `nixd`, `nixfmt`).
 - `clangd` / `clang-format` are intentionally left manual for now because they are system LLVM tools; suggested installs are `sudo pacman -S clang jq shellcheck` on Arch-family systems, distro `apt install clangd clang-format jq shellcheck` on Debian/Ubuntu, or `apt.llvm.org` if you specifically want newer LLVM packages there.
 - Dotfiles repo checkout/config, zsh framework pulls, and tmux server restarts now skip cleanly when nothing needs to change, without blocking later setup tasks.

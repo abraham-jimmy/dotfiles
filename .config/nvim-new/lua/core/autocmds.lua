@@ -2,6 +2,21 @@ local function augroup(name)
   return vim.api.nvim_create_augroup("nvim_new_" .. name, { clear = true })
 end
 
+local function sync_tmux_file_dir()
+  if not vim.env.TMUX or not vim.env.TMUX_PANE then
+    return
+  end
+
+  local name = vim.api.nvim_buf_get_name(0)
+  local dir = name ~= "" and vim.fn.fnamemodify(name, ":p:h") or vim.fn.getcwd()
+
+  if dir == "" then
+    return
+  end
+
+  vim.fn.system({ "tmux", "set-option", "-p", "-t", vim.env.TMUX_PANE, "-q", "@nvim_file_dir", dir })
+end
+
 vim.api.nvim_create_autocmd("FileType", {
   group = augroup("formatoptions"),
   pattern = "*",
@@ -70,4 +85,9 @@ vim.api.nvim_create_autocmd({ "RecordingEnter", "RecordingLeave" }, {
 vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
   group = augroup("checktime"),
   command = "checktime",
+})
+
+vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "DirChanged", "WinEnter" }, {
+  group = augroup("tmux_file_dir"),
+  callback = sync_tmux_file_dir,
 })

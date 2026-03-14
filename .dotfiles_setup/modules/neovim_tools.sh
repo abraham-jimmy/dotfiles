@@ -4,6 +4,65 @@ set -euo pipefail
 NVIM_TOOLS_BIN_DIR="$HOME/.local/bin"
 NVIM_TOOLS_OPT_DIR="$HOME/.local/opt/neovim-tools"
 
+managed_tool_path() {
+  printf '%s/%s\n' "$NVIM_TOOLS_BIN_DIR" "$1"
+}
+
+path_is_healthy_executable() {
+  local path="${1:-}"
+
+  [ -n "$path" ] && [ -x "$path" ]
+}
+
+command_is_healthy() {
+  local cmd="$1"
+  local path
+
+  path="$(command -v "$cmd" 2>/dev/null || true)"
+  path_is_healthy_executable "$path"
+}
+
+managed_tool_is_healthy() {
+  path_is_healthy_executable "$(managed_tool_path "$1")"
+}
+
+managed_tool_needs_repair() {
+  local path
+
+  path="$(managed_tool_path "$1")"
+
+  if [ -L "$path" ] && [ ! -e "$path" ]; then
+    return 0
+  fi
+
+  if [ -e "$path" ] && [ ! -x "$path" ]; then
+    return 0
+  fi
+
+  return 1
+}
+
+should_skip_managed_tool_install() {
+  local cmd="$1"
+
+  if managed_tool_is_healthy "$cmd"; then
+    skip "already installed: $cmd"
+    return 0
+  fi
+
+  if managed_tool_needs_repair "$cmd"; then
+    warn "repairing broken managed tool: $cmd"
+    return 1
+  fi
+
+  if command_is_healthy "$cmd"; then
+    skip "already installed: $cmd"
+    return 0
+  fi
+
+  return 1
+}
+
 ensure_neovim_tool_dirs() {
   run "mkdir -p \"$NVIM_TOOLS_BIN_DIR\" \"$NVIM_TOOLS_OPT_DIR\""
 }
@@ -19,17 +78,24 @@ linux_arch() {
 install_release_binary() {
   local cmd="$1"
   local url="$2"
-  local tmp
+  local tmp target_path bin_path
 
-  if command -v "$cmd" >/dev/null 2>&1; then
-    skip "already installed: $cmd"
+  if should_skip_managed_tool_install "$cmd"; then
     return 0
   fi
 
   ensure_neovim_tool_dirs
   tmp="$(mktemp)"
+  bin_path="$(managed_tool_path "$cmd")"
+  target_path="$NVIM_TOOLS_BIN_DIR/$cmd"
 
-  if run "curl -fL \"$url\" -o \"$tmp\"" && run "install -m 0755 \"$tmp\" \"$NVIM_TOOLS_BIN_DIR/$cmd\""; then
+  if run "curl -fL \"$url\" -o \"$tmp\"" && run "rm -f \"$bin_path\"" && run "install -m 0755 \"$tmp\" \"$target_path\""; then
+    if ! path_is_healthy_executable "$target_path"; then
+      rm -f "$tmp"
+      warn "installed binary '$cmd' is not executable at '$target_path'"
+      return 1
+    fi
+
     if [ "${DRY_RUN:-0}" -eq 1 ]; then
       plan "would install '$cmd' from upstream release"
     else
@@ -50,10 +116,9 @@ install_release_archive_tool() {
   local archive_kind="$3"
   local binary_relpath="$4"
   local install_name="$5"
-  local archive_path extract_dir install_dir
+  local archive_path extract_dir install_dir extracted_binary_path installed_binary_path bin_path
 
-  if command -v "$cmd" >/dev/null 2>&1; then
-    skip "already installed: $cmd"
+  if should_skip_managed_tool_install "$cmd"; then
     return 0
   fi
 
@@ -61,6 +126,8 @@ install_release_archive_tool() {
   archive_path="$(mktemp)"
   extract_dir="$(mktemp -d)"
   install_dir="$NVIM_TOOLS_OPT_DIR/$install_name"
+  installed_binary_path="$install_dir/$binary_relpath"
+  bin_path="$(managed_tool_path "$cmd")"
 
   if ! run "curl -fL \"$url\" -o \"$archive_path\""; then
     rm -f "$archive_path"
@@ -79,7 +146,7 @@ install_release_archive_tool() {
       fi
       ;;
     zip|vsix)
-      if ! run "unzip -o \"$archive_path\" -d \"$extract_dir\""; then
+      if ! run "unzip -oq \"$archive_path\" -d \"$extract_dir\""; then
         rm -f "$archive_path"
         rm -rf "$extract_dir"
         warn "unable to extract archive for '$cmd'"
@@ -94,7 +161,29 @@ install_release_archive_tool() {
       ;;
   esac
 
-  if run "rm -rf \"$install_dir\"" && run "mkdir -p \"$install_dir\"" && run "cp -R \"$extract_dir\"/. \"$install_dir\"/" && run "ln -sfn \"$install_dir/$binary_relpath\" \"$NVIM_TOOLS_BIN_DIR/$cmd\""; then
+  extracted_binary_path="$extract_dir/$binary_relpath"
+  if ! path_is_healthy_executable "$extracted_binary_path"; then
+    rm -f "$archive_path"
+    rm -rf "$extract_dir"
+    warn "archive for '$cmd' did not contain executable '$binary_relpath'"
+    return 1
+  fi
+
+  if run "rm -rf \"$install_dir\"" && run "mkdir -p \"$install_dir\"" && run "cp -R \"$extract_dir\"/. \"$install_dir\"/" && run "rm -f \"$bin_path\"" && run "ln -sfn \"$installed_binary_path\" \"$bin_path\""; then
+    if ! path_is_healthy_executable "$installed_binary_path"; then
+      rm -f "$archive_path"
+      rm -rf "$extract_dir"
+      warn "installed archive tool '$cmd' is missing executable '$binary_relpath'"
+      return 1
+    fi
+
+    if ! path_is_healthy_executable "$bin_path"; then
+      rm -f "$archive_path"
+      rm -rf "$extract_dir"
+      warn "managed tool link for '$cmd' is not executable at '$bin_path'"
+      return 1
+    fi
+
     if [ "${DRY_RUN:-0}" -eq 1 ]; then
       plan "would install '$cmd' from upstream archive"
     else
@@ -225,8 +314,8 @@ install_ruff() {
   }
 
   case "$arch" in
-    x86_64) install_release_archive_tool ruff "https://github.com/astral-sh/ruff/releases/download/${version}/ruff-x86_64-unknown-linux-gnu.tar.gz" tar.gz ruff "ruff-${version}-linux-x86_64" ;;
-    arm64) install_release_archive_tool ruff "https://github.com/astral-sh/ruff/releases/download/${version}/ruff-aarch64-unknown-linux-gnu.tar.gz" tar.gz ruff "ruff-${version}-linux-arm64" ;;
+    x86_64) install_release_archive_tool ruff "https://github.com/astral-sh/ruff/releases/download/${version}/ruff-x86_64-unknown-linux-gnu.tar.gz" tar.gz ruff-x86_64-unknown-linux-gnu/ruff "ruff-${version}-linux-x86_64" ;;
+    arm64) install_release_archive_tool ruff "https://github.com/astral-sh/ruff/releases/download/${version}/ruff-aarch64-unknown-linux-gnu.tar.gz" tar.gz ruff-aarch64-unknown-linux-gnu/ruff "ruff-${version}-linux-arm64" ;;
   esac
 }
 

@@ -108,6 +108,18 @@ show_text() {
   done <<< "$text"
 }
 
+show_file() {
+  local file_path="$1"
+  local prefix line
+
+  [ -f "$file_path" ] || return 0
+
+  prefix="$(indent_prefix)"
+  while IFS= read -r line || [ -n "$line" ]; do
+    printf '%s%s\n' "$prefix" "$line"
+  done <"$file_path"
+}
+
 enter_module() {
   local name="$1"
 
@@ -147,6 +159,7 @@ leave_task() {
 
 run() {
   local cmd="$*"
+  local output_file status
 
   if [ "$DRY_RUN" -eq 1 ]; then
     plan "would run: $cmd"
@@ -154,7 +167,22 @@ run() {
   fi
 
   run_log "$cmd"
-  eval "$cmd"
+  output_file="$(mktemp)"
+
+  if eval "$cmd" >"$output_file" 2>&1; then
+    rm -f "$output_file"
+    return 0
+  fi
+
+  status=$?
+
+  if [ -s "$output_file" ]; then
+    error "command output follows"
+    show_file "$output_file"
+  fi
+
+  rm -f "$output_file"
+  return "$status"
 }
 
 record_task_failure_state() {
@@ -544,7 +572,7 @@ run_task() {
 }
 
 export DRY_RUN SUMMARY_EVENT_FILE SUMMARY_WARNING_FILE
-export -f append_task_failure count_event done_log enter_module enter_task error info leave_module leave_task list_setup_functions log log_emit module_log on_task_error plan record_task_failure_state run run_log run_task show_text skip summary_print task_fail task_failed task_log warn
+export -f append_task_failure count_event done_log enter_module enter_task error info leave_module leave_task list_setup_functions log log_emit module_log on_task_error plan record_task_failure_state run run_log run_task show_file show_text skip summary_print task_fail task_failed task_log warn
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MODULE_DIR="$SCRIPT_DIR/modules"

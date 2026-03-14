@@ -49,6 +49,7 @@ curl -fsSL https://raw.githubusercontent.com/abraham-jimmy/dotfiles/main/.dotfil
 
 - `setup.sh --dry-run` prints grouped module/task output with `PLAN` lines for pending actions and ends with a horizontal summary table with `SUMMARY` inside the table.
 - If warnings occurred, setup prints them in yellow after the summary and groups them by module/task; if errors or failed tasks occurred, setup also prints a separate issues table and failure details after the summary.
+- Successful installer command output is suppressed; setup shows captured command output only for failures.
 - Setup tasks now run independently: normal no-op states short-circuit cleanly, and a failed task logs its context and reason before setup continues.
 - Setup modules increasingly short-circuit cleanly when state is already correct (dotfiles repo config, Bob install, tmux reloads, repo fast-forwards).
 - tmux restarts are now confirmation-based when plugin changes are detected and a server is running, with yes as the default answer.
@@ -63,7 +64,7 @@ From `.dotfiles_setup/modules/programs.sh` and related setup modules:
 - `fzf`, `zoxide`, `ripgrep`
 - `opencode` via official installer (`latest` by default, optional pin)
 - `nvim` via Bob (`nightly` by default, optional pin)
-- Neovim external tools via `.dotfiles_setup/modules/neovim_tools.sh` (source-first and user-local)
+- Neovim external tools via `.dotfiles_setup/modules/neovim_tools.sh` (source-first, user-local, and self-healing on rerun when managed links break)
 - Some LLVM/system-style tools like `clangd` and `clang-format` may still be intentionally manual prerequisites.
 
 ## Working Rules

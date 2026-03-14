@@ -85,6 +85,7 @@ Dry-run behavior:
 
 - `setup.sh --dry-run` shows `PLAN` lines instead of executing commands or writing files
 - Output is grouped by module file and setup function so it is easier to scan
+- Successful command output is suppressed during real runs; captured command output is replayed only when a command fails
 - A final horizontal summary table shows how many modules, tasks, plans, runs, skips, and warnings occurred
 - If any errors or failed tasks occurred, setup prints a separate issues table afterward
 - Set `NO_COLOR=1` to force plain output
@@ -113,7 +114,7 @@ Managed tool installs outside the distro package list:
 
 - OpenCode via the official installer in `.dotfiles_setup/modules/shell.sh` (`OPENCODE_VERSION=latest` by default)
 - Neovim via Bob in `.dotfiles_setup/modules/neovim.sh` (`NVIM_VERSION=nightly` by default)
-- Neovim external tools in `.dotfiles_setup/modules/neovim_tools.sh` (source-first, user-local `npm`, and upstream binary ownership)
+- Neovim external tools in `.dotfiles_setup/modules/neovim_tools.sh` (source-first, user-local `npm`, upstream binary ownership, and self-healing reruns for broken managed links)
 - Some tools are intentionally still manual when they are better treated as system LLVM/toolchain dependencies, notably `clangd` and `clang-format`
 
 Supported distro families (normalized in `.dotfiles_setup/modules/distro.sh`):
