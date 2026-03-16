@@ -48,6 +48,9 @@ nnew
 - `nvim-tree` is enabled as the persistent sidebar tree, alongside `mini.files`
 - language tooling foundations are added with `nvim-lspconfig`, `conform.nvim`, and `nvim-lint`, but per-language choices are still under review
 - currently enabled LSP servers: `bashls`, `basedpyright`, `clangd`, `hyprls`, `jsonls`, `lua_ls`, `marksman`, `nixd`, and `yamlls`
+- `nvim-new` keeps Neovim 0.12 native `:lsp` commands as the real backend, with compatibility aliases for `:LspInfo`, `:LspStart`, `:LspRestart`, `:LspStop`, `:LspDisable`, and `:LspLog`
+- Python LSP root detection now prefers `.git`, then `.venv`, then Python project files, so repo-local `.venv/bin/python` wins over nested `requirements.txt` roots when available
+- `basedpyright` now notifies once per workspace attach with the detected root and interpreter path, and warns when the expected repo-local `.venv/bin/python` is missing
 - formatting is handled by `conform.nvim` with `<leader>fo` and `:FormatToggle`
 - `todo-comments.nvim` is enabled in passive highlight-only mode for comment TODO/FIX/HACK/NOTE tags
 - `nvim-treesitter` is enabled with parser auto-install for better syntax highlighting, indentation, and incremental selection
@@ -80,7 +83,7 @@ nnew
 - `mini.surround`: `gsa`, `gsd`, `gsr`, `gsf`, `gsF`, `gsh`, `gsn`
 - `mini.trailspace`: no keybinds; passive trailing-whitespace highlighting only
 - `nvim-tree`: `<leader>o` toggle sidebar, `<leader>O` reveal current file; inside tree use `a`, `d`, `r`, `c`, `x`, `p`, `H`, `?`
-- `nvim-lspconfig`: `gd`, `gr`, `gI`, `K`, `<leader>rn`, `<leader>ca`, `<leader>wa`, `<leader>wr`, `<leader>wl`, `<leader>li`
+- `nvim-lspconfig`: `gd`, `gr`, `gI`, `K`, `<leader>rn`, `<leader>ca`, `<leader>wa`, `<leader>wr`, `<leader>wl`, `<leader>li`; command aliases `:LspInfo`, `:LspStart`, `:LspRestart`, `:LspStop`, `:LspDisable`, `:LspLog`
 - `nvim-lint`: `<leader>ll` runs the current buffer linters when a language has them configured
 - `conform.nvim`: `<leader>fo` to format, `:FormatToggle` to toggle autoformat-on-save
 - `nvim-treesitter`: `<C-Space>` to expand selection, `<BS>` to shrink selection
@@ -105,9 +108,11 @@ nnew
 - `C/C++`: keep `clangd_extensions.nvim` out unless plain `clangd` shows a real gap.
 - `C/C++`: `clangd` / `clang-format` are still manual prerequisites; suggested installs are `sudo pacman -S clang jq shellcheck` on Arch-family systems, distro `apt install clangd clang-format jq shellcheck` on Debian/Ubuntu, or `apt.llvm.org` if you want newer LLVM packages there.
 - `Python`: use `basedpyright` for LSP and type checking.
+- `Python`: prefer repo-root detection from `.git` first, then `.venv`, before falling back to nested Python project files like `requirements.txt`.
 - `Python`: use Ruff for linting, diagnostics, import organization, and formatting.
 - `Python`: keep the initial type-checking level at `standard`; raise it later only if you want stricter project-wide feedback.
 - `Python`: prefer project-local `pyproject.toml` / Ruff config and avoid separate `black` / `isort` unless a concrete compatibility need appears.
+- `Python`: when `<root>/.venv/bin/python` exists, `basedpyright` is pointed at it automatically and announces that interpreter path on attach; if it is missing, `nvim-new` warns with the expected path.
 - `Lua`: use `lua_ls` for LSP and `stylua` for formatting.
 - `Lua`: use `lazydev.nvim` for Neovim config/plugin Lua work so `require()` libraries and Neovim-specific workspace data stay accurate without loading everything eagerly.
 - `Lua`: skip a separate linter by default; add `selene` later only if you want stricter style/static rules beyond `lua_ls` diagnostics.

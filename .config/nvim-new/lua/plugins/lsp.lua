@@ -1,4 +1,5 @@
 local M = {}
+local python_attach_notified = {}
 
 local function map(bufnr, mode, lhs, rhs, desc)
   vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, silent = true, desc = desc })
@@ -35,6 +36,28 @@ function M.setup()
     callback = function(args)
       local bufnr = args.buf
       local client = vim.lsp.get_client_by_id(args.data.client_id)
+
+      if client and client.name == "basedpyright" and not python_attach_notified[client.id] then
+        python_attach_notified[client.id] = true
+
+        local root = client.config._nvim_new_python_root or client.config.root_dir or vim.fn.getcwd()
+        local python_path = client.config._nvim_new_python_path
+        local expected = client.config._nvim_new_python_expected or vim.fs.joinpath(root, ".venv", "bin", "python")
+
+        if python_path then
+          vim.notify(
+            string.format("basedpyright attached\nroot: %s\npython: %s", root, python_path),
+            vim.log.levels.INFO,
+            { title = "Python LSP" }
+          )
+        else
+          vim.notify(
+            string.format("basedpyright attached without repo-local .venv\nroot: %s\nexpected: %s", root, expected),
+            vim.log.levels.WARN,
+            { title = "Python LSP" }
+          )
+        end
+      end
 
       map(bufnr, "n", "gd", vim.lsp.buf.definition, "LSP definition")
       map(bufnr, "n", "gr", vim.lsp.buf.references, "LSP references")
