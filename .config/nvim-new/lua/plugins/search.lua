@@ -63,7 +63,7 @@ function M.setup()
     fzf.setup({
       winopts = {
         preview = {
-          hidden = "hidden",
+          hidden = false,
         },
       },
     })

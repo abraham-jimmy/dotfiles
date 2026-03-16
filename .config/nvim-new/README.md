@@ -34,7 +34,7 @@ nnew
 - leader and editor environment setup
 - options, keymaps, autocmds, diagnostics
 - toggle and project root helpers
-- first workflow plugin added: `fzf-lua` for files, buffers, grep, and keymap search
+- first workflow plugin added: `fzf-lua` for files, buffers, grep, and keymap search, with picker previews visible by default
 - `nvim-hlslens` is enabled for `/` search highlighting and match counters while moving through search results
 - `gitsigns.nvim` is enabled for live gutter hunks and quick stage/reset/blame actions while editing
 - git review plugin added: `codediff.nvim` for richer repo/file/history diffs

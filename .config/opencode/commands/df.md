@@ -1,6 +1,6 @@
 ---
 description: Start with dotfiles context
-agent: build
+agent: plan
 ---
 
 Read @/home/jimmy/.config/opencode/docs/dotfiles/context.md first.
