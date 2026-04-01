@@ -1,0 +1,26 @@
+[metadata]
+name = "sesh"
+description = "Session manager integrating tmux sessions, zoxide directories, and config paths"
+requirements = [ "sesh",]
+
+[source]
+command = [ "sh -lc 'sesh list --icons | sed -r \"s/\\x1B\\[[0-9;]*m//g\" | while IFS= read -r line; do value=${line#* }; printf \"%s\\t%s\\n\" \"$value\" \"$line\"; done'", "sh -lc 'sesh list -t --icons | sed -r \"s/\\x1B\\[[0-9;]*m//g\" | while IFS= read -r line; do value=${line#* }; printf \"%s\\t%s\\n\" \"$value\" \"$line\"; done'", "sh -lc 'sesh list -c --icons | sed -r \"s/\\x1B\\[[0-9;]*m//g\" | while IFS= read -r line; do value=${line#* }; printf \"%s\\t%s\\n\" \"$value\" \"$line\"; done'", "sh -lc 'sesh list -z --icons | sed -r \"s/\\x1B\\[[0-9;]*m//g\" | while IFS= read -r line; do value=${line#* }; printf \"%s\\t%s\\n\" \"$value\" \"$line\"; done'", "sh -lc '(if command -v fd >/dev/null 2>&1; then fd -H -d 2 -t d -E .Trash . ~; elif command -v fdfind >/dev/null 2>&1; then fdfind -H -d 2 -t d -E .Trash . ~; fi) | while IFS= read -r line; do printf \"%s\\t%s\\n\" \"$line\" \"$line\"; done'",]
+display = "{split:\t:1}"
+output = "{split:\t:0}"
+
+[preview]
+command = "bash ~/.config/sesh/tv-preview-sesh.sh '{split:\t:0}'"
+
+[keybindings]
+enter = "actions:connect"
+ctrl-d = [ "actions:kill_session", "reload_source",]
+
+[actions.connect]
+description = "Connect to selected session"
+command = "sesh connect '{split:\t:0}'"
+mode = "execute"
+
+[actions.kill_session]
+description = "Kill selected tmux session (press Ctrl+r to reload)"
+command = "tmux kill-session -t '{split:\t:0}'"
+mode = "fork"

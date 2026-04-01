@@ -19,13 +19,20 @@ What this does:
 
 ## Tracked modules
 
-These map to `DOTDIRS` in `.config/git/git_aliases`.
+These map to `DOTDIRS` in `.config/shell/dotfiles.sh`.
 
+- `.config/bob`
 - [Neovim](.config/nvim/README.md)
+- `.config/nvim-new`
+- [sesh](.config/sesh/README.md)
+- [Shell](.config/shell/README.md)
+- [television](.config/television/README.md)
 - [tmux](.config/tmux/README.md)
 - [Git](.config/git/README.md)
 - [Bash](.config/bash/README.md)
 - [Zsh](.config/zsh/README.md)
+- `.config/themes`
+- `.config/alacritty`
 - [WezTerm](.config/wezterm/README.md)
 - [OpenCode](.config/opencode/README.md)
 - [Bootstrap/setup scripts](.dotfiles_setup/README.md)

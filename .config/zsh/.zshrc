@@ -36,6 +36,10 @@ if command -v zoxide >/dev/null 2>&1; then
 fi
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 
+if command -v tv >/dev/null 2>&1; then
+  eval "$(tv init zsh)"
+fi
+
 [[ -r "$HOME/.local/share/powerlevel10k/powerlevel10k.zsh-theme" ]] && source "$HOME/.local/share/powerlevel10k/powerlevel10k.zsh-theme"
 [[ -r "$HOME/.local/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] && source "$HOME/.local/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
 [[ -r "$HOME/.local/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh" ]] && source "$HOME/.local/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh"

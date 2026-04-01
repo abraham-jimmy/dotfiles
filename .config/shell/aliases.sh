@@ -20,8 +20,6 @@ nnew() {
   NVIM_APPNAME=nvim-new nvim "$@"
 }
 
-[ -r "$HOME/.config/shell/ndot.sh" ] && source "$HOME/.config/shell/ndot.sh"
-
 unalias gau 2>/dev/null
 gau() {
   git add -u

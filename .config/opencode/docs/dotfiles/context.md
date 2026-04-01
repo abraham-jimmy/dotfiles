@@ -31,13 +31,18 @@ Defined by `DOTDIRS` in `.config/shell/dotfiles.sh`:
 - `.config/bob`
 - `.config/nvim`
 - `.config/nvim-new`
+- `.config/sesh`
 - `.config/shell`
+- `.config/television`
 - `.config/tmux`
 - `.config/git`
 - `.config/bash`
 - `.config/zsh`
+- `.config/themes`
+- `.config/alacritty`
 - `.config/wezterm`
 - `.config/opencode`
+- `.dotfiles_setup/`
 
 ## Bootstrap
 
@@ -63,6 +68,7 @@ From `.dotfiles_setup/modules/programs.sh` and related setup modules:
 - `unzip`, `tmux`
 - `fzf`, `zoxide`, `ripgrep`
 - `opencode` via official installer (`latest` by default, optional pin)
+- `television` and `sesh` via upstream release archives in `.dotfiles_setup/modules/shell.sh`
 - `nvim` via Bob (`nightly` by default, optional pin)
 - Neovim external tools via `.dotfiles_setup/modules/neovim_tools.sh` (source-first, user-local, and self-healing on rerun when managed links break)
 - Some LLVM/system-style tools like `clangd` and `clang-format` may still be intentionally manual prerequisites.

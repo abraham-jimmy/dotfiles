@@ -9,6 +9,7 @@ Bootstrap and provisioning scripts for new machine setup.
 - `modules/distro.sh`: detects and normalizes Linux distro family.
 - `modules/installer.sh`: package manager helpers used by setup modules.
 - `modules/programs.sh`: installs the base distro-managed programs.
+- `modules/shell.sh`: shell stubs, shell framework repos, default shell, and upstream user-local installs for OpenCode, `television`, and `sesh`.
 - `modules/neovim.sh`: installs Bob and selects the configured Neovim version.
 - `modules/neovim_tools.sh`: installs Neovim-facing external tools for LSP, formatting, linting, and diagnostics.
 - `modules/dotfiles.sh`: clones/checks out the bare dotfiles repo and applies core dotfiles Git settings.
@@ -37,6 +38,7 @@ Bootstrap and provisioning scripts for new machine setup.
 
 - Base distro packages come from `modules/programs.sh`.
 - OpenCode is installed with the official `https://opencode.ai/install` script.
+- `television` and `sesh` are installed from upstream release archives into `~/.local/bin` / `~/.local/opt/shell-tools` by `modules/shell.sh`.
 - Neovim is managed with Bob instead of the distro package list; Bob itself is only installed if missing.
 - Bob install is verified before Neovim commands continue, so a successful installer that leaves no usable `bob` now fails clearly inside the Neovim task.
 - Neovim external tools are managed in `modules/neovim_tools.sh`, preferring user-local `npm` installs and upstream release binaries in `~/.local/bin` / `~/.local/opt/neovim-tools`.
@@ -49,7 +51,8 @@ Bootstrap and provisioning scripts for new machine setup.
 ## Version knobs
 
 - `OPENCODE_VERSION=latest` is the default; set an exact release to pin it.
+- `TELEVISION_VERSION=0.15.4` and `SESH_VERSION=v2.24.2` are the current defaults; set either to pin a different release.
 - `NVIM_VERSION=nightly` is the default; `stable` and exact releases like `v0.10.4` are also supported.
-- Set `INSTALL_OPENCODE=false` or `INSTALL_NEOVIM=false` to skip either managed install.
+- Set `INSTALL_OPENCODE=false`, `INSTALL_TELEVISION=false`, `INSTALL_SESH=false`, or `INSTALL_NEOVIM=false` to skip a managed install.
 - Set `INSTALL_NEOVIM_TOOLS=false` to skip the external Neovim toolchain, or `INSTALL_NIX_TOOLS=false` to skip `nixd` / `nixfmt`.
 - Tool versions like `CODELLDB_VERSION`, `HYPRLS_VERSION`, `LUA_LANGUAGE_SERVER_VERSION`, `MARKSMAN_VERSION`, `RUFF_VERSION`, `SHFMT_VERSION`, `STYLUA_VERSION`, and `YAMLFMT_VERSION` can be overridden if you want to pin upstream binaries.

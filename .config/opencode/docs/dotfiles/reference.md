@@ -39,13 +39,18 @@ Primary tracked config scope is defined by `DOTDIRS` in `.config/shell/dotfiles.
 - `.config/bob`
 - `.config/nvim`
 - `.config/nvim-new`
+- `.config/sesh`
 - `.config/shell`
+- `.config/television`
 - `.config/tmux`
 - `.config/git`
 - `.config/bash`
 - `.config/zsh`
+- `.config/themes`
+- `.config/alacritty`
 - `.config/wezterm`
 - `.config/opencode`
+- `.dotfiles_setup/`
 
 Other tracked files can exist outside these directories (for example top-level `README.md` and `.dotfiles_setup/*`).
 
@@ -113,6 +118,8 @@ Distro/package handling is in `.dotfiles_setup/modules/installer.sh`.
 Managed tool installs outside the distro package list:
 
 - OpenCode via the official installer in `.dotfiles_setup/modules/shell.sh` (`OPENCODE_VERSION=latest` by default)
+- Television via upstream release archives in `.dotfiles_setup/modules/shell.sh` (`TELEVISION_VERSION=0.15.4` by default)
+- Sesh via upstream release archives in `.dotfiles_setup/modules/shell.sh` (`SESH_VERSION=v2.24.2` by default)
 - Neovim via Bob in `.dotfiles_setup/modules/neovim.sh` (`NVIM_VERSION=nightly` by default)
 - Neovim external tools in `.dotfiles_setup/modules/neovim_tools.sh` (source-first, user-local `npm`, upstream binary ownership, and self-healing reruns for broken managed links)
 - Some tools are intentionally still manual when they are better treated as system LLVM/toolchain dependencies, notably `clangd` and `clang-format`
@@ -128,11 +135,15 @@ Supported distro families (normalized in `.dotfiles_setup/modules/distro.sh`):
 - `.config/nvim` - current Neovim setup (`lazy.nvim`, plugins, config modules)
 - `.config/nvim-new` - parallel Neovim 0.12 rewrite using native `vim.pack`
 - `.config/bob` - Bob config for Neovim version management
+- `.config/sesh` - sesh session definitions for tmux workflows
 - `.config/shell` - shared aliases and cross-shell helper files
+- `.config/television` - television config and custom channels such as the tmux sesh picker
 - `.config/tmux` - tmux base config + TPM plugins + popup workflows
 - `.config/git` - Git config and shell helpers for dotfiles workflow
 - `.config/bash` - Bash prompt, aliases, shell behavior
 - `.config/zsh` - Zsh + Oh My Zsh + prompt/plugins
+- `.config/themes` - theme assets and shared appearance files
+- `.config/alacritty` - Alacritty terminal preferences
 - `.config/wezterm` - terminal preferences
 - `.config/opencode` - OpenCode preferences and helper context docs
 - `.dotfiles_setup` - machine bootstrap/provisioning scripts

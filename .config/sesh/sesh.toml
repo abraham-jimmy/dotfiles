@@ -1,0 +1,18 @@
+#:schema https://github.com/joshmedeski/sesh/raw/main/sesh.schema.json
+
+[[session]]
+name = "Downloads 📥"
+path = "~/Downloads"
+startup_command = "ls"
+
+[[session]]
+name = "tmux config"
+path = "~/.config/tmux"
+startup_command = "nvim tmux.conf"
+preview_command = "bat --color=always ~/.config/tmux/tmux.conf"
+
+[[session]]
+name = "dotfiles"
+path = "~/.config/"
+startup_command = "bash ~/.config/sesh/start-dotfiles-session.sh"
+preview_command = "bash ~/.config/sesh/preview-dotfiles.sh"

@@ -18,7 +18,9 @@ DOTDIRS=(
   .config/bob
   .config/nvim
   .config/nvim-new
+  .config/sesh
   .config/shell
+  .config/television
   .config/tmux
   .config/git
   .config/bash
@@ -54,7 +56,6 @@ dotpick() {
       dotpick_entry "dotadd" "dotadd <path>" 'Stage a specific path in the dotfiles repo'
       dotpick_entry "dotsync" "dotsync" 'Stage, suggest a commit message, commit, and push dotfiles'
       dotpick_entry "dot_smart_commit_message" "dot_smart_commit_message" 'Suggest a dotfiles commit message from staged changes'
-      dotpick_entry "ndot" "ndot" 'Open the dotfiles file picker'
       dotpick_entry "dotsetup" "dotsetup [args]" 'Run the dotfiles setup script'
       dotpick_entry "ds" "ds [args]" 'Alias for dotsetup'
     } |

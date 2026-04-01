@@ -1,0 +1,21 @@
+[metadata]
+name = "dotfiles"
+description = "Browse tracked dotfiles and open them in nnew"
+requirements = ["git", "nvim"]
+
+[source]
+command = "/usr/bin/git -C \"$HOME\" --git-dir=\"$HOME/.dotfiles\" --work-tree=\"$HOME\" ls-files --full-name | while IFS= read -r path; do printf '%s\t%s/%s\n' \"$path\" \"$HOME\" \"$path\"; done"
+display = "{split:\\t:0}"
+output = "{split:\\t:1}"
+
+[preview]
+command = "sh -lc 'file=\"{split:\t:1}\"; if command -v bat >/dev/null 2>&1; then bat --style=plain --color=always \"$file\"; else sed -n \"1,240p\" \"$file\"; fi'"
+header = "{split:\\t:1}"
+
+[keybindings]
+enter = "actions:open"
+
+[actions.open]
+description = "Open tracked dotfile in nnew"
+command = "sh -lc 'NVIM_APPNAME=nvim-new exec nvim \"{split:\\t:1}\"'"
+mode = "execute"

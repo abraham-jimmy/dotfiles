@@ -45,3 +45,7 @@ fi
 eval "$(zoxide init bash --cmd cd)"
 # fuzzyfinder
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+if command -v tv >/dev/null 2>&1; then
+  eval "$(tv init bash)"
+fi
