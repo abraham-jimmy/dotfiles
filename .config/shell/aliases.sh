@@ -1,5 +1,8 @@
 #! /usr/bin/env bash
 
+# Export for opencode to use edit mode
+export EDITOR=nvim
+
 alias vi='nvim'
 alias n='nvim'
 alias oc='opencode'

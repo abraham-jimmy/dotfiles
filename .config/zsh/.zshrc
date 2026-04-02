@@ -46,3 +46,6 @@ fi
 [[ -r "$HOME/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] && source "$HOME/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
 [[ -f ~/.config/zsh/.p10k.zsh ]] && source ~/.config/zsh/.p10k.zsh
+
+# bun completions
+[ -s "/home/jimmy/.bun/_bun" ] && source "/home/jimmy/.bun/_bun"
