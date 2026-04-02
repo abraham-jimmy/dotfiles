@@ -1,0 +1,29 @@
+# general
+background = '#181616'
+border_fg = '#625e5a'
+text_fg = '#c5c9c5'
+dimmed_text_fg = '#a6a69c'
+
+# input
+input_text_fg = '#7fb4ca'
+result_count_fg = '#e6c384'
+
+# results
+result_name_fg = '#7fb4ca'
+result_line_number_fg = '#c4b28a'
+result_value_fg = '#c8c093'
+selection_fg = '#c8c093'
+selection_bg = '#2d4f67'
+match_fg = '#e46876'
+
+# preview
+preview_title_fg = '#938aa9'
+
+# modes
+channel_mode_fg = '#181616'
+channel_mode_bg = '#87a987'
+remote_control_mode_fg = '#181616'
+remote_control_mode_bg = '#e6c384'
+action_picker_mode_fg = '#181616'
+action_picker_mode_bg = '#938aa9'
+send_to_channel_mode_fg = '#7aa89f'

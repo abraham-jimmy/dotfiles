@@ -15,6 +15,7 @@ alias dotreset='dotfiles reset --hard'
 alias dotundo='dotfiles reset --soft HEAD~1'
 
 DOTDIRS=(
+  .ai
   .config/bob
   .config/nvim
   .config/nvim-new

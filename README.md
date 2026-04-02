@@ -21,6 +21,7 @@ What this does:
 
 These map to `DOTDIRS` in `.config/shell/dotfiles.sh`.
 
+- `.ai`
 - `.config/bob`
 - [Neovim](.config/nvim/README.md)
 - `.config/nvim-new`

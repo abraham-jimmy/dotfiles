@@ -36,6 +36,7 @@ Useful read-only commands:
 
 Primary tracked config scope is defined by `DOTDIRS` in `.config/shell/dotfiles.sh`:
 
+- `.ai`
 - `.config/bob`
 - `.config/nvim`
 - `.config/nvim-new`
@@ -146,6 +147,7 @@ Supported distro families (normalized in `.dotfiles_setup/modules/distro.sh`):
 - `.config/alacritty` - Alacritty terminal preferences
 - `.config/wezterm` - terminal preferences
 - `.config/opencode` - OpenCode preferences and helper context docs
+- `.ai` - AI implementation specs and task handoff documents
 - `.dotfiles_setup` - machine bootstrap/provisioning scripts
 
 ## 6) Operational Guidance for LLM Agents

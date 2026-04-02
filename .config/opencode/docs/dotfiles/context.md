@@ -28,6 +28,7 @@ Use this file as the first context when working on my dotfiles.
 
 Defined by `DOTDIRS` in `.config/shell/dotfiles.sh`:
 
+- `.ai`
 - `.config/bob`
 - `.config/nvim`
 - `.config/nvim-new`
