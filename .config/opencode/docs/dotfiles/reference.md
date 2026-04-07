@@ -159,6 +159,7 @@ Supported distro families (normalized in `.dotfiles_setup/modules/distro.sh`):
 - Prefer module README files for local conventions.
 - For Neovim migration work, treat `.config/nvim` as the stable reference and `.config/nvim-new` as the active rewrite target; test with `NVIM_APPNAME=nvim-new nvim`.
 - For `nvim-new`, treat `.dotfiles_setup/modules/neovim_tools.sh` as the ownership point for external LSP, formatter, linter, and debug-adapter binaries.
+- In `nvim-new`, tracked dotfiles buffers now route CodeDiff review through isolated read-only temp snapshots/files; do not assume codediff can operate directly on the bare dotfiles repo.
 - If setup behavior is relevant, inspect `.dotfiles_setup` files first.
 - If you add or reorganize a tracked config directory, update `DOTDIRS` in `.config/shell/dotfiles.sh`.
 - If you change module layout, ownership, or workflow behavior, update the relevant README/context docs in the same change unless the user says not to.

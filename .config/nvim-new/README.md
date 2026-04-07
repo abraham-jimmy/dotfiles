@@ -74,7 +74,7 @@ nnew
 - `nvim-hlslens`: `/`, `?`, `n`, `N`, `*`, `#`, `g*`, `g#`; `<leader>sh` clears search highlighting
 - `todo-comments.nvim`: no keybinds; passive comment highlighting only
 - `gitsigns.nvim`: `[h`, `]h`, `<leader>gs`, `<leader>gr`, `<leader>gS`, `<leader>gu`, `<leader>gR`, `<leader>gp`, `<leader>gb`, `<leader>gD`, `<leader>g~`, `gh`
-- `codediff.nvim`: `<leader>gd` for repo changes explorer, `<leader>gf` for current file vs `HEAD`, and `<leader>gh` for diff history; all three support the bare dotfiles repo via a temporary snapshot, and `<leader>?` toggles a persistent in-view hint panel inside codediff tabs
+- `codediff.nvim`: `<leader>gd` for repo changes explorer, `<leader>gf` for current file vs `HEAD`, and `<leader>gh` for diff history; when the current buffer is a tracked dotfiles file, all three switch to an isolated read-only review flow, and `<leader>?` toggles a persistent in-view hint panel inside codediff tabs
 - `mini.files`: `<leader>e` current path toggle, `<leader>E` git root toggle; inside explorer use `l`, `h`, `=`, `g?`
 - `mini.ai`: textobjects like `af` / `if`, `ac` / `ic`, `ai` / `ii` for functions, classes, and conditionals
 - `mini.indentscope`: `ii`, `ai`, `[i`, `]i`; `<leader>tI` toggles the scope guides
@@ -138,11 +138,15 @@ nnew
 ## Using CodeDiff
 
 - Start with `<leader>gd` to browse repo changes, `<leader>gf` to compare the current file against `HEAD`, or `<leader>gh` to inspect history.
+- `:DotfilesDiff`, `:DotfilesDiffFile`, and `:DotfilesDiffHistory` open the same review flows explicitly when you want dotfiles review without relying on the current repo context.
 - `<leader>gd` and `<leader>gh` open panel-first views. You land in the codediff explorer/history panel first, not directly in a file diff. Press `<CR>` on an entry to open the actual diff for that file.
+- In tracked dotfiles files, `<leader>gd`, `<leader>gf`, and `<leader>gh` switch to an isolated read-only review path instead of talking to the bare repo directly through codediff.
+- Dotfiles repo and history review use a temporary snapshot of the bare dotfiles repo, while dotfiles file review compares `HEAD` against the current buffer contents.
 - Once a file diff is open, codediff does not replace all normal-mode keys. Only its own diff keys are added on top, so ordinary motions still work by design.
 - In the file diff view, use `q` to close, `t` to switch side-by-side vs inline, and `]c` / `[c` to move between hunks.
 - In explorer/history views, use `<CR>` to open the selected file or commit entry, `R` to refresh, and `i` to switch list vs tree view.
-- For git actions, use `-` to stage or unstage a file, `<leader>hs` / `<leader>hu` / `<leader>hr` for hunk actions, and `do` / `dp` to apply diff changes across panes.
+- In normal repos, use `-` to stage or unstage a file, `<leader>hs` / `<leader>hu` / `<leader>hr` for hunk actions, and `do` / `dp` to apply diff changes across panes.
+- In dotfiles review sessions, git actions and refresh are intentionally disabled because the view is read-only and isolated from the live bare repo.
 - Use `g?` for codediff's built-in floating help, or `<leader>?` for the persistent clue panel while learning the view.
 
 ## Debugging Notes

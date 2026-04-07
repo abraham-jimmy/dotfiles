@@ -81,6 +81,7 @@ From `.dotfiles_setup/modules/programs.sh` and related setup modules:
 - Before edits, inspect current tracked state with `status -s`.
 - For Neovim migration work, treat `.config/nvim` as the stable reference and test the parallel rewrite with `NVIM_APPNAME=nvim-new nvim`.
 - For `nvim-new`, treat `.dotfiles_setup/modules/neovim_tools.sh` as the source of truth for external LSP, formatter, linter, and debug-adapter binaries.
+- In `nvim-new`, dotfiles CodeDiff review is now isolated and read-only: tracked dotfiles buffers route `<leader>gd`, `<leader>gf`, and `<leader>gh` through temp snapshot/file views instead of trying to make codediff talk to the bare repo directly.
 - If you add or reorganize a tracked config directory, update `DOTDIRS` in `.config/shell/dotfiles.sh`.
 - If you change workflow, ownership, or layout, update the affected README/context docs in the same change unless told not to.
 
