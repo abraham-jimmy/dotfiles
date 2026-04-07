@@ -52,13 +52,11 @@ tmux_plugins_snapshot() {
 setup_20_tmux() {
   local tpm="$HOME/.config/tmux/plugins/tpm"
   local before_plugins after_plugins
-  local tmux_changed=0
+  local plugins_changed=0 tpm_changed=0 tmux_changed=0
 
   run "mkdir -p $HOME/.config/tmux/plugins"
 
-  if git_clone_or_update "https://github.com/tmux-plugins/tpm" "$tpm"; then
-    tmux_changed=1
-  fi
+  git_clone_or_update "https://github.com/tmux-plugins/tpm" "$tpm" tpm_changed
 
   if [ "${DRY_RUN:-0}" -eq 1 ]; then
     plan "would sync tmux plugins and, if they changed, ask before restarting tmux"
@@ -70,10 +68,19 @@ setup_20_tmux() {
   after_plugins="$(tmux_plugins_snapshot)"
 
   if [ "$before_plugins" != "$after_plugins" ]; then
-    tmux_changed=1
+    plugins_changed=1
     done_log "tmux plugins changed"
-  else
+  elif [ "$tpm_changed" -eq 0 ]; then
     skip "tmux plugins already current"
+  fi
+
+  if [ "$tpm_changed" -eq 1 ]; then
+    tmux_changed=1
+    done_log "tmux plugin manager changed"
+  fi
+
+  if [ "$plugins_changed" -eq 1 ]; then
+    tmux_changed=1
   fi
 
   if [ "$tmux_changed" -eq 0 ]; then

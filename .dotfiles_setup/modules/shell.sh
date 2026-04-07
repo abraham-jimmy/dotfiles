@@ -43,11 +43,15 @@ write_if_changed() {
 git_clone_or_update() {
   local repo="$1"
   local dest="$2"
-  local head upstream
+  local changed_var="${3:-}"
+  local head upstream changed=0
 
   if [ -d "$dest/.git" ]; then
     if [ "${DRY_RUN:-0}" -eq 1 ]; then
       plan "would check remote updates for repo: $dest"
+      if [ -n "$changed_var" ]; then
+        printf -v "$changed_var" '%s' "$changed"
+      fi
       return 0
     fi
 
@@ -59,23 +63,37 @@ git_clone_or_update() {
 
       if [ -n "$head" ] && [ "$head" = "$upstream" ]; then
         skip "repo already up to date: $dest"
+        if [ -n "$changed_var" ]; then
+          printf -v "$changed_var" '%s' "$changed"
+        fi
         return 0
       fi
     fi
 
     info "fast-forwarding repo: $dest"
     run "git -C \"$dest\" pull --ff-only"
+    changed=1
+    if [ -n "$changed_var" ]; then
+      printf -v "$changed_var" '%s' "$changed"
+    fi
     return 0
   fi
 
   if [ -e "$dest" ]; then
     skip "leaving path alone: $dest exists but is not a git repository"
+    if [ -n "$changed_var" ]; then
+      printf -v "$changed_var" '%s' "$changed"
+    fi
     return 0
   fi
 
   info "cloning repo: $dest"
   run "mkdir -p \"$(dirname "$dest")\""
   run "git clone \"$repo\" \"$dest\""
+  changed=1
+  if [ -n "$changed_var" ]; then
+    printf -v "$changed_var" '%s' "$changed"
+  fi
   return 0
 }
 
