@@ -11,14 +11,14 @@ Fix the most severe tracked dotfiles issues first: bootstrap first-install flow,
 ## Context
 
 **Relevant files:**
-- `.dotfiles_setup/modules/dotfiles.sh` - bootstraps bare-repo checkout and repo-local git config
-- `.dotfiles_setup/modules/tmux.sh` - installs/syncs TPM and decides whether tmux should restart
-- `.dotfiles_setup/modules/shell.sh` - shared helper `git_clone_or_update` affects tmux plugin change detection
-- `.config/tmux/tmux.conf` - main tmux entrypoint currently sources a missing file
-- `.config/opencode/opencode.json` - trusted-path allowlist for tracked dotfiles access
-- `.config/nvim/init.lua` - startup LSP enablement and editor env setup
-- `.config/nvim/lua/plugins/lsp.lua` - authoritative LSP server configuration
-- `.config/themes/theme-switch` - generated theme application and OpenCode theme update flow
+- `~/.dotfiles_setup/modules/dotfiles.sh` - bootstraps bare-repo checkout and repo-local git config
+- `~/.dotfiles_setup/modules/tmux.sh` - installs/syncs TPM and decides whether tmux should restart
+- `~/.dotfiles_setup/modules/shell.sh` - shared helper `git_clone_or_update` affects tmux plugin change detection
+- `~/.config/tmux/tmux.conf` - main tmux entrypoint currently sources a missing file
+- `~/.config/opencode/opencode.json` - trusted-path allowlist for tracked dotfiles access
+- `~/.config/nvim/init.lua` - startup LSP enablement and editor env setup
+- `~/.config/nvim/lua/plugins/lsp.lua` - authoritative LSP server configuration
+- `~/.config/themes/theme-switch` - generated theme application and OpenCode theme update flow
 
 **Patterns to follow:**
 - Setup modules should short-circuit cleanly when state is already correct, as in `.dotfiles_setup/modules/neovim.sh`

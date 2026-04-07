@@ -7,9 +7,10 @@ setup_10_dotfiles() {
   local repo_ssh="git@github.com:abraham-jimmy/dotfiles.git"
   local bootstrap_dotfiles="$HOME/.dotfiles-src"
   local status_untracked current_name current_email current_origin
-  local worktree_ready=0 config_ready=0 remote_ready=1
+  local worktree_ready=0 config_ready=0 remote_ready=1 first_install=0
 
   if [ ! -d "$dotdir" ]; then
+    first_install=1
     run "git clone --bare $repo_https $dotdir"
   fi
 
@@ -17,7 +18,7 @@ setup_10_dotfiles() {
     /usr/bin/git --git-dir="$dotdir/" --work-tree="$HOME" "$@"
   }
 
-  if [ ! -d "$dotdir" ]; then
+  if [ "$first_install" -eq 1 ]; then
     info "planning initial dotfiles checkout and repo config"
     run "dotfiles checkout"
     run "dotfiles config --local status.showUntrackedFiles no"
