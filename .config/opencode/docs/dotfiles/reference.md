@@ -37,7 +37,9 @@ Useful read-only commands:
 Primary tracked config scope is defined by `DOTDIRS` in `.config/shell/dotfiles.sh`:
 
 - `.ai`
+- `.config/ai`
 - `.config/bob`
+- `.config/claude`
 - `.config/nvim`
 - `.config/nvim-new`
 - `.config/sesh`
@@ -135,6 +137,8 @@ Supported distro families (normalized in `.dotfiles_setup/modules/distro.sh`):
 
 - `.config/nvim` - current Neovim setup (`lazy.nvim`, plugins, config modules)
 - `.config/nvim-new` - parallel Neovim 0.12 rewrite using native `vim.pack`
+- `.config/ai` - shared model-agnostic AI assets such as reusable skills, commands, and context docs
+- `.config/claude` - Claude Code client config with shared command and skill symlinks
 - `.config/bob` - Bob config for Neovim version management
 - `.config/sesh` - sesh session definitions for tmux workflows
 - `.config/shell` - shared aliases and cross-shell helper files
@@ -146,7 +150,7 @@ Supported distro families (normalized in `.dotfiles_setup/modules/distro.sh`):
 - `.config/themes` - theme assets and shared appearance files
 - `.config/alacritty` - Alacritty terminal preferences
 - `.config/wezterm` - terminal preferences
-- `.config/opencode` - OpenCode preferences and helper context docs
+- `.config/opencode` - OpenCode-specific preferences, dotfiles helper docs, and shared command/skill links
 - `.ai` - AI implementation specs and task handoff documents
 - `.dotfiles_setup` - machine bootstrap/provisioning scripts
 
@@ -156,6 +160,7 @@ Supported distro families (normalized in `.dotfiles_setup/modules/distro.sh`):
 - Use full bare-repo command form, not aliases, unless explicitly requested.
 - Confirm file is tracked (or intentionally untracked) before editing.
 - Keep edits scoped to requested modules.
+- Put cross-model AI resources in `.config/ai`; keep OpenCode-only behavior under `.config/opencode` and Claude-only behavior under `.config/claude`.
 - Prefer module README files for local conventions.
 - For Neovim migration work, treat `.config/nvim` as the stable reference and `.config/nvim-new` as the active rewrite target; test with `NVIM_APPNAME=nvim-new nvim`.
 - For `nvim-new`, treat `.dotfiles_setup/modules/neovim_tools.sh` as the ownership point for external LSP, formatter, linter, and debug-adapter binaries.

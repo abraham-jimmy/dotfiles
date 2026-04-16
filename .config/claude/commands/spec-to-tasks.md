@@ -1,0 +1,1 @@
+../../ai/commands/spec-to-tasks.md

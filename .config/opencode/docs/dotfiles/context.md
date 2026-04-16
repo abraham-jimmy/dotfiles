@@ -29,7 +29,9 @@ Use this file as the first context when working on my dotfiles.
 Defined by `DOTDIRS` in `.config/shell/dotfiles.sh`:
 
 - `.ai`
+- `.config/ai`
 - `.config/bob`
+- `.config/claude`
 - `.config/nvim`
 - `.config/nvim-new`
 - `.config/sesh`
@@ -79,6 +81,7 @@ From `.dotfiles_setup/modules/programs.sh` and related setup modules:
 - Prefer editing files inside tracked modules.
 - Do not change unrelated files outside tracked modules unless explicitly requested.
 - Before edits, inspect current tracked state with `status -s`.
+- Shared model-agnostic AI assets live in `~/.config/ai`; keep client-specific config in `~/.config/opencode` or `~/.config/claude` unless it is intentionally shared.
 - For Neovim migration work, treat `.config/nvim` as the stable reference and test the parallel rewrite with `NVIM_APPNAME=nvim-new nvim`.
 - For `nvim-new`, treat `.dotfiles_setup/modules/neovim_tools.sh` as the source of truth for external LSP, formatter, linter, and debug-adapter binaries.
 - In `nvim-new`, dotfiles CodeDiff review is now isolated and read-only: tracked dotfiles buffers route `<leader>gd`, `<leader>gf`, and `<leader>gh` through temp snapshot/file views instead of trying to make codediff talk to the bare repo directly.

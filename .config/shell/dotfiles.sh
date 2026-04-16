@@ -16,7 +16,9 @@ alias dotundo='dotfiles reset --soft HEAD~1'
 
 DOTDIRS=(
   .ai
+  .config/ai
   .config/bob
+  .config/claude
   .config/nvim
   .config/nvim-new
   .config/sesh

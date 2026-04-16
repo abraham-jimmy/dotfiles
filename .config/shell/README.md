@@ -12,6 +12,8 @@ Shared shell helpers used by both Bash and Zsh.
 
 `aliases.sh` includes `nnew` to launch the parallel `nvim-new` config with `NVIM_APPNAME=nvim-new`.
 
+`syncAiResources` links shared commands and skills from `~/.config/ai` into client-specific directories such as `~/.config/opencode` and `~/.config/claude`.
+
 `dotpick` shows dotfiles workflow helpers in an `fzf` picker so you can quickly search the available aliases/functions.
 
 Bash and Zsh both load `tv init` when `television` is installed so shell `Ctrl-t` and `Ctrl-r` use `tv` instead of the default `fzf` bindings.
