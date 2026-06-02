@@ -1,1 +1,1 @@
-../../ai/commands/pragmatic.md
+/home/jimmy/.config/ai/commands/pragmatic.md

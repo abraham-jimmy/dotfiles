@@ -47,7 +47,7 @@ nnew
 - `mini.trailspace` is enabled for passive trailing-whitespace highlighting in files not covered by formatters
 - `nvim-tree` is enabled as the persistent sidebar tree, alongside `mini.files`
 - language tooling foundations are added with `nvim-lspconfig`, `conform.nvim`, and `nvim-lint`, but per-language choices are still under review
-- currently enabled LSP servers: `bashls`, `basedpyright`, `clangd`, `hyprls`, `jsonls`, `lua_ls`, `marksman`, `nixd`, and `yamlls`
+- currently enabled LSP servers: `bashls`, `basedpyright`, `clangd`, `glsl_analyzer`, `hyprls`, `jsonls`, `lua_ls`, `marksman`, `nixd`, and `yamlls`
 - `nvim-new` keeps Neovim 0.12 native `:lsp` commands as the real backend, with compatibility aliases for `:LspInfo`, `:LspStart`, `:LspRestart`, `:LspStop`, `:LspDisable`, and `:LspLog`
 - Python LSP root detection now prefers `.git`, then `.venv`, then Python project files, so repo-local `.venv/bin/python` wins over nested `requirements.txt` roots when available
 - `basedpyright` now notifies once per workspace attach with the detected root and interpreter path, and warns when the expected repo-local `.venv/bin/python` is missing
@@ -107,6 +107,7 @@ nnew
 - `C/C++`: keep standalone linting empty for now; add `cppcheck` or another extra tool only if `clangd` diagnostics prove insufficient.
 - `C/C++`: keep `clangd_extensions.nvim` out unless plain `clangd` shows a real gap.
 - `C/C++`: `clangd` / `clang-format` are still manual prerequisites; suggested installs are `sudo pacman -S clang jq shellcheck` on Arch-family systems, distro `apt install clangd clang-format jq shellcheck` on Debian/Ubuntu, or `apt.llvm.org` if you want newer LLVM packages there.
+- `GLSL`: use `glsl_analyzer` for LSP features and formatting; the binary is setup-managed through `~/.dotfiles_setup/modules/neovim_tools.sh`.
 - `Python`: use `basedpyright` for LSP and type checking.
 - `Python`: prefer repo-root detection from `.git` first, then `.venv`, before falling back to nested Python project files like `requirements.txt`.
 - `Python`: use Ruff for linting, diagnostics, import organization, and formatting.

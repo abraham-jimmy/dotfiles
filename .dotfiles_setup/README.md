@@ -55,4 +55,4 @@ Bootstrap and provisioning scripts for new machine setup.
 - `NVIM_VERSION=nightly` is the default; `stable` and exact releases like `v0.10.4` are also supported.
 - Set `INSTALL_OPENCODE=false`, `INSTALL_TELEVISION=false`, `INSTALL_SESH=false`, or `INSTALL_NEOVIM=false` to skip a managed install.
 - Set `INSTALL_NEOVIM_TOOLS=false` to skip the external Neovim toolchain, or `INSTALL_NIX_TOOLS=false` to skip `nixd` / `nixfmt`.
-- Tool versions like `CODELLDB_VERSION`, `HYPRLS_VERSION`, `LUA_LANGUAGE_SERVER_VERSION`, `MARKSMAN_VERSION`, `RUFF_VERSION`, `SHFMT_VERSION`, `STYLUA_VERSION`, and `YAMLFMT_VERSION` can be overridden if you want to pin upstream binaries.
+- Tool versions like `CODELLDB_VERSION`, `GLSL_ANALYZER_VERSION`, `HYPRLS_VERSION`, `LUA_LANGUAGE_SERVER_VERSION`, `MARKSMAN_VERSION`, `RUFF_VERSION`, `SHFMT_VERSION`, `STYLUA_VERSION`, and `YAMLFMT_VERSION` can be overridden if you want to pin upstream binaries.

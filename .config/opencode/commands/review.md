@@ -1,1 +1,1 @@
-../../ai/commands/review.md
+/home/jimmy/.config/ai/commands/review.md

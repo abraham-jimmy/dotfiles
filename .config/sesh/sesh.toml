@@ -10,3 +10,9 @@ name = "dotfiles"
 path = "~/.config/"
 startup_command = "bash ~/.config/sesh/start-dotfiles-session.sh"
 preview_command = "bash ~/.config/sesh/preview-dotfiles.sh"
+
+[[session]]
+name = "opengl game"
+path = "~/Documents/git_repos/opengl_game/"
+startup_command = "bash ~/.config/sesh/start-opengl-game-session.sh"
+preview_command = "bash ~/.config/sesh/preview-opengl-game.sh"

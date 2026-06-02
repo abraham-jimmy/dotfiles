@@ -1,1 +1,1 @@
-../../ai/commands/task.md
+/home/jimmy/.config/ai/commands/task.md

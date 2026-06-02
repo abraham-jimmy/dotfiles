@@ -1,1 +1,1 @@
-../../ai/commands/spec.md
+/home/jimmy/.config/ai/commands/spec.md

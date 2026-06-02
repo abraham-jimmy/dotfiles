@@ -1,1 +1,1 @@
-../../ai/commands/spec-to-tasks.md
+/home/jimmy/.config/ai/commands/spec-to-tasks.md

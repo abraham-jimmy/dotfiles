@@ -228,6 +228,21 @@ install_hyprls() {
   esac
 }
 
+install_glsl_analyzer() {
+  local version="${GLSL_ANALYZER_VERSION:-v1.7.1}"
+  local arch
+
+  arch="$(linux_arch)" || {
+    warn "unsupported architecture for glsl_analyzer"
+    return 1
+  }
+
+  case "$arch" in
+    x86_64) install_release_archive_tool glsl_analyzer "https://github.com/nolanderc/glsl_analyzer/releases/download/${version}/x86_64-linux-musl.zip" zip bin/glsl_analyzer "glsl_analyzer-${version}-linux-x86_64" ;;
+    arm64) install_release_archive_tool glsl_analyzer "https://github.com/nolanderc/glsl_analyzer/releases/download/${version}/aarch64-linux-musl.zip" zip bin/glsl_analyzer "glsl_analyzer-${version}-linux-arm64" ;;
+  esac
+}
+
 install_marksman() {
   local version="${MARKSMAN_VERSION:-2026-02-08}"
   local arch
@@ -351,6 +366,7 @@ setup_20_neovim_toolchain() {
   ensure_npm_global yaml-language-server yaml-language-server || true
 
   install_codelldb || true
+  install_glsl_analyzer || true
   install_hyprls || true
   install_lua_language_server || true
   install_marksman || true

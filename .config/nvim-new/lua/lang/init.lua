@@ -5,6 +5,7 @@ local function specs()
     require("lang.bash"),
     require("lang.cpp"),
     require("lang.data"),
+    require("lang.glsl"),
     require("lang.hypr"),
     require("lang.lua"),
     require("lang.markdown"),

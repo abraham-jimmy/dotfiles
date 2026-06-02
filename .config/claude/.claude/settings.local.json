@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(hyprctl clients *)"
+    ]
+  }
+}

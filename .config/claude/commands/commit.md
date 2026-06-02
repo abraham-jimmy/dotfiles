@@ -1,1 +1,1 @@
-../../ai/commands/commit.md
+/home/jimmy/.config/ai/commands/commit.md
