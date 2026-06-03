@@ -13,6 +13,7 @@ map("n", "q:", "<Nop>")
 
 map("n", "<C-d>", "<C-d>zz", { desc = "Scroll down and center" })
 map("n", "<C-u>", "<C-u>zz", { desc = "Scroll up and center" })
+map("n", "<leader>m", "<cmd>make<cr>", { desc = "Run make in cwd" })
 map("n", "<leader>cn", "<cmd>cnext<cr>", { desc = "Quickfix next" })
 map("n", "<leader>cp", "<cmd>cprev<cr>", { desc = "Quickfix previous" })
 map("i", "<C-c>", "<Esc>")
