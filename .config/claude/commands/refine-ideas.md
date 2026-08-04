@@ -1,0 +1,1 @@
+/home/jimmy/.config/ai/commands/refine-ideas.md

@@ -75,7 +75,7 @@ nnew
 - `todo-comments.nvim`: no keybinds; passive comment highlighting only
 - `gitsigns.nvim`: `[h`, `]h`, `<leader>gs`, `<leader>gr`, `<leader>gS`, `<leader>gu`, `<leader>gR`, `<leader>gp`, `<leader>gb`, `<leader>gD`, `<leader>g~`, `gh`
 - `codediff.nvim`: `<leader>gd` for repo changes explorer, `<leader>gf` for current file vs `HEAD`, and `<leader>gh` for diff history; when the current buffer is a tracked dotfiles file, all three switch to an isolated read-only review flow, and `<leader>?` toggles a persistent in-view hint panel inside codediff tabs
-- `mini.files`: `<leader>e` current path toggle, `<leader>E` git root toggle; inside explorer use `l`, `h`, `=`, `g?`
+- `mini.files`: `<leader>e` current path toggle (falling back to the nearest existing parent for new, moved, or deleted files), `<leader>E` git root toggle; inside explorer use `l`, `h`, `=`, `g?`
 - `mini.ai`: textobjects like `af` / `if`, `ac` / `ic`, `ai` / `ii` for functions, classes, and conditionals
 - `mini.indentscope`: `ii`, `ai`, `[i`, `]i`; `<leader>tI` toggles the scope guides
 - `mini.move`: `<M-h>`, `<M-j>`, `<M-k>`, `<M-l>` move lines/selections left, down, up, right

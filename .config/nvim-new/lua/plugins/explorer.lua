@@ -6,6 +6,23 @@ local function map(mode, lhs, rhs, opts)
   vim.keymap.set(mode, lhs, rhs, opts)
 end
 
+local function nearest_existing_path(path)
+  if path == nil or path == "" then
+    return nil
+  end
+
+  path = vim.fs.normalize(path)
+  while vim.uv.fs_stat(path) == nil do
+    local parent = vim.fs.dirname(path)
+    if parent == nil or parent == path then
+      return nil
+    end
+    path = parent
+  end
+
+  return path
+end
+
 local function toggle_mini_files(path, use_absolute)
   local ok, files = pcall(require, "mini.files")
   if not ok then
@@ -45,7 +62,7 @@ function M.setup()
 
     if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].buflisted then
       local name = vim.api.nvim_buf_get_name(buf)
-      toggle_mini_files(name ~= "" and name or nil)
+      toggle_mini_files(nearest_existing_path(name))
       return
     end
 

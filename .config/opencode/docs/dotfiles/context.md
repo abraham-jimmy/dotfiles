@@ -82,6 +82,8 @@ From `.dotfiles_setup/modules/programs.sh` and related setup modules:
 - Do not change unrelated files outside tracked modules unless explicitly requested.
 - Before edits, inspect current tracked state with `status -s`.
 - Shared model-agnostic AI assets live in `~/.config/ai`; keep client-specific config in `~/.config/opencode` or `~/.config/claude` unless it is intentionally shared.
+- After a shared `task` command succeeds, it marks and renames the task complete and suggests a scoped commit message without committing automatically.
+- The shared spec workflow ends with `validate-spec <feature-folder>` in a new isolated session; it is verification-only, tags checks awaiting fresh human confirmation as `[MANUAL_VERIFY]`, and marks a fully validated feature by renaming its folder with a `-DONE` suffix.
 - For Neovim migration work, treat `.config/nvim` as the stable reference and test the parallel rewrite with `NVIM_APPNAME=nvim-new nvim`.
 - For `nvim-new`, treat `.dotfiles_setup/modules/neovim_tools.sh` as the source of truth for external LSP, formatter, linter, and debug-adapter binaries.
 - In `nvim-new`, dotfiles CodeDiff review is now isolated and read-only: tracked dotfiles buffers route `<leader>gd`, `<leader>gf`, and `<leader>gh` through temp snapshot/file views instead of trying to make codediff talk to the bare repo directly.

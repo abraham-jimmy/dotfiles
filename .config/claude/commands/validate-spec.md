@@ -1,0 +1,1 @@
+/home/jimmy/.config/ai/commands/validate-spec.md
