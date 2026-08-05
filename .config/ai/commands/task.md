@@ -15,6 +15,18 @@ If a task file is provided, execute that task.
 If a feature folder is provided, execute the next incomplete task in that folder.
 If no argument is provided, resolve the Git root and search from there for the next incomplete task.
 
+## Git Preflight
+
+Run this before resolving or reading a task:
+
+1. Resolve the repository and the Git invocation required by its instructions, including a bare-repository work-tree command when applicable
+2. Inspect the complete working tree with the equivalent of `git status --short`, including staged, unstaged, and untracked paths
+3. If any path is reported, hard stop immediately and list every changed or untracked path
+4. Tell the user the Git tree must be completely clean and ask them to commit, stash, or otherwise resolve every reported path before rerunning `task`
+5. Do not read or execute a task, modify files, stage or unstage changes, create a commit, or continue to task resolution while the Git tree is dirty
+
+A clean Git tree before task work is mandatory. There are no exceptions for unrelated, staged, unstaged, or untracked changes.
+
 ## Task Resolution
 
 When a feature folder or no argument is provided:
@@ -81,9 +93,22 @@ Do not mark the task complete or rename it if verification failed or blockers re
 
 After verification succeeds and the task file is renamed:
 
-1. Suggest committing the completed task before starting another task
-2. Provide a concise commit message scoped to this task's changes
-3. Do not create the commit unless the user explicitly asks
+1. Review the complete working-tree diff and create a concise commit message scoped to the completed task
+2. Before staging anything, tell the user exactly:
+
+```text
+Task is considered done.
+Suggested commit: <commit message>
+Would you like me to stage these changes and create this commit?
+```
+
+3. Wait for explicit user confirmation; do not stage or commit anything while awaiting the answer
+4. If the user declines, leave every change unstaged and do not create a commit
+5. If the user requests a different message, propose the revised message and ask for confirmation again before staging
+6. Only after the user confirms, stage all task changes, review the staged diff, and create the commit with the confirmed message
+7. Confirm the commit succeeded and record its commit hash and message
+
+If staging or committing fails, report the failure and hard stop without continuing to another task. Do not discard, reset, unstage, or rewrite changes to recover automatically.
 
 Report:
 - What was implemented
@@ -91,9 +116,10 @@ Report:
 - Verification result
 - Any issues or blockers
 - Final task file path
-- Suggested commit message
+- Suggested commit message and whether the user approved it
+- Created commit hash and message, if committed, or the exact commit failure
 
 Suggest next step:
-- First: commit the completed task using the suggested message
-- If more tasks remain after committing: implement the next unblocked task
+- If more tasks remain after the commit: implement the next unblocked task
+- If the user declined the commit: resolve the dirty Git tree before attempting another task
 - If the final task is complete: suggest running `validate-spec <feature-folder>` in a new isolated session

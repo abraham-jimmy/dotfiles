@@ -82,7 +82,7 @@ From `.dotfiles_setup/modules/programs.sh` and related setup modules:
 - Do not change unrelated files outside tracked modules unless explicitly requested.
 - Before edits, inspect current tracked state with `status -s`.
 - Shared model-agnostic AI assets live in `~/.config/ai`; keep client-specific config in `~/.config/opencode` or `~/.config/claude` unless it is intentionally shared.
-- After a shared `task` command succeeds, it marks and renames the task complete and suggests a scoped commit message without committing automatically.
+- The shared `task` command requires a completely clean Git tree before task work and hard-stops on staged, unstaged, or untracked paths. After successful verification, it marks and renames the task complete, proposes a scoped commit message, and requires explicit user approval before staging the task changes and creating the commit.
 - The shared spec workflow ends with `validate-spec <feature-folder>` in a new isolated session; it verifies completion, tags checks awaiting fresh human confirmation as `[MANUAL_VERIFY]`, and marks a fully validated feature by renaming its folder with a `-DONE` suffix. It may then record completion in an ancestor main spec using that spec's existing progress convention, but only after the user confirms the exact update, and it ends with commit-message guidance.
 - For Neovim migration work, treat `.config/nvim` as the stable reference and test the parallel rewrite with `NVIM_APPNAME=nvim-new nvim`.
 - For `nvim-new`, treat `.dotfiles_setup/modules/neovim_tools.sh` as the source of truth for external LSP, formatter, linter, and debug-adapter binaries.
