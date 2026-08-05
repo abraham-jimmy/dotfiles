@@ -162,7 +162,7 @@ Supported distro families (normalized in `.dotfiles_setup/modules/distro.sh`):
 - Keep edits scoped to requested modules.
 - Put cross-model AI resources in `.config/ai`; keep OpenCode-only behavior under `.config/opencode` and Claude-only behavior under `.config/claude`.
 - After a shared `task` command succeeds, it marks and renames the task complete and suggests a scoped commit message without committing automatically.
-- Finish shared spec workflows by running `validate-spec <feature-folder>` in a new isolated session; the command only verifies `Done` conditions, tags checks awaiting fresh human confirmation as `[MANUAL_VERIFY]`, and renames a fully validated feature folder with a `-DONE` suffix.
+- Finish shared spec workflows by running `validate-spec <feature-folder>` in a new isolated session; the command verifies `Done` conditions, tags checks awaiting fresh human confirmation as `[MANUAL_VERIFY]`, and renames a fully validated feature folder with a `-DONE` suffix. It may then record completion in an ancestor main spec using that spec's existing progress convention, but it must show the exact update and receive explicit user confirmation first; every report ends with commit-message guidance.
 - Prefer module README files for local conventions.
 - For Neovim migration work, treat `.config/nvim` as the stable reference and `.config/nvim-new` as the active rewrite target; test with `NVIM_APPNAME=nvim-new nvim`.
 - For `nvim-new`, treat `.dotfiles_setup/modules/neovim_tools.sh` as the ownership point for external LSP, formatter, linter, and debug-adapter binaries.

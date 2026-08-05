@@ -5,7 +5,7 @@ agent: build
 
 # Validate Spec
 
-Validate the end-to-end `## Done` conditions for a completed feature without implementing or fixing anything.
+Validate the end-to-end `## Done` conditions for a completed feature without implementing or fixing anything, then optionally record the completion in a higher-level spec with the user's approval.
 
 ## Input
 
@@ -23,7 +23,7 @@ If no argument is provided, resolve the Git root, search only under `<git-root>/
 - Do not add or update tests to make a condition pass
 - Do not install dependencies or change configuration
 - Do not modify product source files
-- The only allowed content edits are checkbox states in the spec's `## Done` section
+- The only allowed content edits are checkbox states in the spec's `## Done` section and a user-approved progress update in a higher-level spec
 - The only allowed rename is the final feature-folder rename described below
 
 ## Process
@@ -46,6 +46,22 @@ If no argument is provided, resolve the Git root, search only under `<git-root>/
 16. Set a condition to `[x]` only when it is `PASS`
 17. Leave a failed, pending-manual, or unverifiable condition unchecked; if it was previously checked, change it back to `[ ]`
 18. Do not substitute a related check for the condition actually written in the spec
+
+## Higher-Level Spec Progress
+
+Only after the completion gate passes and the feature folder is renamed:
+
+1. Search ancestor directories, stopping at the Git root, for a higher-level main spec that explicitly references or tracks this feature, its spec, or its feature folder
+2. Do not treat an unrelated ancestor Markdown file as a main spec
+3. If more than one plausible main spec exists, ask the user which one applies; do not choose silently
+4. Inspect how the selected main spec already records progress, such as existing checkboxes, numbered steps, status fields, or completed-work entries
+5. Show the user the selected main spec and the exact proposed progress update, then ask for explicit confirmation before editing it
+6. After confirmation, use the main spec's existing progress convention: for example, check its existing feature checkbox or add a concise completed step where completed steps are already recorded
+7. Do not invent a new progress format or section; if the existing handling is unclear, ask the user what update to make
+8. If the user declines or has not confirmed, do not modify the higher-level spec
+9. Do not alter requirements, scope, design decisions, or unrelated progress while recording completion
+
+Absence of a higher-level main spec, or the user's decision not to update one, does not undo the completed feature validation or folder rename.
 
 ## Result Rules
 
@@ -94,6 +110,10 @@ Then report:
 - Whether spec checkboxes changed
 - Whether the feature folder was renamed
 - Final feature folder path
+- Whether a higher-level main spec was found, confirmed by the user, and updated
 - Every blocker preventing completion
+- Suggested commit message covering the validation metadata changes
 
 Do not offer to fix blockers in this session. If validation is incomplete, tell the user to address the reported blockers in a separate session and rerun `validate-spec` afterward.
+
+End every report with `Suggested commit message:`. If validation produced no committable changes, use `Suggested commit message: None (validation made no changes).` Do not create the commit unless the user explicitly asks.
