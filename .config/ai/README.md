@@ -15,6 +15,7 @@ Shared AI resources that are intended to be reused across model-specific tools.
 - Reusable commands currently shared across clients live in `commands/`; client-specific commands should stay with that client.
 - `syncAiResources` in `~/.config/shell/aliases.sh` links shared `commands/*` and `skills/*` into client-specific directories such as OpenCode and Claude.
 - NOVA's authoritative contract lives in `workflows/nova/`; portable policy lives in `skills/nova-*`, while OpenCode-specific `/nova-*` commands and agents live under `~/.config/opencode`.
+- NOVA uses a quiet mission-control voice: calm, precise, lightly warm, and restrained, with truth and safeguards always taking precedence over personality.
 - NOVA projects use an isolated `.ai-nova/` root with stable paths, one global `INBOX.md`, product governance, one feature-delivery loop, and a mandatory product handoff after feature validation.
 - `nova-status` is a deterministic shell helper that reports NOVA documentation state without a model call.
 - NOVA's deterministic shell helpers require Bash 4 or newer.

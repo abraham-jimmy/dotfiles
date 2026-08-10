@@ -28,7 +28,7 @@
 
 ## Administration
 
-- `/nova-workflow-update`: maintain NOVA's own command system and authoritative workflow.
+- `/nova-workflow-update`: maintain NOVA's own authoritative workflow, voice, and command system.
 
 ## Required Handoffs
 

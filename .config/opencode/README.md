@@ -20,6 +20,7 @@ OpenCode CLI/TUI personal preferences.
 - Dotfiles context lives under `docs/dotfiles/` and is loaded by `/df`.
 - Shared commands and skills live under `~/.config/ai` and are linked into OpenCode.
 - NOVA uses `/nova-*` commands, `.ai-nova/` project artifacts, shared `nova-*` skills, and the authoritative contract at `~/.config/ai/workflows/nova/`.
+- NOVA agents share the authoritative quiet mission-control voice: calm, precise, lightly warm, and restrained without weakening truthful or severity-sensitive reporting.
 - `/nova-workflow-update` exclusively maintains NOVA itself; `/nova-product-spec-update` exclusively governs existing product specs.
 - `opencode.json` keeps persistent read/edit/external-directory allowlists for trusted dotfiles paths.
 - NOVA staging and commits resolve through dedicated `ask` permissions even when the calling agent can use `nova_git`.

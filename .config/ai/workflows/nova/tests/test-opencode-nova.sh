@@ -2,10 +2,17 @@
 
 set -euo pipefail
 
+script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+nova_dir=$(cd -- "$script_dir/.." && pwd)
+config_root=$(cd -- "$nova_dir/../../.." && pwd)
+voice_activation="Apply NOVA's central voice contract: calm, precise, lightly warm, and restrained; truth and role-specific severity always take precedence."
+
 config_file=$(mktemp)
 trap 'rm -f "$config_file"' EXIT
 opencode debug config > "$config_file"
 skills=$(opencode debug skill)
+
+grep -Fqx -- '## Voice And Personality' "$nova_dir/WORKFLOW.md"
 
 for agent in \
 	nova-product-steward \
@@ -17,6 +24,7 @@ for agent in \
 	nova-setup-steward \
 	nova-validator; do
 	jq -e --arg agent "$agent" '.agent | has($agent)' "$config_file" >/dev/null
+	grep -Fqx -- "$voice_activation" "$config_root/opencode/agents/$agent.md"
 done
 
 for skill in \
@@ -35,6 +43,7 @@ done
 
 assert_command_agent() {
 	jq -e --arg command "$1" --arg agent "$2" '.command[$command].agent == $agent' "$config_file" >/dev/null
+	grep -Fq -- "\`/$1\`" "$nova_dir/command-map.md"
 }
 
 assert_command_agent nova-project-setup nova-setup-steward

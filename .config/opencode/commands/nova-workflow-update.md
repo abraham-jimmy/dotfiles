@@ -1,11 +1,11 @@
 ---
-description: Explain, audit, and maintain the NOVA workflow itself
+description: Explain, audit, and maintain NOVA's workflow and voice
 agent: nova-workflow-steward
 ---
 
 # NOVA Workflow Update
 
-$ARGUMENTS: optional explanation, audit, addition, update, rename, removal, or efficiency concern
+$ARGUMENTS: optional explanation, audit, personality, addition, update, rename, removal, or efficiency concern
 
 Load `nova-workflow-governance` first. This command maintains NOVA itself, never a project's `.ai-nova/` state or product source.
 
@@ -30,7 +30,7 @@ Validation health:
 Known inconsistencies:
 ```
 
-Then offer helpful operations: explain a phase, audit a problem, add/update/rename/reorganize/deprecate/remove a command, change an artifact or transition, improve efficiency/token use, or review the full workflow. Ask focused questions appropriate to the chosen operation.
+Then offer helpful operations: explain a phase, audit a problem, design or audit NOVA's personality, add/update/rename/reorganize/deprecate/remove a command, change an artifact or transition, improve efficiency/token use, or review the full workflow. Ask focused questions appropriate to the chosen operation.
 
 ## Senior Review
 
