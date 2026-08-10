@@ -1,6 +1,11 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "skills": {
+    "paths": ["~/.config/ai/skills"]
+  },
   "permission": {
+    "nova_git_stage": "ask",
+    "nova_git_commit": "ask",
     "edit": {
       "~/.config/ai/**": "allow",
       "~/.config/bash/**": "allow",
@@ -14,7 +19,15 @@
       "~/.config/tmux/**": "allow",
       "~/.config/wezterm/**": "allow",
       "~/.config/zsh/**": "allow",
-      "~/.dotfiles_setup/**": "allow"
+      "~/.dotfiles_setup/**": "allow",
+      "~/.config/**/.env": "ask",
+      "~/.config/**/.env.*": "ask",
+      "~/.config/**/.env.example": "allow",
+      "~/.dotfiles_setup/**/.env": "ask",
+      "~/.dotfiles_setup/**/.env.*": "ask",
+      "~/.dotfiles_setup/**/.env.example": "allow",
+      ".ai-nova/product-spec.md": "deny",
+      "**/.ai-nova/product-spec.md": "deny"
     },
     "external_directory": {
       "~/.config/ai/**": "allow",
@@ -44,7 +57,13 @@
       "~/.config/tmux/**": "allow",
       "~/.config/wezterm/**": "allow",
       "~/.config/zsh/**": "allow",
-      "~/.dotfiles_setup/**": "allow"
+      "~/.dotfiles_setup/**": "allow",
+      "~/.config/**/.env": "ask",
+      "~/.config/**/.env.*": "ask",
+      "~/.config/**/.env.example": "allow",
+      "~/.dotfiles_setup/**/.env": "ask",
+      "~/.dotfiles_setup/**/.env.*": "ask",
+      "~/.dotfiles_setup/**/.env.example": "allow"
     }
   }
 }

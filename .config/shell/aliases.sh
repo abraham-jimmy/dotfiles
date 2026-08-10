@@ -97,3 +97,7 @@ syncAiResources() {
 		done
 	done
 }
+
+nova-status() {
+	"$HOME/.config/ai/workflows/nova/scripts/nova-status.sh" "$@"
+}
