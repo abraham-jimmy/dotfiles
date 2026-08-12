@@ -11,7 +11,7 @@ Read `~/.config/ai/workflows/nova/artifacts.md` and `naming.md`. Use canonical f
 
 - Resolve the Git root before inspecting project artifacts.
 - NOVA owns `.ai-nova/`; legacy `.ai/` is separate and untouched by default.
-- Require a clean Git tree before setup mutations.
+- Inspect complete Git status before reading setup artifacts. On a non-exempt dirty tree, list every changed path, pause, and resume only after the user says it is clean and status is reverified.
 - Show every proposed create, move, rename, rewrite, or removal before applying it.
 - Never modify product source code during setup.
 - Never create `product-spec.md`; `/nova-product-spec-create` owns it.

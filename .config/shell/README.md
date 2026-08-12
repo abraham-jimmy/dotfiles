@@ -14,7 +14,7 @@ Shared shell helpers used by both Bash and Zsh.
 
 `syncAiResources` links shared commands and skills from `~/.config/ai` into client-specific directories such as `~/.config/opencode` and `~/.config/claude`.
 
-`nova-status [project-root]` runs NOVA's deterministic documentation/status helper without invoking a model.
+`nova-status [project-root]` runs NOVA's deterministic documentation/status helper without invoking a model. Human-facing labels use restrained color only on a TTY and honor `NO_COLOR`; piped output stays plain. The related `nova-project-check.sh` shows a concise issue summary by default and accepts `--verbose` for individual passes.
 
 `dotpick` shows dotfiles workflow helpers in an `fzf` picker so you can quickly search the available aliases/functions.
 

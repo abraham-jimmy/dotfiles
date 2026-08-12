@@ -13,6 +13,15 @@ const productPaths = [
   ".ai-nova/INBOX.md",
 ]
 
+const projectScriptAgents = [
+  "nova-product-steward",
+  "nova-project-planner",
+  "nova-readonly",
+  "nova-setup-steward",
+  "nova-task-worker",
+  "nova-validator",
+]
+
 async function runResult(command: string[], cwd: string, signal?: AbortSignal) {
   return await new Promise<{ stdout: string; stderr: string; exitCode: number }>((resolve, reject) => {
     const child = spawn(command[0], command.slice(1), { cwd, signal })
@@ -195,20 +204,35 @@ export default (async () => ({
       description: "Run NOVA's deterministic structure checker for the current or explicitly selected repository.",
       args: {
         repository: tool.schema.string().optional(),
+        verbose: tool.schema.boolean().optional(),
       },
       async execute(args, context) {
-        if (![
-          "nova-readonly",
-          "nova-project-planner",
-          "nova-setup-steward",
-          "nova-validator",
-        ].includes(context.agent)) {
+        if (!projectScriptAgents.includes(context.agent)) {
           throw new Error(`${context.agent} may not run the NOVA structure checker`)
         }
         const root = await repositoryRoot(args.repository, context)
         const script = path.join(homedir(), ".config/ai/workflows/nova/scripts/nova-project-check.sh")
-        const result = await runResult([script, root], root, context.abort)
+        const command = [script]
+        if (args.verbose) command.push("--verbose")
+        command.push(root)
+        const result = await runResult(command, root, context.abort)
         if (result.exitCode > 1) throw new Error(result.stderr.trim() || `Structure check exited with ${result.exitCode}`)
+        return result.stdout.trim()
+      },
+    }),
+    nova_status: tool({
+      description: "Run NOVA's deterministic project status report for the current or explicitly selected repository.",
+      args: {
+        repository: tool.schema.string().optional(),
+      },
+      async execute(args, context) {
+        if (!projectScriptAgents.includes(context.agent)) {
+          throw new Error(`${context.agent} may not run the NOVA status report`)
+        }
+        const root = await repositoryRoot(args.repository, context)
+        const script = path.join(homedir(), ".config/ai/workflows/nova/scripts/nova-status.sh")
+        const result = await runResult([script, root], root, context.abort)
+        if (result.exitCode > 1) throw new Error(result.stderr.trim() || `Status report exited with ${result.exitCode}`)
         return result.stdout.trim()
       },
     }),

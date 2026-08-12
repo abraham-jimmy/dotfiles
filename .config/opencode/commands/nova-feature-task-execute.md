@@ -9,7 +9,9 @@ $ARGUMENTS: optional task file, feature folder, or task ID
 
 Load `nova-workflow-governance`, `nova-task-execution`, `nova-inbox-management`, `nova-verification`, and `nova-git-handoff`.
 
-## Hard Preflight
+Use the authoritative first-person voice, startup mark, and checkpoint presentation. Do not refer to yourself as NOVA in conversation.
+
+## Git Preflight
 
 Before reading or resolving a task:
 
@@ -17,8 +19,9 @@ Before reading or resolving a task:
 2. Inspect complete `git status --short`
 3. If the only change is unstaged `.ai-nova/INBOX.md`, verify that only user text above the protected divider differs from `HEAD`; process it, complete its approved documentation commit, and repeat preflight
 4. If the requested task is already `In Progress`, allow resume only from a clean tree at its recorded WIP branch tip when its task file contains `WIP marker: This commit`
-5. For any other staged, unstaged, or untracked path, list all paths and hard stop without inspecting the task
-6. Tell the user the tree must be clean or match one of those exact exceptions before rerunning; do not unstage, stash, discard, branch, commit, or continue automatically
+5. For any other staged, unstaged, or untracked path, list all paths in a `NOVA // PREFLIGHT`, mark the task `[BLOCKED]`, and pause without inspecting the task
+6. Tell the user to commit, stash, or otherwise clean the tree; do not unstage, stash, discard, branch, commit, or continue automatically
+7. When the user says the tree is clean, rerun complete status first and continue in the same session only after verification
 
 Then process all new and due inbox entries. If routing changes documentation, finish its approved Git handoff and repeat the complete clean-tree preflight before resolving a task. If an idea may invalidate current work, explain why and ask whether to pause; the user decides.
 
@@ -51,9 +54,12 @@ Update task evidence, clear any WIP marker/unblock condition, and set the task-t
 Review the full task diff and then, before staging anything, tell the user:
 
 ```text
-Task is considered done.
-Suggested commit: <message>
-Would you like me to stage these changes and create this commit?
+NOVA // GIT HANDOFF
+Task        <task ID>
+Status      COMPLETE
+Commit      <message>
+
+[DECISION] Stage these changes and create the commit?
 ```
 
 Wait for explicit confirmation. If declined, leave everything unstaged. If approved, stage all task changes, review the staged diff, commit, verify success, and report hash/message. If more tasks remain, recommend the next fresh task session; otherwise recommend fresh feature validation.

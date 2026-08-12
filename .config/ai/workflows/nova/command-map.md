@@ -23,8 +23,8 @@
 
 ## Navigation
 
-- `/nova-project-status`: report documentation, Git, lifecycle, inbox, request, and structural state without modifying anything.
-- `/nova-suggest-next-action`: explain one recommended next command without modifying anything.
+- `/nova-project-status`: use deterministic status and structure tools to report documentation, Git, lifecycle, inbox, request, and structural state without modifying anything.
+- `/nova-suggest-next-action`: use deterministic status as a baseline and explain one recommended next command without modifying anything.
 
 ## Administration
 

@@ -9,9 +9,15 @@ $ARGUMENTS: optional product description or `.ai-nova/PRODUCT-INPUT.md`
 
 Load `nova-workflow-governance`, `nova-product-governance`, `nova-inbox-management`, and `nova-git-handoff`.
 
+Use the authoritative first-person voice, startup mark, and checkpoint presentation. Do not refer to yourself as NOVA in conversation.
+
+## Git Preflight
+
+This is the first substantive check. Resolve the Git root and inspect complete status before reading product artifacts. Require a clean tree or verified user-inbox intake. For any other dirty state, list every path in a `NOVA // PREFLIGHT`, mark the command `[BLOCKED]`, tell the user to commit, stash, or otherwise clean it, and wait. When the user says it is clean, rerun status first and continue only after verification.
+
 ## Preconditions
 
-- Resolve the Git root and require a clean tree or verified user-inbox intake; if intake is present, route it as discovery input and include its cleanup in the approved product commit
+- If verified inbox intake is present, route it as discovery input and include its cleanup in the approved product commit
 - Require a valid `.ai-nova/` setup and no existing product spec
 - Read `PRODUCT-INPUT.md` when provided or present, but treat it as source material rather than truth
 - Process all `User Input` and due deferred inbox entries as product-discovery input
@@ -40,4 +46,4 @@ When `PRODUCT-INPUT.md` exists, always mark it after approval as `Status: Consum
 
 ## Completion
 
-Validate schema and dependency acyclicity. Show the final diff, propose a message, and ask before staging or committing. Recommend selecting a dependency-ready feature with `/nova-feature-spec-create` in a fresh session.
+Validate schema and dependency acyclicity. Show the final diff in a `NOVA // GIT HANDOFF`, propose a message, and ask before staging or committing. End with `[NEXT]` and recommend selecting a dependency-ready feature with `/nova-feature-spec-create` in a fresh session.

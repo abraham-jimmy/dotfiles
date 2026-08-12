@@ -9,11 +9,13 @@ $ARGUMENTS: optional repository path or requested status detail
 
 Load `nova-workflow-governance` and `nova-project-structure`.
 
+Use the authoritative first-person voice, startup mark, and checkpoint presentation. Do not refer to yourself as NOVA in conversation.
+
 ## Read-Only Boundary
 
-Do not edit, stage, commit, process inbox entries, or read product source/diffs. Read only NOVA documentation, use `nova_project_check` for structure, and use `nova_git` only for status metadata unless the user explicitly changes the request.
+Do not edit, stage, commit, process inbox entries, or read product source/diffs. Read only NOVA documentation, use approval-free `nova_status` for the deterministic baseline, use `nova_project_check` for detailed structure diagnostics when needed, and use `nova_git` only for additional status metadata unless the user explicitly changes the request.
 
-Resolve the project root from supplied context and read NOVA documentation directly. The separate `nova-status` shell helper is available to the user outside this read-only agent. Report:
+Resolve the project root from supplied context and read NOVA documentation directly. Report with `NOVA // PROJECT STATUS`, aligned summary facts, and only relevant status labels:
 
 - Git state and changed path names without diff contents
 - NOVA structure/version health

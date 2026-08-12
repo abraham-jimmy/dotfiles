@@ -148,13 +148,25 @@ Tested commit: Not run
 EOF
 
 check_output=$("$nova_dir/scripts/nova-project-check.sh" "$fixture")
-[[ "$check_output" == *'Result: 0 error(s)'* ]]
+[[ "$check_output" == *'[RESULT] Valid - 0 failure(s) / 0 warning(s)'* ]]
+[[ "$check_output" != *'[PASS]'* ]]
+[[ "$check_output" != *$'\033['* ]]
+
+verbose_output=$("$nova_dir/scripts/nova-project-check.sh" --verbose "$fixture")
+[[ "$verbose_output" == *'[PASS] .ai-nova/ exists'* ]]
+[[ "$verbose_output" == *'[RESULT] Valid - 0 failure(s) / 0 warning(s)'* ]]
+
+verbose_after_root=$("$nova_dir/scripts/nova-project-check.sh" "$fixture" --verbose)
+[[ "$verbose_after_root" == *'[PASS] .ai-nova/ exists'* ]]
 
 status_output=$("$nova_dir/scripts/nova-status.sh" "$fixture")
-[[ "$status_output" == *'Product: Active'* ]]
-[[ "$status_output" == *'Inbox: new input present, deferred entries none'* ]]
-[[ "$status_output" == *'Features: 1 total, 1 active, 0 blocked, 0 completed'* ]]
-[[ "$status_output" == *'Product requests: 1 proposed, 0 approved, 0 applied, 0 closed; 0 handoff pending'* ]]
+[[ "$status_output" == *'NOVA // STATUS'* ]]
+[[ "$status_output" == *'Product     Active'* ]]
+[[ "$status_output" == *'Inbox       new present / deferred none'* ]]
+[[ "$status_output" == *'Features    1 total / 1 active / 0 blocked / 0 completed'* ]]
+[[ "$status_output" == *'Requests    1 proposed / 0 approved / 0 applied / 0 closed / 0 handoff pending'* ]]
+[[ "$status_output" == *'[RESULT] Status collected with warnings.'* ]]
+[[ "$status_output" != *$'\033['* ]]
 
 "$nova_dir/scripts/nova-status.sh" "$fixture/.ai-nova" >/dev/null
 
@@ -164,7 +176,7 @@ expect_check_failure() {
 	output=$("$nova_dir/scripts/nova-project-check.sh" "$fixture" 2>&1)
 	status=$?
 	set -e
-	if (( status != 1 )) || [[ "$output" != *'FAIL  '* ]]; then
+	if (( status != 1 )) || [[ "$output" != *'[FAIL] '* ]]; then
 		printf 'Expected validation exit 1 with a FAIL diagnostic: %s (got %d)\n' "$1" "$status" >&2
 		exit 1
 	fi
@@ -216,7 +228,7 @@ cp "$fixture/inbox.backup" "$fixture/.ai-nova/INBOX.md"
 
 perl -0pi -e 's/- Revisit the example behavior\./- Revisit the example behavior. <!-- note -->/' "$fixture/.ai-nova/INBOX.md"
 status_output=$("$nova_dir/scripts/nova-status.sh" "$fixture")
-[[ "$status_output" == *'Inbox: new input present, deferred entries none'* ]]
+[[ "$status_output" == *'Inbox       new present / deferred none'* ]]
 cp "$fixture/inbox.backup" "$fixture/.ai-nova/INBOX.md"
 
 if "$nova_dir/scripts/nova-status.sh" "$fixture" extra >/dev/null 2>&1; then

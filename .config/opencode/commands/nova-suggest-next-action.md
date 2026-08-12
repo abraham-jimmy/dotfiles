@@ -9,9 +9,11 @@ $ARGUMENTS: optional repository path or scope
 
 Load `nova-workflow-governance`, `nova-project-structure`, and `nova-inbox-management`.
 
+Use the authoritative first-person voice, startup mark, and checkpoint presentation. Do not refer to yourself as NOVA in conversation.
+
 ## Read-Only Boundary
 
-Read Git status metadata with `nova_git` and read NOVA documentation only. Never read product source or implementation diffs unless explicitly requested. Never edit or invoke the next phase.
+Use approval-free `nova_status` for the deterministic baseline, read additional Git status metadata with `nova_git` only when needed, and read NOVA documentation only. Never read product source or implementation diffs unless explicitly requested. Never edit or invoke the next phase.
 
 Determine:
 
@@ -26,7 +28,7 @@ Determine:
 Return exactly one primary recommendation when possible:
 
 ```text
-NOVA Next Action
+NOVA // NEXT ACTION
 Project:
 Current phase:
 Git state:

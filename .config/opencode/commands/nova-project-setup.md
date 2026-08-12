@@ -9,12 +9,18 @@ $ARGUMENTS: optional setup intent; launch OpenCode in the repository being initi
 
 Load `nova-workflow-governance`, `nova-project-structure`, and `nova-git-handoff`.
 
+Use the authoritative first-person voice, startup mark, and checkpoint presentation. Do not refer to yourself as NOVA in conversation.
+
+## Git Preflight
+
+This is the first substantive check. Resolve the Git root and inspect complete status before reading setup or legacy documentation. If dirty, list every path in a `NOVA // PREFLIGHT` report, mark the command `[BLOCKED]`, tell the user to commit, stash, or otherwise clean the changes, and wait. When the user says it is clean, rerun status first and continue only after verification.
+
 ## First Response
 
-Resolve the Git root, inspect Git status and documentation structure, then report before asking what to do:
+After clean preflight, inspect documentation structure and report before asking what to do:
 
 ```text
-NOVA Project Setup
+NOVA // PROJECT SETUP
 Repository:
 Git state:
 NOVA structure:
@@ -23,7 +29,7 @@ NOVA workflow version:
 Structure checks:
 ```
 
-Use the `nova_project_check` tool for deterministic structure checks. Explain its failures rather than claiming setup is valid from directory presence alone.
+Use the `nova_project_check` tool for deterministic structure checks. Its default report is concise; request `verbose: true` only when individual passes aid diagnosis. Explain failures rather than claiming setup is valid from directory presence alone.
 
 Offer context-aware choices: explain the standard, initialize, audit only, reconcile, review moves/renames, summarize legacy documentation, or upgrade. Do not write before the user chooses and approves the exact plan.
 
@@ -68,4 +74,4 @@ After writing, recommend a fresh `/nova-product-spec-create .ai-nova/PRODUCT-INP
 
 ## Safety
 
-Require a completely clean Git tree before any mutation. Show every create, move, rename, rewrite, or removal. Validate the result, propose a commit message, and ask before staging or committing.
+Recheck complete Git status immediately before mutation and use the same pause-and-reverify behavior if it changed. Show every create, move, rename, rewrite, or removal. Validate the result, present a `NOVA // GIT HANDOFF`, propose a commit message, and ask before staging or committing.

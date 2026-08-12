@@ -14,7 +14,8 @@ The only inbox is `.ai-nova/INBOX.md`.
 - Only NOVA edits below the protected divider.
 - Remove user input only after an approved destination is durable.
 - Deferred items require a reason and lifecycle review trigger.
-- User capture is the only normal dirty-tree intake exception: nothing may be staged, `.ai-nova/INBOX.md` must be the only changed path, and only text above the protected divider may differ from `HEAD`. Any managed-region or other path change hard-stops.
+- User capture is the only normal dirty-tree intake exception: nothing may be staged, `.ai-nova/INBOX.md` must be the only changed path, and only text above the protected divider may differ from `HEAD`. Any managed-region or other path change uses the standard pause-and-reverify behavior.
+- A non-exempt dirty state pauses before inbox classification. List every changed path and resume only after the user cleans the tree and status is reverified.
 
 ## Processing
 

@@ -2,40 +2,56 @@
 
 set -euo pipefail
 
+if [[ -t 1 && -t 2 && -z ${NO_COLOR:-} ]]; then
+	color_red=$'\033[31m'
+	color_green=$'\033[32m'
+	color_yellow=$'\033[33m'
+	color_reset=$'\033[0m'
+else
+	color_red=''
+	color_green=''
+	color_yellow=''
+	color_reset=''
+fi
+
 if (( $# > 1 )); then
-	printf 'Usage: nova-status [project-root]\n' >&2
+	printf '%s[ERROR]%s Usage: nova-status [project-root]\n' "$color_red" "$color_reset" >&2
 	exit 2
 fi
 
 requested_root=${1:-.}
 root=$(git -C "$requested_root" rev-parse --show-toplevel 2>/dev/null) || {
-	printf 'NOVA Status\nERROR Not inside a Git repository: %s\n' "$requested_root" >&2
+	printf 'NOVA // STATUS\n\n%s[ERROR]%s Not inside a Git repository: %s\n' "$color_red" "$color_reset" "$requested_root" >&2
 	exit 2
 }
 
 nova="$root/.ai-nova"
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 
-printf 'NOVA Status\n'
-printf 'Repository: %s\n' "$root"
+printf 'NOVA // STATUS\n'
+printf 'Repository  %s\n\n' "$root"
+report_warning=0
 
 if git_state=$(GIT_OPTIONAL_LOCKS=0 git -C "$root" status --porcelain=v1 --untracked-files=all); then
 	if [[ -z "$git_state" ]]; then
-		printf 'Git: Clean\n'
+		printf 'Git         CLEAN\n'
 	else
-		printf 'Git: Dirty\n%s\n' "$git_state"
+		printf 'Git         DIRTY\n%s\n' "$git_state"
+		printf '%s[WARNING]%s Working tree changes require attention before mutating commands.\n' "$color_yellow" "$color_reset"
+		report_warning=1
 	fi
 else
-	printf 'Git: ERROR unable to read status\n'
+	printf '%s[ERROR]%s Unable to read Git status.\n' "$color_red" "$color_reset"
 	exit 2
 fi
 
 if [[ -L "$nova" ]]; then
-	printf 'Structure: Invalid; .ai-nova/ must not be a symlink\n'
+	printf '%s[FAIL]%s .ai-nova/ must not be a symlink.\n' "$color_red" "$color_reset"
 	exit 1
 elif [[ ! -d "$nova" ]]; then
-	printf 'Structure: Not initialized\n'
-	[[ -d "$root/.ai" ]] && printf 'Legacy workflow: .ai/ detected\n'
+	printf 'Structure   NOT INITIALIZED\n'
+	[[ -d "$root/.ai" ]] && printf '%s[WARNING]%s Legacy .ai/ workflow detected.\n' "$color_yellow" "$color_reset"
+	printf '\n%s[RESULT]%s Project setup is required.\n' "$color_red" "$color_reset"
 	exit 1
 fi
 
@@ -44,16 +60,16 @@ set +e
 check_status=$?
 set -e
 case "$check_status" in
-	0) printf 'Structure: Valid\n' ;;
-	1) printf 'Structure: Issues detected; run /nova-project-setup\n' ;;
-	*) printf 'Structure: ERROR unable to run NOVA structure check\n'; exit 2 ;;
+	0) printf 'Structure   VALID\n' ;;
+	1) printf 'Structure   ISSUES DETECTED\n'; printf '%s[WARNING]%s Run /nova-project-setup for detailed diagnostics.\n' "$color_yellow" "$color_reset"; report_warning=1 ;;
+	*) printf '%s[ERROR]%s Unable to run the structure check.\n' "$color_red" "$color_reset"; exit 2 ;;
 esac
 
 if [[ -f "$nova/product-spec.md" ]]; then
 	product_status=$(awk '/^Status:/ { sub(/^Status:[[:space:]]*/, ""); sub(/\r$/, ""); print; exit }' "$nova/product-spec.md")
-	printf 'Product: %s\n' "${product_status:-Status not recorded}"
+	printf 'Product     %s\n' "${product_status:-STATUS NOT RECORDED}"
 else
-	printf 'Product: Not created\n'
+	printf 'Product     NOT CREATED\n'
 fi
 
 inbox_new='none'
@@ -84,7 +100,7 @@ if [[ -f "$nova/INBOX.md" ]]; then
 		END { print (user ? "present" : "none"), (deferred ? "present" : "none") }
 	' "$nova/INBOX.md")
 fi
-printf 'Inbox: new input %s, deferred entries %s\n' "$inbox_new" "$inbox_deferred"
+printf 'Inbox       new %s / deferred %s\n' "$inbox_new" "$inbox_deferred"
 
 feature_total=0
 feature_completed=0
@@ -101,7 +117,7 @@ for spec in "$nova/features"/F*/T00-spec.md; do
 	esac
 done
 shopt -u nullglob
-printf 'Features: %d total, %d active, %d blocked, %d completed\n' "$feature_total" "$feature_active" "$feature_blocked" "$feature_completed"
+printf 'Features    %d total / %d active / %d blocked / %d completed\n' "$feature_total" "$feature_active" "$feature_blocked" "$feature_completed"
 
 pcr_proposed=0
 pcr_approved=0
@@ -123,4 +139,10 @@ if [[ -d "$nova/product-changes" ]]; then
 	done
 	shopt -u nullglob
 fi
-printf 'Product requests: %d proposed, %d approved, %d applied, %d closed; %d handoff pending\n' "$pcr_proposed" "$pcr_approved" "$pcr_applied" "$pcr_rejected" "$phr_pending"
+printf 'Requests    %d proposed / %d approved / %d applied / %d closed / %d handoff pending\n' "$pcr_proposed" "$pcr_approved" "$pcr_applied" "$pcr_rejected" "$phr_pending"
+
+if (( report_warning )); then
+	printf '\n%s[RESULT]%s Status collected with warnings.\n' "$color_yellow" "$color_reset"
+else
+	printf '\n%s[RESULT]%s Status collected.\n' "$color_green" "$color_reset"
+fi

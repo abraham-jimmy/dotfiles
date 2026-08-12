@@ -9,12 +9,18 @@ $ARGUMENTS: optional explanation, audit, personality, addition, update, rename, 
 
 Load `nova-workflow-governance` first. This command maintains NOVA itself, never a project's `.ai-nova/` state or product source.
 
+Use the authoritative first-person voice, startup mark, and checkpoint presentation. Do not refer to yourself as NOVA in conversation.
+
+## Git Preflight
+
+Before reading the authoritative workflow or connected assets, inspect complete bare-repository status for the scoped dotfiles paths. If dirty, list every path in a `NOVA // PREFLIGHT` report, mark the command `[BLOCKED]`, tell the user to commit, stash, or otherwise clean the changes, and wait. When the user says the scope is clean, rerun status first and continue only after verification.
+
 ## Mandatory First Response
 
 Read the authoritative workflow and installed NOVA commands, skills, agents, scripts, tests, and docs. Check the bare dotfiles repository state. Before asking what to change, print a concise current structure:
 
 ```text
-NOVA Workflow
+NOVA // WORKFLOW
 
 Mission:
 Lifecycle:
@@ -38,6 +44,6 @@ For every proposed change, assess user intent, entry/exit state, reads/writes, o
 
 ## Apply
 
-Require the scoped bare dotfiles worktree to be clean before editing; hard stop and list changes otherwise. Do not edit before showing the complete cross-workflow plan and receiving approval. Update the authoritative workflow contract first, then affected commands, skills, agents, scripts, tests, READMEs, and dotfiles context/reference together. Validate OpenCode discovery/config, skill metadata, scripts, links, command-map consistency, and the bare-repo diff.
+The scoped bare dotfiles worktree was verified clean during preflight. Recheck it immediately before the first edit; if it changed, use the same pause-and-reverify behavior. Do not edit before showing the complete cross-workflow plan and receiving approval. Update the authoritative workflow contract first, then affected commands, skills, agents, scripts, tests, READMEs, and dotfiles context/reference together. Validate OpenCode discovery/config, skill metadata, scripts, links, command-map consistency, and the bare-repo diff.
 
 Suggest a scoped commit message and ask before staging or committing.

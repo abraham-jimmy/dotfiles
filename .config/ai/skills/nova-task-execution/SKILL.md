@@ -11,7 +11,7 @@ description: Executes one NOVA feature task with clean-tree, dependency, verific
 - Require `git status --short` to be empty before task resolution, except verified user-only inbox intake or a clean approved WIP resume.
 - For inbox intake, require no staged paths, only `.ai-nova/INBOX.md` changed, and an unchanged managed region below the divider; process and commit routing, then repeat clean preflight.
 - For WIP resume, require a clean tree at the recorded WIP branch tip, `WIP marker: This commit` in the task file, and the requested row already `In Progress`.
-- Hard stop and list every path for any other state.
+- For any other dirty state, list every path, tell the user to commit, stash, or otherwise clean it, and pause before task resolution. When the user says it is clean, rerun complete status and continue only after verification.
 - Process due inbox entries before implementation.
 - Select only a dependency-ready task from the authoritative feature task table.
 

@@ -9,9 +9,15 @@ $ARGUMENTS: `.ai-nova/features/FNNN-slug/T00-spec.md` or feature folder
 
 Load `nova-workflow-governance`, `nova-feature-planning`, `nova-inbox-management`, and `nova-git-handoff`.
 
+Use the authoritative first-person voice, startup mark, and checkpoint presentation. Do not refer to yourself as NOVA in conversation.
+
+## Git Preflight
+
+This is the first substantive check. Resolve the repository and inspect complete status before reading feature artifacts. Require a clean tree or verified user-inbox intake. For any other dirty state, list every path in a `NOVA // PREFLIGHT`, mark the command `[BLOCKED]`, tell the user to commit, stash, or otherwise clean it, and wait. When the user says it is clean, rerun status first and continue only after verification.
+
 ## Preconditions
 
-- Resolve the repository and require a clean Git tree or verified user-inbox intake; if intake is present, route and commit it, then repeat clean preflight
+- If verified user-inbox intake is present, route and commit it, then repeat clean preflight
 - Resolve exactly one `Approved` feature spec, or an `In Progress` feature containing approved missing `Planned` remediation rows
 - Process every new and currently due inbox entry before materializing tasks
 - Refuse when an unresolved Product Change Request names the feature in `Blocks`
@@ -37,4 +43,4 @@ Lifecycle status remains authoritative in `T00-spec.md`; do not duplicate a task
 
 ## Completion
 
-Verify every non-`None` table file matches exactly once, dependencies are explicit, and checks are actionable. Show the planning diff, propose a message, and ask before staging or committing. Recommend the first dependency-ready `/nova-feature-task-execute <task>` in a fresh session.
+Verify every non-`None` table file matches exactly once, dependencies are explicit, and checks are actionable. Show the planning diff in a `NOVA // GIT HANDOFF`, propose a message, and ask before staging or committing. End with `[NEXT]` and recommend the first dependency-ready `/nova-feature-task-execute <task>` in a fresh session.

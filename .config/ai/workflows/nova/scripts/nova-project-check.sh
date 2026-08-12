@@ -2,19 +2,51 @@
 
 set -euo pipefail
 
+if [[ -t 1 && -t 2 && -z ${NO_COLOR:-} ]]; then
+	color_red=$'\033[31m'
+	color_green=$'\033[32m'
+	color_yellow=$'\033[33m'
+	color_reset=$'\033[0m'
+else
+	color_red=''
+	color_green=''
+	color_yellow=''
+	color_reset=''
+fi
+
 if (( BASH_VERSINFO[0] < 4 )); then
-	printf 'ERROR nova-project-check.sh requires Bash 4 or newer\n' >&2
+	printf '%s[ERROR]%s nova-project-check.sh requires Bash 4 or newer\n' "$color_red" "$color_reset" >&2
 	exit 2
 fi
 
-if (( $# > 1 )); then
-	printf 'Usage: nova-project-check.sh [project-root]\n' >&2
-	exit 2
-fi
+verbose=0
+requested_root='.'
+root_set=0
+while (( $# )); do
+	case $1 in
+		--verbose) verbose=1 ;;
+		-h|--help)
+			printf 'Usage: nova-project-check.sh [--verbose] [project-root]\n'
+			exit 0
+			;;
+		-*)
+			printf '%s[ERROR]%s Unknown option: %s\n' "$color_red" "$color_reset" "$1" >&2
+			exit 2
+			;;
+		*)
+			if (( root_set )); then
+				printf '%s[ERROR]%s Usage: nova-project-check.sh [--verbose] [project-root]\n' "$color_red" "$color_reset" >&2
+				exit 2
+			fi
+			requested_root=$1
+			root_set=1
+			;;
+	esac
+	shift
+done
 
-requested_root=${1:-.}
 root=$(git -C "$requested_root" rev-parse --show-toplevel 2>/dev/null) || {
-	printf 'ERROR Not inside a Git repository: %s\n' "$requested_root" >&2
+	printf '%s[ERROR]%s Not inside a Git repository: %s\n' "$color_red" "$color_reset" "$requested_root" >&2
 	exit 2
 }
 
@@ -22,9 +54,16 @@ nova="$root/.ai-nova"
 errors=0
 warnings=0
 
-pass() { printf 'PASS  %s\n' "$1"; }
-warn() { printf 'WARN  %s\n' "$1"; warnings=$((warnings + 1)); }
-fail() { printf 'FAIL  %s\n' "$1"; errors=$((errors + 1)); }
+pass() { (( verbose )) && printf '%s[PASS]%s %s\n' "$color_green" "$color_reset" "$1"; return 0; }
+warn() { printf '%s[WARN]%s %s\n' "$color_yellow" "$color_reset" "$1"; warnings=$((warnings + 1)); }
+fail() { printf '%s[FAIL]%s %s\n' "$color_red" "$color_reset" "$1"; errors=$((errors + 1)); }
+print_result() {
+	local color=$color_green state='Valid'
+	if (( errors > 0 )); then color=$color_red; state='Invalid'
+	elif (( warnings > 0 )); then color=$color_yellow; state='Valid with warnings'
+	fi
+	printf '\n%s[RESULT]%s %s - %d failure(s) / %d warning(s)\n' "$color" "$color_reset" "$state" "$errors" "$warnings"
+}
 value_of() { awk -v key="$2" 'index($0, key) == 1 { sub("^" key "[[:space:]]*", ""); sub(/\r$/, ""); print; exit }' "$1"; }
 status_of() { value_of "$1" 'Status:'; }
 has_line() { awk -v wanted="$2" '{ sub(/\r$/, "") } $0 == wanted { found=1 } END { exit !found }' "$1"; }
@@ -96,17 +135,17 @@ has_checklist() {
 	' "$1"
 }
 
-printf 'NOVA Structure Check\n'
-printf 'Repository: %s\n' "$root"
+printf 'NOVA // STRUCTURE CHECK\n'
+printf 'Repository  %s\n\n' "$root"
 
 if [[ -L "$nova" ]]; then
 	fail '.ai-nova/ must not be a symlink'
-	printf 'Result: %d error(s), %d warning(s)\n' "$errors" "$warnings"
+	print_result
 	exit 1
 elif [[ ! -d "$nova" ]]; then
 	fail '.ai-nova/ is missing'
 	[[ -d "$root/.ai" ]] && warn 'legacy .ai/ exists'
-	printf 'Result: %d error(s), %d warning(s)\n' "$errors" "$warnings"
+	print_result
 	exit 1
 fi
 
@@ -624,5 +663,5 @@ done
 
 [[ -d "$root/.ai" ]] && warn 'legacy .ai/ coexists; NOVA will leave it untouched'
 
-printf 'Result: %d error(s), %d warning(s)\n' "$errors" "$warnings"
+print_result
 (( errors == 0 ))
