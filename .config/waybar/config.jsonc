@@ -2,16 +2,15 @@
   {
     "name": "RightMon",
     "layer": "top",
-    "height": 24,
+    "height": 28,
     "spacing": 4,
     "output": "ASUSTek COMPUTER INC VG27B K7LMQS089435",
-
     "modules-left": [
       "custom/workspace-state",
       "custom/middle-workspace-1",
       "custom/middle-workspace-2",
       "custom/middle-workspace-3",
-      "custom/spotify"
+      "custom/game-workspace"
     ],
     "modules-center": [
       "custom/right-workspace-4",
@@ -23,127 +22,115 @@
       "custom/right-workspace-10"
     ],
     "modules-right": [
-      "wlr/taskbar",
-      "tray",
+      "custom/spotify",
+      "custom/notifications",
       "clock",
       "wireplumber",
       "custom/power"
     ],
-
     "custom/middle-workspace-1": {
       "exec": "bash ~/.config/waybar/modules/workspace-state.sh stream 1",
       "return-type": "json",
       "restart-interval": 1,
       "exec-on-event": false,
-      "on-click": "hyprctl dispatch workspace 1",
+      "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 1 })'",
       "tooltip": true
     },
-
     "custom/middle-workspace-2": {
       "exec": "bash ~/.config/waybar/modules/workspace-state.sh stream 2",
       "return-type": "json",
       "restart-interval": 1,
       "exec-on-event": false,
-      "on-click": "hyprctl dispatch workspace 2",
+      "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 2 })'",
       "tooltip": true
     },
-
     "custom/middle-workspace-3": {
       "exec": "bash ~/.config/waybar/modules/workspace-state.sh stream 3",
       "return-type": "json",
       "restart-interval": 1,
       "exec-on-event": false,
-      "on-click": "hyprctl dispatch workspace 3",
+      "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 3 })'",
       "tooltip": true
     },
-
+    "custom/game-workspace": {
+      "exec": "bash ~/.config/waybar/modules/workspace-state.sh stream games",
+      "return-type": "json",
+      "restart-interval": 1,
+      "exec-on-event": false,
+      "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"name:games\" })'",
+      "tooltip": true
+    },
     "custom/workspace-state": {
       "exec": "bash ~/.config/waybar/modules/workspace-state.sh watch",
       "return-type": "json",
       "restart-interval": 1,
       "tooltip": false
     },
-
     "custom/right-workspace-4": {
       "exec": "bash ~/.config/waybar/modules/workspace-state.sh stream 4",
       "return-type": "json",
       "restart-interval": 1,
       "exec-on-event": false,
-      "on-click": "hyprctl dispatch workspace 4"
+      "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 4 })'"
     },
-
     "custom/right-workspace-5": {
       "exec": "bash ~/.config/waybar/modules/workspace-state.sh stream 5",
       "return-type": "json",
       "restart-interval": 1,
       "exec-on-event": false,
-      "on-click": "hyprctl dispatch workspace 5"
+      "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 5 })'"
     },
-
     "custom/right-workspace-6": {
       "exec": "bash ~/.config/waybar/modules/workspace-state.sh stream 6",
       "return-type": "json",
       "restart-interval": 1,
       "exec-on-event": false,
-      "on-click": "hyprctl dispatch workspace 6"
+      "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 6 })'"
     },
-
     "custom/right-workspace-7": {
       "exec": "bash ~/.config/waybar/modules/workspace-state.sh stream 7",
       "return-type": "json",
       "restart-interval": 1,
       "exec-on-event": false,
-      "on-click": "hyprctl dispatch workspace 7"
+      "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 7 })'"
     },
-
     "custom/right-workspace-8": {
       "exec": "bash ~/.config/waybar/modules/workspace-state.sh stream 8",
       "return-type": "json",
       "restart-interval": 1,
       "exec-on-event": false,
-      "on-click": "hyprctl dispatch workspace 8"
+      "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 8 })'"
     },
-
     "custom/right-workspace-9": {
       "exec": "bash ~/.config/waybar/modules/workspace-state.sh stream 9",
       "return-type": "json",
       "restart-interval": 1,
       "exec-on-event": false,
-      "on-click": "hyprctl dispatch workspace 9"
+      "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 9 })'"
     },
-
     "custom/right-workspace-10": {
       "exec": "bash ~/.config/waybar/modules/workspace-state.sh stream 10",
       "return-type": "json",
       "restart-interval": 1,
       "exec-on-event": false,
-      "on-click": "hyprctl dispatch workspace 10"
+      "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 10 })'"
     },
-
     "custom/spotify": {
       "exec": "/usr/bin/python3 ~/.config/waybar/mediaplayer.py --player spotify",
-      "format": "{}  ",
+      "format": "{} ",
       "return-type": "json",
       "max-length": 45,
       "on-click": "playerctl --player=spotify play-pause",
       "on-scroll-up": "playerctl --player=spotify next",
       "on-scroll-down": "playerctl --player=spotify previous"
     },
-
-    "wlr/taskbar": {
-      "format": "{icon}",
-      "icon-size": 18,
-      "all-outputs": true,
-      "active-first": true,
-      "tooltip-format": "{name}: {title}",
-      "on-click": "activate",
-      "on-click-middle": "close"
+    "custom/notifications": {
+      "exec": "bash ~/.config/waybar/modules/notification-center.sh count",
+      "return-type": "json",
+      "interval": 3,
+      "on-click": "bash ~/.config/waybar/modules/notification-center.sh show",
+      "on-click-right": "makoctl restore"
     },
-
-    "tray": {
-      "spacing": 6
-    },
-
     "clock": {
       "format": "{:%a, %d %b  %H:%M}",
       "format-alt": "{:%Y-%m-%d  %H:%M:%S}",
@@ -170,15 +157,17 @@
         "on-scroll-down": "shift_down"
       }
     },
-
     "wireplumber": {
       "format": "{volume}% {icon}",
       "format-muted": "Muted ",
       "on-click": "pavucontrol",
       "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
-      "format-icons": ["", "", ""]
+      "format-icons": [
+        "",
+        "",
+        ""
+      ]
     },
-
     "custom/power": {
       "format": "󰐥",
       "tooltip": true,

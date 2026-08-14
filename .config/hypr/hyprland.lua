@@ -93,19 +93,17 @@ hl.config({
     },
 })
 
-hl.curve("wind", { type = "bezier", points = { { 0.05, 0.9 }, { 0.1, 1.05 } } })
-hl.curve("winIn", { type = "bezier", points = { { 0.1, 1.1 }, { 0.1, 1.1 } } })
-hl.curve("winOut", { type = "bezier", points = { { 0.3, -0.3 }, { 0, 1 } } })
-hl.curve("liner", { type = "bezier", points = { { 1, 1 }, { 1, 1 } } })
+hl.curve("easeOutQuint", { type = "bezier", points = { { 0.22, 1 }, { 0.36, 1 } } })
+hl.curve("linear", { type = "bezier", points = { { 0, 0 }, { 1, 1 } } })
 
-hl.animation({ leaf = "windows", enabled = true, speed = 6, bezier = "wind", style = "slide" })
-hl.animation({ leaf = "windowsIn", enabled = true, speed = 6, bezier = "winIn", style = "slide" })
-hl.animation({ leaf = "windowsOut", enabled = true, speed = 5, bezier = "winOut", style = "slide" })
-hl.animation({ leaf = "windowsMove", enabled = true, speed = 5, bezier = "wind", style = "slide" })
-hl.animation({ leaf = "border", enabled = true, speed = 1, bezier = "liner" })
-hl.animation({ leaf = "borderangle", enabled = true, speed = 30, bezier = "liner", style = "loop" })
-hl.animation({ leaf = "fade", enabled = true, speed = 10, bezier = "default" })
-hl.animation({ leaf = "workspaces", enabled = true, speed = 5, bezier = "wind" })
+hl.animation({ leaf = "windows", enabled = true, speed = 3, bezier = "easeOutQuint", style = "slide" })
+hl.animation({ leaf = "windowsIn", enabled = true, speed = 3, bezier = "easeOutQuint", style = "slide" })
+hl.animation({ leaf = "windowsOut", enabled = true, speed = 2, bezier = "easeOutQuint", style = "slide" })
+hl.animation({ leaf = "windowsMove", enabled = true, speed = 3, bezier = "easeOutQuint", style = "slide" })
+hl.animation({ leaf = "border", enabled = true, speed = 1, bezier = "linear" })
+hl.animation({ leaf = "borderangle", enabled = true, speed = 30, bezier = "linear", style = "loop" })
+hl.animation({ leaf = "fade", enabled = true, speed = 3, bezier = "easeOutQuint" })
+hl.animation({ leaf = "workspaces", enabled = true, speed = 3, bezier = "easeOutQuint" })
 
 local workspaceMonitors = {
     [1] = monitors.middle,
@@ -129,6 +127,11 @@ for workspace, monitor in pairs(workspaceMonitors) do
         default = persistent,
     })
 end
+
+hl.workspace_rule({
+    workspace = "name:games",
+    monitor = "desc:" .. monitors.middle,
+})
 
 hl.workspace_rule({
     workspace = "special:special-obsidian",
@@ -159,7 +162,7 @@ windowRule("fix-xwayland-drags", {
 
 windowRule("fullscreen-games", { class = "^(steam_app_.*|gow\\.exe)$" }, {
     fullscreen = true,
-    workspace = 2,
+    workspace = "name:games",
 })
 
 windowRule("float-utility-apps", {
@@ -330,6 +333,7 @@ for workspace = 1, 10 do
     }))
 end
 
+bind(mainMod .. " + CTRL + G", "Switch to game workspace", hl.dsp.focus({ workspace = "name:games" }))
 bind(mainMod .. " + PERIOD", "Next workspace", hl.dsp.focus({ workspace = "e+1" }))
 bind(mainMod .. " + COMMA", "Previous workspace", hl.dsp.focus({ workspace = "e-1" }))
 bind(mainMod .. " + mouse_down", "Next workspace", hl.dsp.focus({ workspace = "e+1" }))

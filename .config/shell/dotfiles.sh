@@ -27,6 +27,7 @@ DOTDIRS=(
   .config/tmux
   .config/git
   .config/hypr
+  .config/mako
   .config/waybar
   .config/autostart
   .config/bash

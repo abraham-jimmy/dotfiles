@@ -4,8 +4,8 @@
   border: none;
   border-radius: 0;
   min-height: 0;
-  font-family: "FiraCode Nerd Font";
-  font-size: 11px;
+  font-family: "JetBrainsMono Nerd Font";
+  font-size: 13px;
   font-weight: 600;
 }
 
@@ -29,6 +29,7 @@ window.RightMon#waybar {
 #custom-middle-workspace-1,
 #custom-middle-workspace-2,
 #custom-middle-workspace-3,
+#custom-game-workspace,
 #custom-right-workspace-4,
 #custom-right-workspace-5,
 #custom-right-workspace-6,
@@ -44,6 +45,7 @@ window.RightMon#waybar {
 #custom-middle-workspace-1,
 #custom-middle-workspace-2,
 #custom-middle-workspace-3,
+#custom-game-workspace,
 #custom-right-workspace-4,
 #custom-right-workspace-5,
 #custom-right-workspace-6,
@@ -52,12 +54,13 @@ window.RightMon#waybar {
 #custom-right-workspace-9,
 #custom-right-workspace-10 {
   color: @subtext1;
-  padding: 0 4px;
+  padding: 0 5px;
 }
 
 #custom-middle-workspace-1.empty,
 #custom-middle-workspace-2.empty,
 #custom-middle-workspace-3.empty,
+#custom-game-workspace.hidden,
 #custom-right-workspace-4.empty,
 #custom-right-workspace-5.empty,
 #custom-right-workspace-6.empty,
@@ -68,9 +71,15 @@ window.RightMon#waybar {
   color: @overlay0;
 }
 
+#custom-game-workspace.hidden {
+  margin: 0;
+  padding: 0;
+}
+
 #custom-middle-workspace-1.active,
 #custom-middle-workspace-2.active,
 #custom-middle-workspace-3.active,
+#custom-game-workspace.active,
 #custom-right-workspace-4.active,
 #custom-right-workspace-5.active,
 #custom-right-workspace-6.active,
@@ -78,35 +87,30 @@ window.RightMon#waybar {
 #custom-right-workspace-8.active,
 #custom-right-workspace-9.active,
 #custom-right-workspace-10.active {
-  color: @red;
-  background: @surface0;
+  color: @text;
+  background: @surface1;
+  font-weight: 900;
+  margin: 2px 1px;
+  padding: 0 8px;
+}
+
+#custom-game-workspace.game {
+  color: @crust;
+  background: @green;
+  font-weight: 900;
+  margin: 2px 1px;
+  padding: 0 9px;
 }
 
 #custom-spotify {
   color: @green;
+  font-weight: 900;
   background: transparent;
   margin-left: 3px;
   padding: 0 5px;
 }
 
-#taskbar {
-  background: @mantle;
-  border-radius: 7px;
-  padding: 2px 4px;
-}
-
-#taskbar button {
-  background: transparent;
-  border-radius: 5px;
-  padding: 1px 5px;
-}
-
-#taskbar button:hover,
-#taskbar button.active {
-  background: @surface1;
-}
-
-#tray,
+#custom-notifications,
 #clock,
 #wireplumber,
 #custom-power {
@@ -115,8 +119,21 @@ window.RightMon#waybar {
   padding: 0 9px;
 }
 
+#custom-notifications {
+  color: @mauve;
+  padding: 0 11px;
+}
+
+#custom-notifications.has-notifications {
+  background: @surface1;
+  color: @text;
+}
+
 #clock {
-  color: @lavender;
+  color: @text;
+  background: @surface2;
+  font-size: 12px;
+  font-weight: 800;
 }
 
 #wireplumber {
