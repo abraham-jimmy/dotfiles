@@ -14,6 +14,9 @@ PROGRAMS=(
 	"zoxide:zoxide:30"
 	"rg:ripgrep:30"
 	"fd|fdfind:fd-find:30"
+	"gnome-calculator:gnome-calculator:40"
+	"satty:satty:40"
+	"gsimplecal:gsimplecal:40"
 )
 
 install_all_programs() {

@@ -5,5 +5,6 @@
 - Waybar's workspace presentation depends on monitor-specific Hyprland workspace assignments and scripts under `$HOME/.config/waybar/modules`; review both sides when changing workspace behavior.
 - Waybar commands targeting Hyprland must use the Lua dispatcher form, such as `hyprctl dispatch 'hl.dsp.focus(...)'`; standard `hyprctl dispatch workspace ...` commands are rejected by the active Lua configuration layer.
 - `$HOME/.config/autostart` contains user XDG overrides that suppress X11-only applications in the Hyprland Wayland session.
+- Waybar's clock launches gsimplecal; `$HOME/.config/gsimplecal/config` owns calendar contents and popup hints, while the Hyprland window rule owns its size and position.
 
 Read the active Lua, Waybar JSON/CSS/scripts, and service definitions for current monitor names, workspace ranges, widgets, and commands.

@@ -1,6 +1,7 @@
 local mainMod = "SUPER"
 local terminal = "alacritty"
 local browser = "google-chrome-stable"
+local calculator = "gnome-calculator"
 local appLauncher = "rofi -show drun"
 
 local monitors = {
@@ -171,6 +172,12 @@ windowRule("float-utility-apps", {
     float = true,
 })
 
+windowRule("calendar-popover", { class = "^[Gg]simplecal$" }, {
+    float = true,
+    size = "380 340",
+    move = "monitor_w-400 34",
+})
+
 windowRule("float-empty-class-dialogs", {
     class = "^$",
     title = "^(Picture in picture|Save File|Open File)$",
@@ -274,6 +281,7 @@ end
 bind(mainMod .. " + RETURN", "Open terminal", hl.dsp.exec_cmd(terminal))
 bind(mainMod .. " + CTRL + RETURN", "Open terminal", hl.dsp.exec_cmd(terminal))
 bind(mainMod .. " + B", "Open browser", hl.dsp.exec_cmd(browser))
+bind(mainMod .. " + C", "Open calculator", hl.dsp.exec_cmd(calculator))
 bind(mainMod .. " + SPACE", "Open application launcher", hl.dsp.exec_cmd(appLauncher))
 bind(mainMod .. " + Q", "Close active window", hl.dsp.window.close())
 bind(mainMod .. " + V", "Toggle floating", hl.dsp.window.float({ action = "toggle" }))
@@ -282,8 +290,8 @@ bind(mainMod .. " + Y", "Pin active window", hl.dsp.window.pin({ action = "toggl
 bind(mainMod .. " + S", "Rotate dwindle split", hl.dsp.layout("rotatesplit"))
 bind(mainMod .. " + Tab", "Focus next grouped window", hl.dsp.group.next())
 bind(mainMod .. " + CTRL + L", "Lock screen", hl.dsp.exec_cmd("hyprlock"))
-bind(mainMod .. " + SHIFT + S", "Capture selected area", hl.dsp.exec_cmd("/home/jimmy/.config/hypr/scripts/screenshot_area.sh"))
-bind(mainMod .. " + Print", "Capture current output", hl.dsp.exec_cmd("/home/jimmy/.config/hypr/scripts/screenshot.sh"))
+bind(mainMod .. " + SHIFT + S", "Edit selected area screenshot", hl.dsp.exec_cmd("/home/jimmy/.config/hypr/scripts/screenshot_area.sh"))
+bind(mainMod .. " + Print", "Edit current output screenshot", hl.dsp.exec_cmd("/home/jimmy/.config/hypr/scripts/screenshot.sh"))
 bind(mainMod .. " + CTRL + P", "Reload Waybar", hl.dsp.exec_cmd("killall -SIGUSR2 waybar"))
 
 local directions = {

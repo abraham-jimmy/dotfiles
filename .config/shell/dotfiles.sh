@@ -26,6 +26,7 @@ DOTDIRS=(
   .config/television
   .config/tmux
   .config/git
+  .config/gsimplecal
   .config/hypr
   .config/mako
   .config/waybar

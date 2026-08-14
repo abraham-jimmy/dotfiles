@@ -117,7 +117,7 @@
     },
     "custom/spotify": {
       "exec": "/usr/bin/python3 ~/.config/waybar/mediaplayer.py --player spotify",
-      "format": "{} ",
+      "format": "{}  ",
       "return-type": "json",
       "max-length": 45,
       "on-click": "playerctl --player=spotify play-pause",
@@ -133,24 +133,10 @@
     },
     "clock": {
       "format": "{:%a, %d %b  %H:%M}",
-      "format-alt": "{:%Y-%m-%d  %H:%M:%S}",
-      "tooltip-format": "<tt><small>{calendar}</small></tt>",
-      "calendar": {
-        "mode": "year",
-        "mode-mon-col": 3,
-        "weeks-pos": "right",
-        "on-scroll": 1,
-        "on-click-right": "mode",
-        "format": {
-          "months": "<span color='#ffead3'><b>{}</b></span>",
-          "days": "<span color='#ecc6d9'><b>{}</b></span>",
-          "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
-          "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
-          "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
-        }
-      },
+      "tooltip-format": "Click: popup | Right-click: Thunderbird calendar",
+      "on-click": "gsimplecal",
+      "on-click-right": "thunderbird -calendar",
       "actions": {
-        "on-click-right": "mode",
         "on-click-forward": "tz_up",
         "on-click-backward": "tz_down",
         "on-scroll-up": "shift_up",
@@ -160,7 +146,7 @@
     "wireplumber": {
       "format": "{volume}% {icon}",
       "format-muted": "Muted ",
-      "on-click": "pavucontrol",
+      "on-click": "bash ~/.config/waybar/modules/pavucontrol-toggle.sh",
       "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
       "format-icons": [
         "",
