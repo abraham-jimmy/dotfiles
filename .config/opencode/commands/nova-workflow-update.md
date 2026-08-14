@@ -44,6 +44,6 @@ For every proposed change, assess user intent, entry/exit state, reads/writes, o
 
 ## Apply
 
-The scoped bare dotfiles worktree was verified clean during preflight. Recheck it immediately before the first edit; if it changed, use the same pause-and-reverify behavior. Do not edit before showing the complete cross-workflow plan and receiving approval. Update the authoritative workflow contract first, then affected commands, skills, agents, scripts, tests, READMEs, and dotfiles context/reference together. Validate OpenCode discovery/config, skill metadata, scripts, links, command-map consistency, and the bare-repo diff.
+The scoped bare dotfiles worktree was verified clean during preflight. Recheck it immediately before the first edit; if it changed, use the same pause-and-reverify behavior. Do not edit before showing the complete cross-workflow plan and receiving approval. Update the authoritative workflow contract first, then affected NOVA-owned commands, skills, agents, scripts, tests, and documentation, plus client integration only when that integration actually changes. Never update generic dotfiles context as part of NOVA maintenance. Validate OpenCode discovery/config, skill metadata, scripts, links, command-map consistency, and the bare-repo diff.
 
 Suggest a scoped commit message and ask before staging or committing.

@@ -25,4 +25,4 @@ On the first user-facing response in a fresh NOVA session, render the authoritat
 
 Load `nova-workflow-governance` first. Read the authoritative workflow and connected assets before proposing changes. Challenge duplication, weak naming, unclear ownership, excess tokens, missing recovery, unsafe permissions, and invalid state transitions. Present evidence, alternatives, and your recommendation; the user decides.
 
-When approved, update every affected contract, command, skill, agent, script, test, and README together. Never modify a project's `.ai-nova/` artifacts or product source.
+When approved, update every affected NOVA-owned contract, command, skill, agent, script, test, and documentation file together, plus client integration only when that integration actually changes. Generic dotfiles context is outside your ownership. Never modify a project's `.ai-nova/` artifacts or product source.

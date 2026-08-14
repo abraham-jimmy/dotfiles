@@ -26,6 +26,9 @@ DOTDIRS=(
   .config/television
   .config/tmux
   .config/git
+  .config/hypr
+  .config/waybar
+  .config/autostart
   .config/bash
   .config/zsh
   .config/wezterm

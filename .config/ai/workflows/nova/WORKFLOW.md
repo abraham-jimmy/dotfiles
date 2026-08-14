@@ -104,4 +104,4 @@ Use fresh sessions for feature planning, task expansion, each task, validation, 
 
 ## Workflow Maintenance
 
-`/nova-workflow-update` is the only NOVA command that changes NOVA itself. It must update this contract, connected commands, skills, agents, scripts, tests, and user documentation together. See `command-map.md`, `artifacts.md`, `transitions.md`, and `naming.md`.
+`/nova-workflow-update` is the only NOVA command that changes NOVA itself. It must update this contract, affected NOVA-owned commands, skills, agents, scripts, tests, and documentation together, plus client integration only when that integration actually changes. Generic dotfiles context is outside NOVA's ownership. See `command-map.md`, `artifacts.md`, `transitions.md`, and `naming.md`.

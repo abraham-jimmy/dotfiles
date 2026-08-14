@@ -1,19 +1,21 @@
 ---
-description: Start with dotfiles context
+description: Work safely in the bare dotfiles repository
 agent: build
 ---
 
-Read @/home/jimmy/.config/opencode/docs/dotfiles/context.md first.
-If needed, read @/home/jimmy/.config/opencode/docs/dotfiles/reference.md.
+Read `$HOME/.config/ai/context/dotfiles/index.md` first, then load only the topic files relevant to the task.
 
-While working in this dotfiles repo:
-- Check bare-repo tracked state before edits using `/usr/bin/git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" status -s`.
-- Use full bare-repo git commands by default instead of relying on shell aliases.
-- Treat `~/.dotfiles_setup/` as the setup source of truth whenever bootstrap or machine setup behavior is involved.
-- If you add, rename, or reorganize a tracked config directory, update `DOTDIRS` in `~/.config/shell/dotfiles.sh` in the same change.
-- If you change module structure, workflow, file ownership, or notable behavior, update the relevant README files automatically unless the user explicitly says not to.
-- Keep `~/.config/opencode/docs/dotfiles/context.md` and `~/.config/opencode/docs/dotfiles/reference.md` in sync when module layout or workflow guidance changes.
-- If a task needs access to a new trusted folder or file outside the current OpenCode allowlist, ask for confirmation before updating `~/.config/opencode/opencode.json`, then add that path to `permission.read`, `permission.edit`, and `permission.external_directory`.
+Before editing:
+- Check tracked state with `/usr/bin/git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" status --short` and preserve unrelated changes.
+- Locate candidates through tracked files, `DOTDIRS`, and task-specific paths. Do not recursively scan `$HOME`.
+- Read the actual source files; context never overrides source.
 
-Then help with this task:
+While working:
+- Use full bare-repository Git commands rather than shell aliases.
+- Do not create or update README files or other human-facing documentation unless the user explicitly requests it.
+- Add or update AI context only for durable, non-obvious ownership or cross-file coupling, and keep it concise and topic-scoped under `$HOME/.config/ai/context/dotfiles/`.
+- If new access is required outside the OpenCode allowlist, ask before changing `$HOME/.config/opencode/opencode.json` and grant only the permissions needed for the requested work.
+- Verify the affected behavior and inspect the scoped bare-repository diff before handoff. Do not stage or commit unless explicitly requested.
+
+Task:
 $ARGUMENTS

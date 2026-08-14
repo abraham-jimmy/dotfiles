@@ -1,0 +1,136 @@
+@import "mocha.css";
+
+* {
+  border: none;
+  border-radius: 0;
+  min-height: 0;
+  font-family: "FiraCode Nerd Font";
+  font-size: 11px;
+  font-weight: 600;
+}
+
+window.RightMon#waybar {
+  background: @base;
+  color: @text;
+}
+
+#custom-workspace-state {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.modules-left,
+.modules-center,
+.modules-right {
+  padding: 0 5px;
+}
+
+#custom-middle-workspace-1,
+#custom-middle-workspace-2,
+#custom-middle-workspace-3,
+#custom-right-workspace-4,
+#custom-right-workspace-5,
+#custom-right-workspace-6,
+#custom-right-workspace-7,
+#custom-right-workspace-8,
+#custom-right-workspace-9,
+#custom-right-workspace-10 {
+  background: transparent;
+  border-radius: 3px;
+  padding: 0;
+}
+
+#custom-middle-workspace-1,
+#custom-middle-workspace-2,
+#custom-middle-workspace-3,
+#custom-right-workspace-4,
+#custom-right-workspace-5,
+#custom-right-workspace-6,
+#custom-right-workspace-7,
+#custom-right-workspace-8,
+#custom-right-workspace-9,
+#custom-right-workspace-10 {
+  color: @subtext1;
+  padding: 0 4px;
+}
+
+#custom-middle-workspace-1.empty,
+#custom-middle-workspace-2.empty,
+#custom-middle-workspace-3.empty,
+#custom-right-workspace-4.empty,
+#custom-right-workspace-5.empty,
+#custom-right-workspace-6.empty,
+#custom-right-workspace-7.empty,
+#custom-right-workspace-8.empty,
+#custom-right-workspace-9.empty,
+#custom-right-workspace-10.empty {
+  color: @overlay0;
+}
+
+#custom-middle-workspace-1.active,
+#custom-middle-workspace-2.active,
+#custom-middle-workspace-3.active,
+#custom-right-workspace-4.active,
+#custom-right-workspace-5.active,
+#custom-right-workspace-6.active,
+#custom-right-workspace-7.active,
+#custom-right-workspace-8.active,
+#custom-right-workspace-9.active,
+#custom-right-workspace-10.active {
+  color: @red;
+  background: @surface0;
+}
+
+#custom-spotify {
+  color: @green;
+  background: transparent;
+  margin-left: 3px;
+  padding: 0 5px;
+}
+
+#taskbar {
+  background: @mantle;
+  border-radius: 7px;
+  padding: 2px 4px;
+}
+
+#taskbar button {
+  background: transparent;
+  border-radius: 5px;
+  padding: 1px 5px;
+}
+
+#taskbar button:hover,
+#taskbar button.active {
+  background: @surface1;
+}
+
+#tray,
+#clock,
+#wireplumber,
+#custom-power {
+  background: @surface0;
+  border-radius: 7px;
+  padding: 0 9px;
+}
+
+#clock {
+  color: @lavender;
+}
+
+#wireplumber {
+  color: @sky;
+}
+
+#custom-power {
+  color: @red;
+  padding: 0 12px;
+}
+
+tooltip {
+  color: @text;
+  background: @mantle;
+  border: 1px solid @surface1;
+  border-radius: 7px;
+}

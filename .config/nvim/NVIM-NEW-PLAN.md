@@ -39,7 +39,6 @@ Build a new config in `~/.config/nvim-new` first, keep `~/.config/nvim` working 
   lua/plugins/completion.lua
   lua/plugins/dap.lua
   lua/util/*.lua
-  README.md
   nvim-pack-lock.json
 ```
 
@@ -126,7 +125,6 @@ The current config is not just using `lazy.nvim` for install/update. It also dep
 
 Before this note was written, bare-repo status showed existing user changes in:
 
-- `~/.config/nvim/README.md`
 - `~/.config/nvim/lua/plugins/blink.lua`
 - `~/.config/nvim/lua/plugins/lsp.lua`
 - `~/.config/nvim/lua/plugins/sidekick.lua`
@@ -262,15 +260,14 @@ Current direction:
 - keep `.vscode/launch.json` support
 - defer hydra until the base flow proves worth keeping
 
-### Phase 8 - Bootstrap / Docs / Final Switch
+### Phase 8 - Bootstrap / Context / Final Switch
 
 If `nvim-new` becomes the real setup:
 
 - decide whether to rename `nvim-new` -> `nvim`
 - update `.dotfiles_setup/` if external tool ownership changed
-- update Neovim README docs
 - if a tracked config directory is added or renamed, update `DOTDIRS` in `~/.config/shell/dotfiles.sh`
-- keep `~/.config/opencode/docs/dotfiles/context.md` and `~/.config/opencode/docs/dotfiles/reference.md` in sync if workflow/layout guidance changes
+- update `~/.config/ai/context/dotfiles/neovim.md` only if durable ownership or migration guidance changes
 
 ## Risks / Things To Watch
 
@@ -313,6 +310,6 @@ On the next session, start by scaffolding `~/.config/nvim-new` with:
 1. `init.lua`
 2. `lua/core/{options,keymaps,autocmds,diagnostics}.lua`
 3. `lua/plugins/init.lua` with a minimal `vim.pack.add()` list
-4. a small README describing how to launch/test the parallel config
+4. concise launch and validation guidance in the shared AI context
 
 After that, port a minimal daily-driver feature set before chasing full parity.
