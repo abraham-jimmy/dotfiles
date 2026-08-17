@@ -29,33 +29,33 @@
       "custom/power"
     ],
     "custom/middle-workspace-1": {
-      "exec": "bash ~/.config/waybar/modules/workspace-state.sh stream 1",
+      "exec": "bash ~/.config/waybar/modules/workspace-state.sh read 1",
       "return-type": "json",
-      "restart-interval": 1,
+      "signal": 8,
       "exec-on-event": false,
       "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 1 })'",
       "tooltip": true
     },
     "custom/middle-workspace-2": {
-      "exec": "bash ~/.config/waybar/modules/workspace-state.sh stream 2",
+      "exec": "bash ~/.config/waybar/modules/workspace-state.sh read 2",
       "return-type": "json",
-      "restart-interval": 1,
+      "signal": 8,
       "exec-on-event": false,
       "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 2 })'",
       "tooltip": true
     },
     "custom/middle-workspace-3": {
-      "exec": "bash ~/.config/waybar/modules/workspace-state.sh stream 3",
+      "exec": "bash ~/.config/waybar/modules/workspace-state.sh read 3",
       "return-type": "json",
-      "restart-interval": 1,
+      "signal": 8,
       "exec-on-event": false,
       "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 3 })'",
       "tooltip": true
     },
     "custom/game-workspace": {
-      "exec": "bash ~/.config/waybar/modules/workspace-state.sh stream games",
+      "exec": "bash ~/.config/waybar/modules/workspace-state.sh read games",
       "return-type": "json",
-      "restart-interval": 1,
+      "signal": 8,
       "exec-on-event": false,
       "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"name:games\" })'",
       "tooltip": true
@@ -67,51 +67,51 @@
       "tooltip": false
     },
     "custom/right-workspace-4": {
-      "exec": "bash ~/.config/waybar/modules/workspace-state.sh stream 4",
+      "exec": "bash ~/.config/waybar/modules/workspace-state.sh read 4",
       "return-type": "json",
-      "restart-interval": 1,
+      "signal": 8,
       "exec-on-event": false,
       "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 4 })'"
     },
     "custom/right-workspace-5": {
-      "exec": "bash ~/.config/waybar/modules/workspace-state.sh stream 5",
+      "exec": "bash ~/.config/waybar/modules/workspace-state.sh read 5",
       "return-type": "json",
-      "restart-interval": 1,
+      "signal": 8,
       "exec-on-event": false,
       "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 5 })'"
     },
     "custom/right-workspace-6": {
-      "exec": "bash ~/.config/waybar/modules/workspace-state.sh stream 6",
+      "exec": "bash ~/.config/waybar/modules/workspace-state.sh read 6",
       "return-type": "json",
-      "restart-interval": 1,
+      "signal": 8,
       "exec-on-event": false,
       "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 6 })'"
     },
     "custom/right-workspace-7": {
-      "exec": "bash ~/.config/waybar/modules/workspace-state.sh stream 7",
+      "exec": "bash ~/.config/waybar/modules/workspace-state.sh read 7",
       "return-type": "json",
-      "restart-interval": 1,
+      "signal": 8,
       "exec-on-event": false,
       "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 7 })'"
     },
     "custom/right-workspace-8": {
-      "exec": "bash ~/.config/waybar/modules/workspace-state.sh stream 8",
+      "exec": "bash ~/.config/waybar/modules/workspace-state.sh read 8",
       "return-type": "json",
-      "restart-interval": 1,
+      "signal": 8,
       "exec-on-event": false,
       "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 8 })'"
     },
     "custom/right-workspace-9": {
-      "exec": "bash ~/.config/waybar/modules/workspace-state.sh stream 9",
+      "exec": "bash ~/.config/waybar/modules/workspace-state.sh read 9",
       "return-type": "json",
-      "restart-interval": 1,
+      "signal": 8,
       "exec-on-event": false,
       "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 9 })'"
     },
     "custom/right-workspace-10": {
-      "exec": "bash ~/.config/waybar/modules/workspace-state.sh stream 10",
+      "exec": "bash ~/.config/waybar/modules/workspace-state.sh read 10",
       "return-type": "json",
-      "restart-interval": 1,
+      "signal": 8,
       "exec-on-event": false,
       "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 10 })'"
     },

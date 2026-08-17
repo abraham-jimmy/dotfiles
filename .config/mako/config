@@ -1,0 +1,36 @@
+output=DP-1
+sort=-time
+layer=overlay
+anchor=top-right
+font=JetBrainsMono Nerd Font 10
+background-color=#181825F2
+text-color=#CDD6F4
+width=380
+height=180
+outer-margin=14,16
+margin=6
+padding=14,16
+border-size=0
+border-color=#45475A
+border-radius=0
+progress-color=over #89B4FA
+icons=1
+max-icon-size=48
+icon-border-radius=0
+markup=1
+actions=1
+format=<span foreground="#A6ADC8" size="small">%a</span>\n<b>%s</b>\n%b
+max-visible=5
+max-history=20
+history=1
+group-by=app-name
+default-timeout=7000
+ignore-timeout=1
+on-button-left=invoke-default-action
+on-button-middle=dismiss-all
+on-button-right=dismiss
+
+[urgency=critical]
+border-size=2
+border-color=#F38BA8
+default-timeout=0

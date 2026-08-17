@@ -23,38 +23,10 @@ read_workspace() {
   fi
 }
 
-workspace_fifo() {
-  printf '%s/%s.fifo\n' "$cache_dir" "$1"
-}
-
-ensure_fifo() {
-  local fifo
-
-  fifo=$(workspace_fifo "$1")
-  [[ -p "$fifo" ]] || {
-    rm -f "$fifo"
-    mkfifo "$fifo" 2>/dev/null || [[ -p "$fifo" ]]
-  }
-}
-
-stream_workspace() {
-  local workspace=$1 fifo output
-
-  ensure_fifo "$workspace"
-  fifo=$(workspace_fifo "$workspace")
-  read_workspace "$workspace"
-
-  while true; do
-    while IFS= read -r output; do
-      printf '%s\n' "$output"
-    done < "$fifo"
-    sleep 0.1
-  done
-}
-
 refresh_workspaces() {
-  local clients monitors workspace encoded temporary output fd
+  local clients monitors workspace encoded file current temporary output
   local steam_class app_id manifest key value steam_name
+  local -i changed=0
   local steam_names='{}'
 
   clients=$(hyprctl clients -j 2>/dev/null || printf '[]')
@@ -84,11 +56,17 @@ refresh_workspaces() {
 
   while IFS=$'\t' read -r workspace encoded; do
     output=$(printf '%s' "$encoded" | base64 -d)
-    temporary="$cache_dir/$workspace.json.tmp"
+    file="$cache_dir/$workspace.json"
+
+    if [[ -r $file ]]; then
+      current=$(<"$file")
+      [[ $current == "$output" ]] && continue
+    fi
+
+    temporary="$file.tmp"
     printf '%s\n' "$output" > "$temporary"
-    mv "$temporary" "$cache_dir/$workspace.json"
-    fd=${workspace_fds[$workspace]}
-    printf '%s\n' "$output" >&"$fd"
+    mv "$temporary" "$file"
+    changed=1
   done < <(
     jq -nr \
       --argjson clients "$clients" \
@@ -172,27 +150,24 @@ refresh_workspaces() {
           )
         '
   )
+
+  if (( changed )); then
+    pkill -RTMIN+8 -x waybar 2>/dev/null || true
+  fi
 }
 
 watch_workspaces() {
-  local workspace fifo fd _event socket
-  local -a workspaces=({1..10} games)
-  declare -gA workspace_fds
+  local _event socket
 
   printf '{"text":""}\n'
-
-  for workspace in "${workspaces[@]}"; do
-    ensure_fifo "$workspace"
-    fifo=$(workspace_fifo "$workspace")
-    exec {fd}<>"$fifo"
-    workspace_fds[$workspace]=$fd
-  done
 
   refresh_workspaces
   socket="${XDG_RUNTIME_DIR:?}/hypr/${HYPRLAND_INSTANCE_SIGNATURE:?}/.socket2.sock"
 
   while true; do
     while IFS= read -r _event; do
+      # Let cross-monitor focus and workspace changes settle before querying state.
+      sleep 0.1
       refresh_workspaces
     done < <(
       perl -MIO::Select -MIO::Socket::UNIX -MSocket=SOCK_STREAM -e '
@@ -216,7 +191,6 @@ watch_workspaces() {
 
 case "${1:-}" in
   read) read_workspace "${2:?workspace is required}" ;;
-  stream) stream_workspace "${2:?workspace is required}" ;;
   watch) watch_workspaces ;;
   *) exit 1 ;;
 esac
