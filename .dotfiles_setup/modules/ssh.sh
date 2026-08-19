@@ -8,25 +8,33 @@ github_ssh_ok() {
   echo "$out" | grep -q "successfully authenticated"
 }
 
+use_dotfiles_ssh_remote() {
+  local repo="$HOME/.dotfiles"
+
+  [ -d "$repo" ] || return
+  run "/usr/bin/git --git-dir=\"$repo\" --work-tree=\"$HOME\" remote set-url origin git@github.com:abraham-jimmy/dotfiles.git"
+}
+
 setup_90_ssh_prompt() {
   local answer confirm
   local key="$HOME/.ssh/id_ed25519"
 
   info "checking GitHub SSH authentication"
 
+  if [ "${DEBUG:-0}" -eq 1 ]; then
+    plan "would check GitHub SSH authentication and optionally configure a key"
+    return
+  fi
+
   if github_ssh_ok; then
     done_log "SSH key to GitHub already configured"
     SSH_ENABLED=1
     export SSH_ENABLED
+    use_dotfiles_ssh_remote
     return
   fi
 
   warn "No SSH key configured for GitHub"
-
-  if [ "${DRY_RUN:-0}" -eq 1 ]; then
-    plan "would prompt for GitHub SSH setup and verify access"
-    return
-  fi
 
   read -rp "Setup SSH key for GitHub? (yes/no): " answer
   if [ "$answer" != "yes" ]; then
@@ -55,13 +63,11 @@ setup_90_ssh_prompt() {
     done_log "SSH key successfully configured for GitHub"
     SSH_ENABLED=1
     export SSH_ENABLED
+    use_dotfiles_ssh_remote
   else
     warn "GitHub SSH authentication still not working"
     info "Try running manually:"
     show_text "ssh -T git@github.com"
   fi
 
-  if [ -d "$HOME/.dotfiles-src" ]; then
-    run "git -C \"$HOME/.dotfiles-src\" remote set-url origin git@github.com:abraham-jimmy/dotfiles.git" || true
-  fi
 }

@@ -1,0 +1,9 @@
+include|terminal||
+package|gnome-calculator|gnome-calculator|50
+package|gsimplecal|gsimplecal|50
+package|waybar|waybar|50
+package|mako|mako|50
+package|grim|grim|50
+package|slurp|slurp|50
+package|wl-copy|wl-clipboard|50
+package|satty|satty|50

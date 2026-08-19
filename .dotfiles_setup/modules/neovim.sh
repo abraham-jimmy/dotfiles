@@ -8,6 +8,11 @@ ensure_bob() {
   expected_bin="$HOME/.local/bin/bob"
   expected_dir="$HOME/.local/share/bob_bin"
 
+  if [ "${DEBUG:-0}" -eq 1 ]; then
+    plan "would install Bob when needed"
+    return 0
+  fi
+
   if command -v bob >/dev/null 2>&1; then
     skip "bob already installed: $(command -v bob)"
     return 0
@@ -55,8 +60,6 @@ setup_19_neovim() {
       return
       ;;
   esac
-
-  write_if_changed "$HOME/.config/bob/config.json" $'{\n  "add_neovim_binary_to_path": false\n}\n'
 
   ensure_bob || return
 

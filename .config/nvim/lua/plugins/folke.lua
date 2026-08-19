@@ -21,11 +21,7 @@ return {
       -- scroll = { enabled = true },
       -- statuscolumn = { enabled = true },
       -- words = { enabled = true },
-      lazygit = { enabled = true }
     },
-    keys = {
-      { "<leader>lg", function() Snacks.lazygit.open() end, desc = "Open Lazygit" }
-    }
   },
   {
     "folke/zen-mode.nvim",

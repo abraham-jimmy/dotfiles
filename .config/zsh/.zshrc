@@ -13,6 +13,7 @@ fi
 
 source ~/.config/bash/.colors
 source ~/.config/shell/path.sh
+source ~/.config/shell/platform.sh
 source ~/.config/shell/aliases.sh
 source ~/.config/git/git_aliases
 source ~/.config/shell/dotfiles.sh
@@ -48,4 +49,4 @@ fi
 [[ -f ~/.config/zsh/.p10k.zsh ]] && source ~/.config/zsh/.p10k.zsh
 
 # bun completions
-[ -s "/home/jimmy/.bun/_bun" ] && source "/home/jimmy/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"

@@ -1,9 +1,11 @@
 # Setup
 
-`$HOME/.dotfiles_setup` is the source of truth for fresh-machine bootstrap and provisioning behavior.
+`$HOME/.dotfiles_setup/bootstrap.sh` is the sole supported setup entrypoint.
 
-- `bootstrap.sh` handles initial repository acquisition and invokes `setup.sh`.
-- `setup.sh` discovers and runs setup functions from `modules/*.sh`.
+- `setup.sh` is only a compatibility redirect for shells that still have the former `dotsetup` function loaded.
+- Bootstrap acquires or updates the bare repository, previews and applies a sparse profile from `profiles/*.paths`, then separately offers the matching optional software manifest.
+- Declining the install prompt must leave setup configuration-only; software tasks are owned by the internal `install.sh` and `profiles/*.programs` manifests.
+- `bootstrap.sh --debug` requires a local checkout and validates all profiles/scripts before simulating the complete workstation installer without persistent changes or network activity.
 - Preserve safe reruns, no-op detection, dry-run behavior, and task isolation.
 - Prefer user-local or upstream-release ownership for application-specific tools when the existing setup module follows that model.
 - Keep intentionally manual system or toolchain prerequisites manual unless the user explicitly changes their ownership.

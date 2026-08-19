@@ -15,7 +15,7 @@ alias nva='nvim ~/.config/shell/aliases.sh'
 alias nvb='nvim ~/.config/bash/.bashrc'
 alias nvg='nvim ~/.config/git/git_aliases'
 alias nvn='nvim ~/.config/nvim/init.lua'
-alias nvs='nvim ~/.dotfiles_setup/setup.sh'
+alias nvs='nvim ~/.dotfiles_setup/bootstrap.sh'
 alias nvt='nvim ~/.config/tmux/tmux.conf'
 alias nvz='nvim ~/.config/zsh/.zshrc'
 
@@ -54,7 +54,14 @@ t() {
 }
 
 dotsetup() {
-	bash "$HOME/.dotfiles_setup/setup.sh" "$@"
+	local bootstrap="$HOME/.dotfiles_setup/bootstrap.sh"
+
+	if [[ ! -r "$bootstrap" ]]; then
+		printf 'dotfiles bootstrap not found: %s\n' "$bootstrap" >&2
+		return 1
+	fi
+
+	bash "$bootstrap" "$@"
 }
 
 run_startup() {

@@ -1,0 +1,28 @@
+# kind|command or task|package or description|priority
+package|git|git|10
+package|curl|curl|10
+package|unzip|unzip|10
+package|ssh|openssh|10
+package|zsh|zsh|20
+package|node|nodejs|20
+package|npm|npm|20
+package|tmux|tmux|30
+package|fzf|fzf|30
+package|zoxide|zoxide|30
+package|rg|ripgrep|30
+package|fd,fdfind|fd-find|30
+package|jq|jq|40
+package|shellcheck|shellcheck|40
+package|clangd|clangd|40
+package|clang-format|clang-format|40
+package|gcc|gcc|40
+package|make|make|40
+task|setup_16_zsh_framework|Zsh framework and plugins|
+task|setup_17_default_shell|Default Zsh shell|
+task|setup_18a_television|Television fuzzy finder|
+task|setup_18b_sesh|Sesh session manager|
+task|setup_18_opencode|OpenCode CLI|
+task|setup_19_neovim|Neovim via Bob|
+task|setup_20_neovim_toolchain|Neovim external tools|
+task|setup_20_tmux|Tmux plugin manager and plugins|
+task|setup_90_ssh_prompt|Optional GitHub SSH key setup|

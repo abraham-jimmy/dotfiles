@@ -80,6 +80,11 @@ install_release_binary() {
   local url="$2"
   local tmp target_path bin_path
 
+  if [ "${DEBUG:-0}" -eq 1 ]; then
+    plan "would install '$cmd' from upstream release: $url"
+    return 0
+  fi
+
   if should_skip_managed_tool_install "$cmd"; then
     return 0
   fi
@@ -117,6 +122,11 @@ install_release_archive_tool() {
   local binary_relpath="$4"
   local install_name="$5"
   local archive_path extract_dir install_dir extracted_binary_path installed_binary_path bin_path
+
+  if [ "${DEBUG:-0}" -eq 1 ]; then
+    plan "would install '$cmd' from upstream archive: $url"
+    return 0
+  fi
 
   if should_skip_managed_tool_install "$cmd"; then
     return 0
@@ -203,6 +213,11 @@ install_release_archive_tool() {
 note_manual_tool() {
   local cmd="$1"
   local reason="$2"
+
+  if [ "${DEBUG:-0}" -eq 1 ]; then
+    plan "would check manual prerequisite '$cmd' ($reason)"
+    return 0
+  fi
 
   if command -v "$cmd" >/dev/null 2>&1; then
     skip "already installed: $cmd"
@@ -374,11 +389,6 @@ setup_20_neovim_toolchain() {
   install_shfmt || true
   install_stylua || true
   install_yamlfmt || true
-
-  note_manual_tool clangd "use your system or LLVM upstream install for C/C++ LSP" || true
-  note_manual_tool clang-format "use your system or LLVM upstream install for C/C++ formatting" || true
-  note_manual_tool jq "install manually if you want JSON formatting via jq" || true
-  note_manual_tool shellcheck "install manually if you want shell linting" || true
 
   case "${INSTALL_NIX_TOOLS:-auto}" in
     0|false|FALSE|no|NO)

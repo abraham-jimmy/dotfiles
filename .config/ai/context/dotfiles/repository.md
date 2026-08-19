@@ -12,6 +12,7 @@ Use this command shape for every repository operation:
 - The repository config hides untracked files from status. When a target may be new, inspect that path with `ls-files --others --exclude-standard -- <path>`.
 - Use `ls-files` rather than directory contents to determine what the repository currently tracks.
 - Inspect the final scoped diff and run `diff --check` before handoff.
+- Sparse checkout uses cone-mode path lists under `$HOME/.dotfiles_setup/profiles`; root shell stubs are tracked and therefore included automatically by cone mode.
 
 ## Tracked Scope
 

@@ -301,12 +301,12 @@ bind(mainMod .. " + CTRL + L", "Lock screen", hl.dsp.exec_cmd("hyprlock"))
 bind(
 	mainMod .. " + SHIFT + S",
 	"Edit selected area screenshot",
-	hl.dsp.exec_cmd("/home/jimmy/.config/hypr/scripts/screenshot_area.sh")
+	hl.dsp.exec_cmd(os.getenv("HOME") .. "/.config/hypr/scripts/screenshot_area.sh")
 )
 bind(
 	mainMod .. " + Print",
 	"Edit current output screenshot",
-	hl.dsp.exec_cmd("/home/jimmy/.config/hypr/scripts/screenshot.sh")
+	hl.dsp.exec_cmd(os.getenv("HOME") .. "/.config/hypr/scripts/screenshot.sh")
 )
 bind(mainMod .. " + CTRL + P", "Reload Waybar", hl.dsp.exec_cmd("killall -SIGUSR2 waybar"))
 

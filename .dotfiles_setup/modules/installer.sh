@@ -44,6 +44,7 @@ pkg_name() {
 		case "$program" in
 		clangd) echo clangd ;;
 		clang-format) echo clang-format ;;
+		mako) echo mako-notifier ;;
 		openssh) echo openssh-client ;;
 		nodejs) echo nodejs ;;
 		nvim) echo neovim ;;
@@ -105,10 +106,18 @@ try_install_package() {
 ensure_program() {
 	local cmd="$1"
 	local program="$2"
-	local cmd_variant
+	local cmd_variant pkg
 	local -a cmd_variants=()
 
-	IFS='|' read -r -a cmd_variants <<<"$cmd"
+	if [ "${DEBUG:-0}" -eq 1 ]; then
+		pkg="$(pkg_name "$program")"
+		info "package required: $pkg"
+		install_package "$pkg"
+		plan "would ensure command '$cmd' via package '$pkg'"
+		return
+	fi
+
+	IFS=',' read -r -a cmd_variants <<<"$cmd"
 
 	for cmd_variant in "${cmd_variants[@]}"; do
 		if command -v "$cmd_variant" >/dev/null 2>&1; then
@@ -117,7 +126,6 @@ ensure_program() {
 		fi
 	done
 
-	local pkg
 	pkg="$(pkg_name "$program")"
 	info "package required: $pkg"
 	install_package "$pkg"
@@ -132,13 +140,21 @@ ensure_program() {
 ensure_program_optional() {
 	local cmd="$1"
 	local program="$2"
+	local pkg
+
+	if [ "${DEBUG:-0}" -eq 1 ]; then
+		pkg="$(pkg_name "$program")"
+		info "optional package required: $pkg"
+		install_package "$pkg"
+		plan "would ensure optional command '$cmd' via package '$pkg'"
+		return 0
+	fi
 
 	if command -v "$cmd" >/dev/null 2>&1; then
 		skip "already installed: $cmd"
 		return 0
 	fi
 
-	local pkg
 	pkg="$(pkg_name "$program")"
 	info "optional package required: $pkg"
 
@@ -159,6 +175,11 @@ ensure_npm_global() {
 	local cmd="$1"
 	local package="$2"
 	local prefix_dir="$HOME/.local"
+
+	if [ "${DEBUG:-0}" -eq 1 ]; then
+		plan "would ensure command '$cmd' via npm package '$package'"
+		return 0
+	fi
 
 	if command -v "$cmd" >/dev/null 2>&1; then
 		skip "already installed: $cmd"

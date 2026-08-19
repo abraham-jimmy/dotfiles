@@ -4,47 +4,24 @@ set -euo pipefail
 SHELL_TOOLS_BIN_DIR="$HOME/.local/bin"
 SHELL_TOOLS_OPT_DIR="$HOME/.local/opt/shell-tools"
 
-write_if_changed() {
-  local path="$1"
-  local content="$2"
-  local tmp action
-
-  tmp="$(mktemp)"
-  printf '%s' "$content" >"$tmp"
-
-  if [ -f "$path" ] && cmp -s "$tmp" "$path"; then
-    rm -f "$tmp"
-    skip "unchanged file: $path"
-    return
-  fi
-
-  if [ -e "$path" ]; then
-    action="update"
-  else
-    action="create"
-  fi
-
-  if [ "${DRY_RUN:-0}" -eq 1 ]; then
-    plan "would $action file: $path"
-    rm -f "$tmp"
-    return
-  fi
-
-  mkdir -p "$(dirname "$path")"
-
-  mv "$tmp" "$path"
-
-  case "$action" in
-    create) done_log "created file: $path" ;;
-    update) done_log "updated file: $path" ;;
-  esac
-}
-
 git_clone_or_update() {
   local repo="$1"
   local dest="$2"
   local changed_var="${3:-}"
   local head upstream changed=0
+
+  if [ "${DEBUG:-0}" -eq 1 ]; then
+    if [ -d "$dest/.git" ]; then
+      plan "would update repo: $dest"
+    else
+      plan "would clone $repo into $dest"
+    fi
+    changed=1
+    if [ -n "$changed_var" ]; then
+      printf -v "$changed_var" '%s' "$changed"
+    fi
+    return 0
+  fi
 
   if [ -d "$dest/.git" ]; then
     if [ "${DRY_RUN:-0}" -eq 1 ]; then
@@ -139,6 +116,11 @@ install_managed_shell_archive_tool() {
   local binary_relpath="$3"
   local install_name="$4"
   local archive_path extract_dir install_dir installed_binary_path extracted_binary_path bin_path
+
+  if [ "${DEBUG:-0}" -eq 1 ]; then
+    plan "would install '$cmd' from upstream archive: $url"
+    return 0
+  fi
 
   ensure_shell_tool_dirs
   archive_path="$(mktemp)"
@@ -277,16 +259,6 @@ install_sesh() {
     "sesh-${version}-${arch}"
 }
 
-setup_15_shell_stubs() {
-  write_if_changed "$HOME/.bashrc" $'[[ $- != *i* ]] && return\n[ -r "$HOME/.config/bash/.bashrc" ] && . "$HOME/.config/bash/.bashrc"\n'
-
-  write_if_changed "$HOME/.bash_profile" $'[ -r "$HOME/.profile" ] && . "$HOME/.profile"\n[ -r "$HOME/.bashrc" ] && . "$HOME/.bashrc"\n'
-
-  write_if_changed "$HOME/.zshenv" $'export ZDOTDIR="$HOME/.config/zsh"\n'
-
-  write_if_changed "$HOME/.zshrc" $'[[ -r "$HOME/.config/zsh/.zshrc" ]] && source "$HOME/.config/zsh/.zshrc"\n'
-}
-
 setup_16_zsh_framework() {
   git_clone_or_update "https://github.com/ohmyzsh/ohmyzsh.git" "$HOME/.oh-my-zsh"
   git_clone_or_update "https://github.com/romkatv/powerlevel10k.git" "$HOME/.local/share/powerlevel10k"
@@ -297,6 +269,11 @@ setup_16_zsh_framework() {
 
 setup_17_default_shell() {
   local entry current_shell zsh_path
+
+  if [ "${DEBUG:-0}" -eq 1 ]; then
+    plan "would set the default shell to zsh when needed"
+    return
+  fi
 
   entry="$(getent passwd "$USER" || true)"
   current_shell="${entry##*:}"

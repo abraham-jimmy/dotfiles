@@ -9,6 +9,7 @@
 
 source ~/.config/bash/.colors
 source ~/.config/shell/path.sh
+source ~/.config/shell/platform.sh
 source ~/.config/shell/aliases.sh
 source ~/.config/bash/.bashprompt.sh
 source ~/.config/bash/.git-prompt.sh
@@ -42,7 +43,9 @@ fi
 
 ############################### cd stuff ###############################
 # zoxide
-eval "$(zoxide init bash --cmd cd)"
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init bash --cmd cd)"
+fi
 # fuzzyfinder
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 

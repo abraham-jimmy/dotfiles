@@ -40,6 +40,13 @@ DOTDIRS=(
   .dotfiles_setup/
 )
 
+DOTFILES_ROOT_FILES=(
+  .bash_profile
+  .bashrc
+  .zshenv
+  .zshrc
+)
+
 dotpick() {
   local choice name command description
 
@@ -96,6 +103,12 @@ dotau() {
   for dir in "${DOTDIRS[@]}"; do
     if [[ -d "$HOME/$dir" ]]; then
       /usr/bin/git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" add "$HOME/$dir"
+    fi
+  done
+
+  for file in "${DOTFILES_ROOT_FILES[@]}"; do
+    if [[ -f "$HOME/$file" ]]; then
+      /usr/bin/git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" add "$HOME/$file"
     fi
   done
 
