@@ -7,6 +7,13 @@ PROFILE_DIR=".dotfiles_setup/profiles"
 DEBUG=0
 SOURCE_REF=HEAD
 USE_WORKTREE_MANIFESTS=0
+BOOTSTRAP_FROM_STDIN=0
+PROMPT_TTY_AVAILABLE=0
+
+[ -n "${BASH_SOURCE[0]:-}" ] || BOOTSTRAP_FROM_STDIN=1
+if { exec 9<>/dev/tty; } 2>/dev/null; then
+  PROMPT_TTY_AVAILABLE=1
+fi
 
 usage() {
   printf 'Usage: %s [--debug]\n' "${0##*/}"
@@ -26,6 +33,25 @@ for arg in "$@"; do
       ;;
   esac
 done
+
+prompt_read() {
+  local target="$1"
+  local prompt="$2"
+  local value
+
+  if [ "$BOOTSTRAP_FROM_STDIN" -eq 0 ] && IFS= read -r -p "$prompt" value; then
+    printf -v "$target" '%s' "$value"
+    return 0
+  fi
+
+  if [ "$PROMPT_TTY_AVAILABLE" -eq 1 ] && IFS= read -r -u 9 -p "$prompt" value; then
+    printf -v "$target" '%s' "$value"
+    return 0
+  fi
+
+  printf 'Interactive input is unavailable while prompting: %s\n' "$prompt" >&2
+  return 1
+}
 
 dotfiles() {
   /usr/bin/git --git-dir="$DOTFILES_DIR" --work-tree="$HOME" "$@"
@@ -87,7 +113,7 @@ ensure_git() {
     exit 1
   fi
 
-  read -rp 'Install Git now? [y/N]: ' answer
+  prompt_read answer 'Install Git now? [y/N]: ' || exit 1
 
   case "$answer" in
     y|Y|yes|YES)
@@ -285,10 +311,10 @@ select_profile() {
 
   while true; do
     if [ -n "$current" ]; then
-      read -rp "Select profile [$current]: " answer
+      prompt_read answer "Select profile [$current]: " || return 1
       answer="${answer:-$current}"
     else
-      read -rp 'Select profile: ' answer
+      prompt_read answer 'Select profile: ' || return 1
     fi
 
     for profile in "${profiles[@]}"; do
@@ -497,6 +523,16 @@ first_checkout=0
 dirty=0
 needs_fast_forward=0
 profile_applied=1
+
+if [ -e "$DOTFILES_DIR" ]; then
+  bare_repo="$(/usr/bin/git --git-dir="$DOTFILES_DIR" rev-parse --is-bare-repository 2>/dev/null || true)"
+  if [ "$bare_repo" != "true" ] || ! /usr/bin/git --git-dir="$DOTFILES_DIR" rev-parse --verify HEAD >/dev/null 2>&1; then
+    printf 'The dotfiles path exists but is not a complete bare repository: %s\n' "$DOTFILES_DIR" >&2
+    printf 'Move or remove that path after inspecting it, then rerun bootstrap.\n' >&2
+    exit 1
+  fi
+fi
+
 if [ ! -d "$DOTFILES_DIR" ]; then
   printf 'Cloning bare dotfiles repository...\n'
   /usr/bin/git clone --bare "$REPO_HTTPS" "$DOTFILES_DIR"
@@ -542,7 +578,7 @@ fi
 active_profile="$(current_profile || true)"
 profile="$(select_profile "$active_profile")"
 show_profile "$profile"
-read -rp "Apply profile '$profile'? [y/N]: " answer
+prompt_read answer "Apply profile '$profile'? [y/N]: " || exit 1
 case "$answer" in
   y|Y|yes|YES) ;;
   *) printf 'No configuration changes made.\n'; exit 0 ;;
@@ -569,7 +605,7 @@ fi
 printf 'Native Git reapply command:\n'
 # shellcheck disable=SC2016
 printf '  /usr/bin/git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" sparse-checkout set --cone --stdin < "$HOME/%s/%s.paths"\n' "$PROFILE_DIR" "$profile"
-read -rp "Install optional software for '$profile'? [y/N]: " answer
+prompt_read answer "Install optional software for '$profile'? [y/N]: " || exit 1
 case "$answer" in
   y|Y|yes|YES)
     exec bash "$HOME/.dotfiles_setup/install.sh" --profile "$profile"

@@ -4,7 +4,6 @@
 [alias]
 	lol = log --graph --decorate --abbrev-commit --pretty='tformat:%C(yellow)%h %C(green)%cd%C(reset) %s - %C(blue)%an %ad%C(auto)%d%C(reset)' --date='format:%y%m%d %H%M'
 	lol2 = log --graph --topo-order --pretty='%w(100,0,6)%C(yellow)%h%C(bold)%C(red)%d %C(cyan)%ar %C(green)%an%n%C(bold)%C(white)%s %N' --abbrev-commit
-	kpt = ! ${KPT_INSTALL_PATH-/proj/crbs/kpt/v10.0-pre}/bin/git-kpt
 	co = checkout
 	br = branch
 	ci = commit

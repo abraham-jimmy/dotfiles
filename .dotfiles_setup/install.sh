@@ -4,6 +4,11 @@ set -euo pipefail
 DRY_RUN=0
 DEBUG=0
 PROFILE=""
+PROMPT_TTY_AVAILABLE=0
+
+if { exec 9<>/dev/tty; } 2>/dev/null; then
+  PROMPT_TTY_AVAILABLE=1
+fi
 
 while [ "$#" -gt 0 ]; do
   case "$1" in
@@ -26,6 +31,25 @@ while [ "$#" -gt 0 ]; do
       ;;
   esac
 done
+
+prompt_read() {
+  local target="$1"
+  local prompt="$2"
+  local value
+
+  if IFS= read -r -p "$prompt" value; then
+    printf -v "$target" '%s' "$value"
+    return 0
+  fi
+
+  if [ "$PROMPT_TTY_AVAILABLE" -eq 1 ] && IFS= read -r -u 9 -p "$prompt" value; then
+    printf -v "$target" '%s' "$value"
+    return 0
+  fi
+
+  printf 'Interactive input is unavailable while prompting: %s\n' "$prompt" >&2
+  return 1
+}
 
 case "$PROFILE" in
   terminal|workstation) ;;
@@ -585,10 +609,17 @@ run_task() {
   enter_task "$name"
 
   if [ "$DEBUG" -eq 1 ]; then
-    if "$name"; then
+    set +e
+    (
+      set -Eeuo pipefail
+      "$name"
+    )
+    status=$?
+    set -e
+
+    if [ "$status" -eq 0 ]; then
       leave_task "$name"
     else
-      status=$?
       error "debug simulation failed: $name (exit $status)"
       exit "$status"
     fi
@@ -597,17 +628,21 @@ run_task() {
 
   error_file="$(mktemp)"
 
-  if (
+  set +e
+  (
     set -Eeuo pipefail
     CURRENT_MODULE="$module_name"
     CURRENT_TASK="$name"
     TASK_ERROR_FILE="$error_file"
     trap 'on_task_error "$LINENO" "$BASH_COMMAND" "$?"' ERR
     "$name"
-  ); then
+  )
+  status=$?
+  set -e
+
+  if [ "$status" -eq 0 ]; then
     leave_task "$name"
   else
-    status=$?
     task_failed "$name" "$module_name" "$status" "$error_file"
   fi
 
@@ -615,7 +650,7 @@ run_task() {
 }
 
 export DEBUG DRY_RUN PROFILE SUMMARY_EVENT_FILE SUMMARY_WARNING_FILE
-export -f append_task_failure count_event done_log enter_module enter_task error info leave_module leave_task list_setup_functions log log_emit module_log on_task_error plan record_task_failure_state run run_log run_task show_file show_text skip summary_print task_fail task_failed task_log warn
+export -f append_task_failure count_event done_log enter_module enter_task error info leave_module leave_task list_setup_functions log log_emit module_log on_task_error plan prompt_read record_task_failure_state run run_log run_task show_file show_text skip summary_print task_fail task_failed task_log warn
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MODULE_DIR="$SCRIPT_DIR/modules"

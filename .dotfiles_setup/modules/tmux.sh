@@ -14,13 +14,13 @@ confirm_tmux_restart() {
       ;;
   esac
 
-  if [ ! -t 0 ]; then
+  if [ ! -t 0 ] && [ "${PROMPT_TTY_AVAILABLE:-0}" -ne 1 ]; then
     warn "tmux plugins changed, but setup is non-interactive; skipping tmux restart (set RESTART_TMUX_ON_PLUGIN_CHANGE=yes to force it)"
     return 1
   fi
 
   info "tmux plugins were updated; restarting the tmux server is recommended"
-  read -rp "Restart tmux server now? ([Y]es/no): " response
+  prompt_read response "Restart tmux server now? ([Y]es/no): " || return 1
   case "$response" in
     ""|y|Y|yes|YES)
       return 0

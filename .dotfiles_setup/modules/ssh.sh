@@ -2,10 +2,17 @@
 set -euo pipefail
 
 github_ssh_ok() {
+  local out
+
   set +e
-  out="$(ssh -T git@github.com 2>&1)"
+  out="$(ssh \
+    -o BatchMode=yes \
+    -o ConnectTimeout=5 \
+    -o ConnectionAttempts=1 \
+    -o StrictHostKeyChecking=accept-new \
+    -T git@github.com 2>&1)"
   set -e
-  echo "$out" | grep -q "successfully authenticated"
+  [[ "$out" == *"successfully authenticated"* ]]
 }
 
 use_dotfiles_ssh_remote() {
@@ -36,7 +43,10 @@ setup_90_ssh_prompt() {
 
   warn "No SSH key configured for GitHub"
 
-  read -rp "Setup SSH key for GitHub? (yes/no): " answer
+  if ! prompt_read answer "Setup SSH key for GitHub? (yes/no): "; then
+    skip "interactive input unavailable; skipping optional GitHub SSH setup"
+    return 0
+  fi
   if [ "$answer" != "yes" ]; then
     skip "skipping GitHub SSH setup"
     return
@@ -53,7 +63,7 @@ setup_90_ssh_prompt() {
   show_text "$(<"${key}.pub")"
 
   while true; do
-    read -rp "Type 'yes' after adding the key to GitHub: " confirm
+    prompt_read confirm "Type 'yes' after adding the key to GitHub: " || return 1
     [ "$confirm" = "yes" ] && break
   done
 
