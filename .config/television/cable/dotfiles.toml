@@ -1,6 +1,6 @@
 [metadata]
 name = "dotfiles"
-description = "Browse tracked dotfiles and open them in nnew"
+description = "Browse tracked dotfiles and open them in nvim"
 requirements = ["git", "nvim"]
 
 [source]
@@ -16,6 +16,6 @@ header = "{split:\\t:1}"
 enter = "actions:open"
 
 [actions.open]
-description = "Open tracked dotfile in nnew"
-command = "sh -lc 'NVIM_APPNAME=nvim-new exec nvim \"{split:\\t:1}\"'"
+description = "Open tracked dotfile in nvim"
+command = "sh -lc 'exec nvim \"{split:\\t:1}\"'"
 mode = "execute"

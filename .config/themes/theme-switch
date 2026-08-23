@@ -11,7 +11,6 @@ OPENCODE_TUI="$CONFIG_HOME/opencode/tui.json"
 REQUIRED_PROFILE_FILES=(
   manifest.sh
   nvim.lua
-  nvim-new.lua
   tmux.conf
   wezterm.lua
   alacritty.toml
@@ -115,7 +114,6 @@ copy_generated_files() {
 
   mkdir -p "$GENERATED_DIR"
   cp "$profile_path/nvim.lua" "$GENERATED_DIR/nvim.lua"
-  cp "$profile_path/nvim-new.lua" "$GENERATED_DIR/nvim-new.lua"
   cp "$profile_path/tmux.conf" "$GENERATED_DIR/tmux.conf"
   cp "$profile_path/wezterm.lua" "$GENERATED_DIR/wezterm.lua"
   cp "$profile_path/alacritty.toml" "$GENERATED_DIR/alacritty.toml"
@@ -125,7 +123,6 @@ describe_apply() {
   printf 'Would set current theme to %s\n' "$THEME_ID"
   printf 'Would write %s\n' "$CURRENT_FILE"
   printf 'Would write %s\n' "$GENERATED_DIR/nvim.lua"
-  printf 'Would write %s\n' "$GENERATED_DIR/nvim-new.lua"
   printf 'Would write %s\n' "$GENERATED_DIR/tmux.conf"
   printf 'Would write %s\n' "$GENERATED_DIR/wezterm.lua"
   printf 'Would write %s\n' "$GENERATED_DIR/alacritty.toml"

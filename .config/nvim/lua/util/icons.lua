@@ -1,21 +1,20 @@
--- icons used by other plugins
 return {
   dap = {
-    Stopped = { "󰁕 ", "DiagnosticWarn", "DapStoppedLine" },
-    Breakpoint = " ",
-    BreakpointCondition = " ",
-    BreakpointRejected = { " ", "DiagnosticError" },
-    LogPoint = ".>",
+    Stopped = { "*", "DiagnosticWarn", "DapStoppedLine" },
+    Breakpoint = "B",
+    BreakpointCondition = "?",
+    BreakpointRejected = { "!", "DiagnosticError" },
+    LogPoint = "L",
   },
   diagnostics = {
-    Error = " ",
-    Warn = " ",
-    Hint = " ",
-    Info = " ",
+    error = "E",
+    warn = "W",
+    info = "I",
+    hint = "H",
   },
   git = {
-    added = " ",
-    modified = " ",
-    removed = " ",
-  }
+    added = "+",
+    changed = "~",
+    removed = "_",
+  },
 }

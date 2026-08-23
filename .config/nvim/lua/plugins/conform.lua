@@ -1,58 +1,44 @@
-return {
-	"stevearc/conform.nvim",
-	event = { "BufWritePre" },
-	cmd = { "ConformInfo" },
-	keys = {
-		{
-			"<leader>fo",
-			function()
-				require("conform").format({ async = true, lsp_fallback = true })
-			end,
-			mode = "",
-			desc = "Format buffer",
-		},
-	},
-	config = function()
-		require("conform").setup({
-			formatters_by_ft = {
-				lua = { "stylua" },
-				cpp = { "clang_format" },
-				json = { "jq" },
-				python = { "black" },
-				nix = { "nixfmt" },
-				yaml = { "yamlfmt" },
-				bash = { "shfmt" },
-				sh = { "shfmt" },
-				-- ts = { "prettier" },
-				-- js = { "prettier" }
-			},
-			formatters = {
-				shfmt = {
-					prepend_args = { "-i", "2", "-ci" },
-				},
-			},
-			format_on_save = function(bufnr)
-				if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
-					return
-				end
-				return { timeout_ms = 500, lsp_format = "fallback" }
-			end,
-		})
+vim.pack.add({ { src = "https://github.com/stevearc/conform.nvim.git" } }, { confirm = false, load = true })
 
-		vim.api.nvim_create_user_command("FormatToggle", function()
-			vim.g.disable_autoformat = not vim.g.disable_autoformat
-			if vim.g.disable_autoformat then
-				vim.notify("Disabled autoformat", vim.log.levels.WARN)
-			else
-				vim.notify("Enabled autoformat", vim.log.levels.INFO)
-			end
-		end, {
-			desc = "Toggle autoformat-on-save",
-			bang = true,
-		})
-	end,
-	init = function()
-		-- If you want the formatexpr, here is the place to set it
-		vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
-	end,
-}
+local M = {}
+
+local function map(mode, lhs, rhs, opts)
+  opts = opts or {}
+  opts.silent = opts.silent ~= false
+  vim.keymap.set(mode, lhs, rhs, opts)
+end
+
+function M.setup()
+  local ok, conform = pcall(require, "conform")
+  if not ok then
+    vim.schedule(function()
+      vim.notify("conform.nvim is unavailable", vim.log.levels.WARN, { title = "nvim" })
+    end)
+    return
+  end
+
+  local language_tooling = require("lang")
+
+  conform.setup({
+    formatters_by_ft = language_tooling.formatters_by_ft(),
+    formatters = language_tooling.formatters(),
+    format_on_save = function(bufnr)
+      if not vim.g.autoformat_enabled or vim.b[bufnr].disable_autoformat then
+        return
+      end
+
+      return {
+        timeout_ms = 500,
+        lsp_format = "fallback",
+      }
+    end,
+  })
+
+  vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+
+  map({ "n", "x" }, "<leader>fo", function()
+    conform.format({ async = true, lsp_format = "fallback" })
+  end, { desc = "Format buffer" })
+end
+
+return M

@@ -1,38 +1,48 @@
-return {
-  {
-    -- Adds git related signs to the gutter, as well as utilities for managing changes
-    'lewis6991/gitsigns.nvim',
-    opts = {
-      signs = {
-        add = { text = "│" },
-        change = { text = "│" },
-        delete = { text = "" },
-        topdelete = { text = "" },
-        changedelete = { text = "│" },
-        untracked = { text = "│" },
-      },
-      on_attach = function(buffer)
-        local gs = package.loaded.gitsigns
+vim.pack.add({ { src = "https://github.com/lewis6991/gitsigns.nvim.git" } }, { confirm = false, load = true })
 
-        local function map(mode, l, r, desc)
-          vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc })
-        end
+local M = {}
 
-        -- stylua: ignore start
-        map("n", "]h", gs.next_hunk, "Next Hunk")
-        map("n", "[h", gs.prev_hunk, "Prev Hunk")
-        map({ "n", "v" }, "<leader>gs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
-        map({ "n", "v" }, "<leader>gr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
-        map("n", "<leader>gS", gs.stage_buffer, "Stage Buffer")
-        map("n", "<leader>gu", gs.undo_stage_hunk, "Undo Stage Hunk")
-        map("n", "<leader>gR", gs.reset_buffer, "Reset Buffer")
-        map("n", "<leader>gp", gs.preview_hunk, "Preview Hunk")
-        map("n", "<leader>gb", function() gs.blame_line({ full = true }) end, "Blame Line")
-        map("n", "<leader>gd", gs.diffthis, "Diff This")
-        map("n", "<leader>gD", function() gs.diffthis("~") end, "Diff This ~")
-        map({ "o", "x" }, "gh", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
-        map("n", "<leader>gb", ":Gitsigns blame<CR>", "Git blame")
-      end,
+function M.setup()
+  local ok, gitsigns = pcall(require, "gitsigns")
+  if not ok then
+    vim.schedule(function()
+      vim.notify("gitsigns.nvim is unavailable", vim.log.levels.WARN, { title = "nvim" })
+    end)
+    return
+  end
+
+  gitsigns.setup({
+    signs = {
+      add = { text = "|" },
+      change = { text = "|" },
+      delete = { text = "_" },
+      topdelete = { text = "_" },
+      changedelete = { text = "~" },
+      untracked = { text = "|" },
     },
-  },
-}
+    on_attach = function(bufnr)
+      local function map(mode, lhs, rhs, desc)
+        vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc, silent = true })
+      end
+
+      map("n", "]h", gitsigns.next_hunk, "Next hunk")
+      map("n", "[h", gitsigns.prev_hunk, "Previous hunk")
+      map({ "n", "x" }, "<leader>gs", ":Gitsigns stage_hunk<CR>", "Stage hunk")
+      map({ "n", "x" }, "<leader>gr", ":Gitsigns reset_hunk<CR>", "Reset hunk")
+      map("n", "<leader>gS", gitsigns.stage_buffer, "Stage buffer")
+      map("n", "<leader>gu", gitsigns.undo_stage_hunk, "Undo stage hunk")
+      map("n", "<leader>gR", gitsigns.reset_buffer, "Reset buffer")
+      map("n", "<leader>gp", gitsigns.preview_hunk, "Preview hunk")
+      map("n", "<leader>gb", function()
+        gitsigns.blame_line({ full = true })
+      end, "Blame line")
+      map("n", "<leader>gD", gitsigns.diffthis, "Diff this")
+      map("n", "<leader>g~", function()
+        gitsigns.diffthis("~")
+      end, "Diff this against tilde")
+      map({ "o", "x" }, "gh", ":<C-U>Gitsigns select_hunk<CR>", "Select hunk")
+    end,
+  })
+end
+
+return M

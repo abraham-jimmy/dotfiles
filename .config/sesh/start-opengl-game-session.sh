@@ -27,7 +27,7 @@ if [ "$(tmux display-message -p '#{window_panes}')" -gt 1 ]; then
   exit 0
 fi
 
-right_pane="$(tmux split-window -d -h -c "$repo_dir" -P -F '#{pane_id}' "exec env NVIM_APPNAME=nvim-new nvim")"
+right_pane="$(tmux split-window -d -h -c "$repo_dir" -P -F '#{pane_id}' "exec nvim")"
 tmux split-window -d -v -l 10 -c "$repo_dir" "exec \"$shell_path\" $shell_flags"
 tmux resize-pane -t "$right_pane" -x 150 >/dev/null 2>&1 || true
 

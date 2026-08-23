@@ -13,12 +13,12 @@ esac
 
 if ! command -v tmux >/dev/null 2>&1; then
   cd "$dotdir"
-  exec env NVIM_APPNAME=nvim-new nvim
+  exec nvim
 fi
 
 if [ -z "${TMUX:-}" ]; then
   cd "$dotdir"
-  exec env NVIM_APPNAME=nvim-new nvim
+  exec nvim
 fi
 
 # Startup commands only run for new sessions, but keep reruns harmless.
@@ -31,4 +31,4 @@ tmux split-window -d -h -c "$dotdir" "exec \"$shell_path\" $shell_flags"
 tmux select-layout even-horizontal >/dev/null 2>&1 || true
 
 cd "$dotdir"
-exec env NVIM_APPNAME=nvim-new nvim
+exec nvim

@@ -20,7 +20,6 @@ DOTDIRS=(
   .config/bob
   .config/claude
   .config/nvim
-  .config/nvim-new
   .config/sesh
   .config/shell
   .config/television
@@ -160,7 +159,6 @@ dot_smart_commit_message() {
     case "$path" in
       .config/bob/*)     scope="bob" ;;
       .config/nvim/*)    scope="nvim" ;;
-      .config/nvim-new/*) scope="nvim-new" ;;
       .config/shell/*)   scope="shell" ;;
       .config/tmux/*)    scope="tmux" ;;
       .config/git/*)     scope="git" ;;

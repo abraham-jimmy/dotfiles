@@ -4,7 +4,6 @@
 .config/claude
 .config/git
 .config/nvim
-.config/nvim-new
 .config/opencode
 .config/sesh
 .config/shell

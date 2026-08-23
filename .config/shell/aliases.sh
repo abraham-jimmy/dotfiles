@@ -3,7 +3,9 @@
 # Export for opencode to use edit mode
 export EDITOR=nvim
 
-alias vi='nvim'
+alias vi='command nvim'
+alias vim='command nvim'
+alias nvim='command nvim'
 alias n='nvim'
 alias oc='opencode'
 
@@ -18,10 +20,6 @@ alias nvn='nvim ~/.config/nvim/init.lua'
 alias nvs='nvim ~/.dotfiles_setup/bootstrap.sh'
 alias nvt='nvim ~/.config/tmux/tmux.conf'
 alias nvz='nvim ~/.config/zsh/.zshrc'
-
-nnew() {
-	NVIM_APPNAME=nvim-new nvim "$@"
-}
 
 unalias gau 2>/dev/null
 gau() {
