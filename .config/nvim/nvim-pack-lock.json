@@ -45,6 +45,10 @@
       "rev": "5231c62aa83c2f8dc8e7ba957aa77098cda1257d",
       "src": "https://github.com/folke/lazydev.nvim.git"
     },
+    "lualine.nvim": {
+      "rev": "221ce6b2d999187044529f49da6554a92f740a96",
+      "src": "https://github.com/nvim-lualine/lualine.nvim.git"
+    },
     "mini.ai": {
       "rev": "4b0a6207341d895b6cfe9bcb1e4d3e8607bfe4f4",
       "src": "https://github.com/nvim-mini/mini.ai.git"
@@ -64,10 +68,6 @@
     "mini.pairs": {
       "rev": "b7fde3719340946feb75017ef9d75edebdeb0566",
       "src": "https://github.com/nvim-mini/mini.pairs.git"
-    },
-    "mini.statusline": {
-      "rev": "8c3829d4ef02b693f68e43fc131b433f11049b2b",
-      "src": "https://github.com/nvim-mini/mini.statusline.git"
     },
     "mini.surround": {
       "rev": "d205d1741d1fcc1f3117b4e839bf00f74ad72fa2",
