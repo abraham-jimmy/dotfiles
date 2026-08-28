@@ -4,6 +4,7 @@ local function specs()
   return {
     require("lang.bash"),
     require("lang.cpp"),
+    require("lang.csharp"),
     require("lang.data"),
     require("lang.glsl"),
     require("lang.hypr"),
@@ -11,6 +12,8 @@ local function specs()
     require("lang.markdown"),
     require("lang.nix"),
     require("lang.python"),
+    require("lang.typescript"),
+    require("lang.web"),
     require("lang.zsh"),
   }
 end
@@ -54,6 +57,17 @@ end
 function M.linters_by_ft()
   return merge_maps(function(tooling)
     return tooling.linters_by_ft
+  end)
+end
+
+function M.linters_on_write()
+  local names = merge_maps(function(tooling)
+    return tooling.linters_on_write and { names = tooling.linters_on_write }
+  end).names or {}
+
+  return vim.iter(names):fold({}, function(result, name)
+    result[name] = true
+    return result
   end)
 end
 

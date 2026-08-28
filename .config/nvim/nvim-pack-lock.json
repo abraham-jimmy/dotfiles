@@ -122,6 +122,10 @@
       "rev": "737cf6c657898d0c697311d79d361288a1343d50",
       "src": "https://github.com/nvim-tree/nvim-web-devicons.git"
     },
+    "roslyn.nvim": {
+      "rev": "de9a98d61ed3fd01b5016eea5fe9e32f1a4c7cfb",
+      "src": "https://github.com/seblyng/roslyn.nvim.git"
+    },
     "sidekick.nvim": {
       "rev": "dc2710af65a542eb3010136d7664b626633f0229",
       "src": "https://github.com/folke/sidekick.nvim.git",

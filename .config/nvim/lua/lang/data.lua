@@ -23,9 +23,10 @@ function M.tooling()
       },
     },
     formatters_by_ft = {
-      json = { "jq" },
-      yaml = { "yamlfmt" },
-      yml = { "yamlfmt" },
+      json = { "prettier", "jq", stop_after_first = true },
+      jsonc = { "prettier", stop_after_first = true },
+      yaml = { "prettier", "yamlfmt", stop_after_first = true },
+      yml = { "prettier", "yamlfmt", stop_after_first = true },
     },
   }
 end

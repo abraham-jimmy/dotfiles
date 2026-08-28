@@ -77,6 +77,10 @@ function M.setup()
       if client and client.name == "clangd" then
         map(bufnr, "n", "<leader><Tab>", "<cmd>ClangdSwitchSourceHeader<cr>", "Switch source/header")
       end
+
+      if client and client.name == "eslint" then
+        map(bufnr, "n", "<leader>lf", "<cmd>LspEslintFixAll<cr>", "ESLint fix all")
+      end
     end,
   })
 

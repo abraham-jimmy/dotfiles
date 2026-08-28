@@ -33,3 +33,9 @@
 	ui = auto
 [status]
 	renames = true
+[credential]
+  helper = "/mnt/c/Program\\ Files/Git/mingw64/bin/git-credential-manager.exe"
+[http]
+	sslVerify = false
+[credential "https://dev.azure.com"]
+	useHttpPath = true

@@ -407,8 +407,19 @@ apply_profile() {
   dotfiles config --local status.showUntrackedFiles no
 }
 
+configure_shell_startup() {
+  local helper="$HOME/.dotfiles_setup/ensure_shell_startup.sh"
+
+  if [ ! -f "$helper" ]; then
+    printf 'Missing shell startup helper: %s\n' "$helper" >&2
+    return 1
+  fi
+
+  bash "$helper" --home "$HOME" --git-dir "$DOTFILES_DIR"
+}
+
 validate_local_debug() {
-  local script_dir profile path line tracked program_file kind field2 field3 field4 required
+  local script_dir profile path line tracked program_file kind field2 field3 field4
   local failed=0
   local scripts=()
   local path_files=()
@@ -428,6 +439,11 @@ validate_local_debug() {
       failed=1
     fi
   done
+
+  printf '[DEBUG] validating generated shell startup files\n'
+  if ! bash "$script_dir/ensure_shell_startup.sh" --self-test; then
+    failed=1
+  fi
 
   printf '[DEBUG] validating profile manifests\n'
   path_files=("$script_dir"/profiles/*.paths)
@@ -486,20 +502,6 @@ validate_local_debug() {
           ;;
       esac
     done < "$program_file"
-  done
-
-  for required in .bashrc .bash_profile .zshenv .zshrc; do
-    if [ ! -f "$HOME/$required" ]; then
-      printf '[DEBUG] missing cone-mode root config: %s\n' "$required" >&2
-      failed=1
-    elif ! /usr/bin/git --git-dir="$DOTFILES_DIR" --work-tree="$HOME" ls-files --error-unmatch -- ":(top)$required" >/dev/null 2>&1; then
-      if /usr/bin/git --git-dir="$DOTFILES_DIR" --work-tree="$HOME" ls-files --others --exclude-standard -- ":(top)$required" | read -r; then
-        printf '[DEBUG] root config is pending Git tracking: %s\n' "$required"
-      else
-        printf '[DEBUG] root config is not trackable: %s\n' "$required" >&2
-        failed=1
-      fi
-    fi
   done
 
   if [ "$failed" -ne 0 ]; then
@@ -602,6 +604,7 @@ if [ "$profile_applied" -eq 1 ]; then
 else
   printf 'Configuration checkout unchanged; using current profile: %s\n' "$profile"
 fi
+configure_shell_startup
 printf 'Native Git reapply command:\n'
 # shellcheck disable=SC2016
 printf '  /usr/bin/git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" sparse-checkout set --cone --stdin < "$HOME/%s/%s.paths"\n' "$PROFILE_DIR" "$profile"

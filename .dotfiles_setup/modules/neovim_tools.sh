@@ -228,6 +228,144 @@ note_manual_tool() {
   return 1
 }
 
+ensure_npm_global_module() {
+  local package="$1"
+  local module_path="$HOME/.local/lib/node_modules/$package"
+
+  if [ "${DEBUG:-0}" -eq 1 ]; then
+    plan "would ensure global npm module '$package'"
+    return 0
+  fi
+
+  if [ -d "$module_path" ]; then
+    skip "already installed: $package"
+    return 0
+  fi
+
+  if ! command -v npm >/dev/null 2>&1; then
+    warn "npm is unavailable; cannot install global package '$package'"
+    return 1
+  fi
+
+  if run "npm install -g --prefix \"$HOME/.local\" \"$package\""; then
+    done_log "installed npm package: $package"
+    return 0
+  fi
+
+  warn "unable to install npm package '$package'"
+  return 1
+}
+
+ensure_c_headers() {
+  local package
+
+  if [ -f /usr/include/stdint.h ] && [ -f /usr/include/stdio.h ]; then
+    skip "already installed: C development headers"
+    return 0
+  fi
+
+  case "$DISTRO" in
+    arch) package="glibc" ;;
+    debian) package="libc6-dev" ;;
+    fedora) package="glibc-headers" ;;
+    *)
+      warn "unable to select C development headers for distro '$DISTRO'"
+      return 1
+      ;;
+  esac
+
+  if [ "${DEBUG:-0}" -eq 1 ]; then
+    plan "would ensure C development headers via package '$package'"
+    return 0
+  fi
+
+  info "package required for Treesitter parsers: $package"
+  if try_install_package "$package"; then
+    done_log "installed package: $package"
+    return 0
+  fi
+
+  warn "unable to install C development headers package '$package'"
+  return 1
+}
+
+ensure_dotnet_sdk() {
+  local package version major
+
+  if command -v dotnet >/dev/null 2>&1; then
+    while read -r version _; do
+      major="${version%%.*}"
+      case "$major" in
+        '' | *[!0-9]*) continue ;;
+      esac
+
+      if [ "$major" -ge 10 ]; then
+        skip "already installed: .NET SDK $version"
+        return 0
+      fi
+    done < <(dotnet --list-sdks 2>/dev/null)
+  fi
+
+  case "$DISTRO" in
+    arch) package="dotnet-sdk" ;;
+    debian | fedora) package="dotnet-sdk-10.0" ;;
+    *)
+      warn "unable to select a .NET SDK for distro '$DISTRO'"
+      return 1
+      ;;
+  esac
+
+  if [ "${DEBUG:-0}" -eq 1 ]; then
+    plan "would ensure .NET SDK via package '$package'"
+    return 0
+  fi
+
+  info "package required for Roslyn: $package"
+  if try_install_package "$package"; then
+    done_log "installed package: $package"
+    return 0
+  fi
+
+  warn "unable to install .NET SDK package '$package'"
+  return 1
+}
+
+install_roslyn_language_server() {
+  local version="${ROSLYN_LANGUAGE_SERVER_VERSION:-5.12.0-1.26426.8}"
+  local install_dir="$NVIM_TOOLS_OPT_DIR/roslyn-language-server-$version"
+  local bin_path
+
+  if [ "${DEBUG:-0}" -eq 1 ]; then
+    plan "would install roslyn-language-server dotnet tool version $version"
+    return 0
+  fi
+
+  if should_skip_managed_tool_install roslyn-language-server; then
+    return 0
+  fi
+
+  if ! command -v dotnet >/dev/null 2>&1; then
+    warn "manual prerequisite 'dotnet' is missing (required for Roslyn and .NET projects)"
+    return 1
+  fi
+
+  ensure_neovim_tool_dirs
+  bin_path="$(managed_tool_path roslyn-language-server)"
+
+  if run "rm -rf \"$install_dir\"" \
+    && run "dotnet tool install roslyn-language-server --tool-path \"$install_dir\" --version \"$version\"" \
+    && run "rm -f \"$bin_path\"" \
+    && run "ln -s \"$install_dir/roslyn-language-server\" \"$bin_path\""; then
+    if path_is_healthy_executable "$bin_path"; then
+      done_log "installed dotnet tool: roslyn-language-server"
+      return 0
+    fi
+  fi
+
+  warn "unable to install roslyn-language-server"
+  return 1
+}
+
 install_hyprls() {
   local version="${HYPRLS_VERSION:-v0.13.0}"
   local arch
@@ -377,14 +515,23 @@ setup_20_neovim_toolchain() {
 
   ensure_npm_global bash-language-server bash-language-server || true
   ensure_npm_global basedpyright-langserver basedpyright || true
+  ensure_npm_global tree-sitter tree-sitter-cli || true
+  ensure_npm_global vtsls @vtsls/language-server || true
   ensure_npm_global vscode-json-language-server vscode-langservers-extracted || true
+  ensure_npm_global vscode-eslint-language-server vscode-langservers-extracted || true
+  ensure_npm_global vscode-html-language-server vscode-langservers-extracted || true
+  ensure_npm_global vscode-css-language-server vscode-langservers-extracted || true
   ensure_npm_global yaml-language-server yaml-language-server || true
+  ensure_npm_global_module ts-lit-plugin || true
+  ensure_c_headers || true
+  ensure_dotnet_sdk || true
 
   install_codelldb || true
   install_glsl_analyzer || true
   install_hyprls || true
   install_lua_language_server || true
   install_marksman || true
+  install_roslyn_language_server || true
   install_ruff || true
   install_shfmt || true
   install_stylua || true

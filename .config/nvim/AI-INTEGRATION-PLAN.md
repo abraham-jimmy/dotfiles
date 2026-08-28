@@ -91,7 +91,7 @@ old Sidekick mappings only after the trial succeeds.
 | `<leader>ap` | Open the rich CLI prompt input |
 | `<leader>at` | Send current file or visual selection |
 | `<leader>ad` | Send current diagnostics |
-| `<leader>ac` | Toggle Copilot chat when the work switch is enabled |
+| `<leader>ac` | Toggle Copilot chat when the work switch is enabled | (this mapping should also only be visible when copilot is loaded)
 | `<leader>ai` | Run a Copilot inline prompt when the work switch is enabled |
 
 The implementation should check existing mappings before finalizing this table
