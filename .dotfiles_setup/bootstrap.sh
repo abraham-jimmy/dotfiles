@@ -5,6 +5,7 @@ REPO_HTTPS="https://github.com/abraham-jimmy/dotfiles.git"
 DOTFILES_DIR="$HOME/.dotfiles"
 PROFILE_DIR=".dotfiles_setup/profiles"
 DEBUG=0
+REPAIR_SHELL=0
 SOURCE_REF=HEAD
 USE_WORKTREE_MANIFESTS=0
 BOOTSTRAP_FROM_STDIN=0
@@ -16,12 +17,16 @@ if { exec 9<>/dev/tty; } 2>/dev/null; then
 fi
 
 usage() {
-  printf 'Usage: %s [--debug]\n' "${0##*/}"
+  printf 'Usage: %s [--debug | --repair-shell]\n' "${0##*/}"
+  printf '  no arguments    Sync configuration and optionally install software.\n'
+  printf '  --debug         Validate and simulate the complete workstation setup.\n'
+  printf '  --repair-shell  Restore private root shell startup files only.\n'
 }
 
 for arg in "$@"; do
   case "$arg" in
     --debug) DEBUG=1 ;;
+    --repair-shell) REPAIR_SHELL=1 ;;
     -h|--help)
       usage
       exit 0
@@ -33,6 +38,11 @@ for arg in "$@"; do
       ;;
   esac
 done
+
+if [ "$DEBUG" -eq 1 ] && [ "$REPAIR_SHELL" -eq 1 ]; then
+  printf '%s\n' '--debug and --repair-shell cannot be used together.' >&2
+  exit 2
+fi
 
 prompt_read() {
   local target="$1"
@@ -408,7 +418,7 @@ apply_profile() {
 }
 
 configure_shell_startup() {
-  local helper="$HOME/.dotfiles_setup/ensure_shell_startup.sh"
+  local helper="$HOME/.dotfiles_setup/internal/ensure_shell_startup.sh"
 
   if [ ! -f "$helper" ]; then
     printf 'Missing shell startup helper: %s\n' "$helper" >&2
@@ -425,7 +435,7 @@ validate_local_debug() {
   local path_files=()
 
   script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-  if [ ! -f "$script_dir/install.sh" ] || [ ! -d "$script_dir/profiles" ]; then
+  if [ ! -f "$script_dir/internal/install_programs.sh" ] || [ ! -d "$script_dir/profiles" ]; then
     printf '%s\n' 'Full --debug validation requires a local dotfiles checkout.' >&2
     exit 1
   fi
@@ -433,7 +443,7 @@ validate_local_debug() {
   shopt -s nullglob
 
   printf '[DEBUG] validating shell scripts\n'
-  scripts=("$script_dir"/*.sh "$script_dir"/modules/*.sh)
+  scripts=("$script_dir"/*.sh "$script_dir"/internal/*.sh "$script_dir"/modules/*.sh)
   for path in "${scripts[@]}"; do
     if ! bash -n "$path"; then
       failed=1
@@ -441,7 +451,7 @@ validate_local_debug() {
   done
 
   printf '[DEBUG] validating generated shell startup files\n'
-  if ! bash "$script_dir/ensure_shell_startup.sh" --self-test; then
+  if ! bash "$script_dir/internal/ensure_shell_startup.sh" --self-test; then
     failed=1
   fi
 
@@ -510,8 +520,20 @@ validate_local_debug() {
   fi
 
   printf '[DEBUG] simulating complete workstation installer\n'
-  bash "$script_dir/install.sh" --debug --profile workstation
+  bash "$script_dir/internal/install_programs.sh" --debug --profile workstation
 }
+
+if [ "$REPAIR_SHELL" -eq 1 ]; then
+  ensure_git
+  bare_repo="$(/usr/bin/git --git-dir="$DOTFILES_DIR" rev-parse --is-bare-repository 2>/dev/null || true)"
+  if [ "$bare_repo" != "true" ]; then
+    printf 'A complete bare dotfiles repository is required at: %s\n' "$DOTFILES_DIR" >&2
+    exit 1
+  fi
+  configure_shell_startup
+  printf 'Shell startup files repaired.\n'
+  exit
+fi
 
 if [ "$DEBUG" -eq 1 ]; then
   ensure_git
@@ -611,7 +633,7 @@ printf '  /usr/bin/git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" sparse-ch
 prompt_read answer "Install optional software for '$profile'? [y/N]: " || exit 1
 case "$answer" in
   y|Y|yes|YES)
-    exec bash "$HOME/.dotfiles_setup/install.sh" --profile "$profile"
+    exec bash "$HOME/.dotfiles_setup/internal/install_programs.sh" --profile "$profile"
     ;;
   *)
     printf 'Software installation skipped. Rerun bootstrap whenever you want to install it.\n'

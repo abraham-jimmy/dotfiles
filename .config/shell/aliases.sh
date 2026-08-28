@@ -13,6 +13,7 @@ alias ll='ls -lAth'
 alias ..='cd ..'
 
 alias ds='dotsetup'
+alias dotrepair='dotsetup --repair-shell'
 alias nva='nvim ~/.config/shell/aliases.sh'
 alias nvb='nvim ~/.config/bash/.bashrc'
 alias nvg='nvim ~/.config/git/git_aliases'

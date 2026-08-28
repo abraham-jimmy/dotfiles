@@ -652,8 +652,8 @@ run_task() {
 export DEBUG DRY_RUN PROFILE SUMMARY_EVENT_FILE SUMMARY_WARNING_FILE
 export -f append_task_failure count_event done_log enter_module enter_task error info leave_module leave_task list_setup_functions log log_emit module_log on_task_error plan prompt_read record_task_failure_state run run_log run_task show_file show_text skip summary_print task_fail task_failed task_log warn
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-MODULE_DIR="$SCRIPT_DIR/modules"
+SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+MODULE_DIR="$SETUP_DIR/modules"
 
 source "$MODULE_DIR/distro.sh"
 source "$MODULE_DIR/installer.sh"
