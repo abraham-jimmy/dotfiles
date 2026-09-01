@@ -7,6 +7,61 @@ local function map(bufnr, mode, lhs, rhs, desc)
   vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, silent = true, desc = desc })
 end
 
+local function preview_definition(bufnr)
+  local method = "textDocument/definition"
+
+  vim.lsp.buf_request_all(bufnr, method, function(client)
+    return vim.lsp.util.make_position_params(0, client.offset_encoding)
+  end, function(results)
+    local locations = {}
+    local seen = {}
+
+    for _, response in pairs(results) do
+      local result = response and response.result
+      if result then
+        local items = vim.islist(result) and result or { result }
+
+        for _, location in ipairs(items) do
+          local uri = location.targetUri or location.uri
+          local range = location.targetSelectionRange or location.targetRange or location.range
+          local key = uri and range and string.format("%s:%d:%d", uri, range.start.line, range.start.character) or nil
+
+          if key and not seen[key] then
+            seen[key] = true
+            locations[#locations + 1] = location
+          end
+        end
+      end
+    end
+
+    if #locations == 0 then
+      vim.notify("No definition found", vim.log.levels.INFO, { title = "LSP" })
+      return
+    end
+
+    local function show(location)
+      if location then
+        vim.lsp.util.preview_location(location, { border = "rounded", max_height = 30, max_width = 100 })
+      end
+    end
+
+    if #locations == 1 then
+      show(locations[1])
+      return
+    end
+
+    vim.ui.select(locations, {
+      prompt = "Definitions",
+      format_item = function(location)
+        local uri = location.targetUri or location.uri
+        local range = location.targetSelectionRange or location.targetRange or location.range
+        local path = vim.fn.fnamemodify(vim.uri_to_fname(uri), ":~:.")
+        return string.format("%s:%d:%d", path, range.start.line + 1, range.start.character + 1)
+      end,
+    }, show)
+  end)
+end
+
 function M.setup()
   local ok = pcall(require, "lspconfig")
   if not ok then
@@ -49,6 +104,9 @@ function M.setup()
       end
 
       map(bufnr, "n", "gd", vim.lsp.buf.definition, "LSP definition")
+      map(bufnr, "n", "gD", function()
+        preview_definition(bufnr)
+      end, "LSP definition preview")
       map(bufnr, "n", "gr", vim.lsp.buf.references, "LSP references")
       map(bufnr, "n", "gI", vim.lsp.buf.implementation, "LSP implementation")
       map(bufnr, "n", "K", vim.lsp.buf.hover, "LSP hover")

@@ -26,7 +26,7 @@
       "src": "https://github.com/nvimdev/dashboard-nvim.git"
     },
     "flash.nvim": {
-      "rev": "fcea7ff883235d9024dc41e638f164a450c14ca2",
+      "rev": "5f0f270fdc7c5b0c21d903ee85b9cb06f2ac636a",
       "src": "https://github.com/folke/flash.nvim.git"
     },
     "fzf-lua": {
