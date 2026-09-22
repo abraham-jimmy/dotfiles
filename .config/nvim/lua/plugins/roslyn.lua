@@ -11,7 +11,7 @@ function M.setup()
     return
   end
 
-  roslyn.setup({ broad_search = true })
+  roslyn.setup({})
 end
 
 return M
