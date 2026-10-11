@@ -16,12 +16,16 @@ local colors = {
 	lavender = "rgb(b7bdf8)",
 	mellowRed = "rgb(c66a73)",
 }
-
 hl.monitor({
 	output = "desc:" .. monitors.middle,
 	mode = "2560x1440@143.97",
 	position = "1440x0",
 	scale = 1,
+	bitdepth = 10,
+	cm = "hdr",
+	vrr = 2,
+	sdrbrightness = 2.2,
+	sdrsaturation = 1.5,
 })
 hl.monitor({
 	output = "desc:" .. monitors.left,
@@ -100,6 +104,9 @@ hl.config({
 		movefocus_cycles_fullscreen = true,
 		window_direction_monitor_fallback = true,
 	},
+	-- render = {
+	-- 	cm_auto_hdr = 1,
+	-- },
 })
 
 hl.curve("easeOutQuint", { type = "bezier", points = { { 0.22, 1 }, { 0.36, 1 } } })
