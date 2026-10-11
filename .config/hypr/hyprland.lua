@@ -122,9 +122,9 @@ local workspaceMonitors = {
 	[5] = monitors.right,
 	[6] = monitors.right,
 	[7] = monitors.right,
-	[8] = monitors.right,
-	[9] = monitors.right,
-	[10] = monitors.right,
+	[8] = monitors.left,
+	[9] = monitors.left,
+	[10] = monitors.left,
 }
 
 for workspace, monitor in pairs(workspaceMonitors) do
@@ -169,7 +169,7 @@ windowRule("fix-xwayland-drags", {
 	no_focus = true,
 })
 
-windowRule("fullscreen-games", { class = "^(steam_app_.*|gow\\.exe)$" }, {
+windowRule("fullscreen-games", { class = "^(steam_app_.*|gow\\.exe|wowb\\.exe)$" }, {
 	fullscreen = true,
 	workspace = "name:games",
 })
@@ -275,6 +275,12 @@ windowRule("highlight-special-obsidian", {
 windowRule("ferdium-workspace", { class = "^Ferdium$" }, { workspace = "4 silent" })
 windowRule("spotify-workspace", { class = "^Spotify$" }, { workspace = "special:special-obsidian silent" })
 windowRule("steam-workspace", { class = "^steam$" }, { workspace = "6 silent" })
+-- Battle.net and its tray share this Steam shortcut class; override fullscreen-games.
+windowRule("battlenet-workspace", { class = "^steam_app_3537792803$" }, {
+	fullscreen = false,
+	workspace = "6 silent",
+})
+windowRule("discord-workspace", { class = "^discord$" }, { workspace = "8 silent" })
 windowRule("thunderbird-workspace", { class = "^thunderbird$" }, { workspace = "7 silent" })
 windowRule("obsidian-workspace", { class = "^(obsidian|md[.]obsidian[.]Obsidian)$" }, {
 	workspace = "special:special-obsidian silent",
@@ -396,6 +402,7 @@ hl.on("hyprland.start", function()
 		"spotify-launcher",
 		"ferdium",
 		"steam",
+		"discord",
 		"thunderbird",
 	}
 

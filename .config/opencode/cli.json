@@ -1,0 +1,22 @@
+{
+  "$schema": "https://opencode.ai/v2/cli.json",
+  "theme": {
+    "name": "kanagawa-dragon"
+  },
+  "keybinds": {
+    "app.exit": "ctrl+c,ctrl+d,<leader>q",
+    "session.page.up": "ctrl+alt+u",
+    "session.page.down": "ctrl+alt+d",
+    "session.line.up": "alt+k",
+    "session.line.down": "alt+j"
+  },
+  "diffs": {
+    "wrap": "word"
+  },
+  "session": {
+    "sidebar": "hide",
+    "scrollbar": true,
+    "thinking": "hide"
+  },
+  "animations": true
+}

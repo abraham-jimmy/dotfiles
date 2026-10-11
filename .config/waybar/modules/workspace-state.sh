@@ -4,6 +4,7 @@ set -u
 
 cache_dir="${WAYBAR_WORKSPACE_CACHE_DIR:-${XDG_RUNTIME_DIR:-/tmp}/waybar-workspaces}"
 middle_monitor='ASUSTek COMPUTER INC VG27B L2LMQS041890'
+left_monitor='ASUSTek COMPUTER INC VG27AQ1A LALMQS099884'
 right_monitor='ASUSTek COMPUTER INC VG27B K7LMQS089435'
 
 mkdir -p "$cache_dir"
@@ -18,6 +19,8 @@ read_workspace() {
     printf '{"text":"","tooltip":"Steam games","class":["hidden"]}\n'
   elif (( workspace <= 3 )); then
     printf '{"text":"○","tooltip":"Middle monitor workspace %s","class":["empty"]}\n' "$workspace"
+  elif (( workspace >= 8 )); then
+    printf '{"text":"%s","tooltip":"Left monitor workspace %s","class":["empty"]}\n' "$workspace" "$workspace"
   else
     printf '{"text":"%s","tooltip":"Right monitor workspace %s","class":["empty"]}\n' "$workspace" "$workspace"
   fi
@@ -73,6 +76,7 @@ refresh_workspaces() {
       --argjson monitors "$monitors" \
       --argjson steamNames "$steam_names" \
       --arg middle "$middle_monitor" \
+      --arg left "$left_monitor" \
       --arg right "$right_monitor" '
           def app_name:
             .class as $class
@@ -103,7 +107,8 @@ refresh_workspaces() {
             | unique
             | join(", ") as $applications
           | ($workspace <= 3) as $is_middle
-          | (if $is_middle then $middle else $right end) as $monitor
+          | ($workspace >= 8) as $is_left
+          | (if $is_middle then $middle elif $is_left then $left else $right end) as $monitor
           | (active_workspace($monitor) == $workspace) as $active
           | (if $applications == "" then "empty" else "occupied" end) as $state
           | {
@@ -116,7 +121,7 @@ refresh_workspaces() {
                   end
                 end
               ),
-              tooltip: "\(if $is_middle then "Middle" else "Right" end) monitor workspace \($workspace)",
+              tooltip: "\(if $is_middle then "Middle" elif $is_left then "Left" else "Right" end) monitor workspace \($workspace)",
               class: (if $active then ["active", $state] else [$state] end)
             } as $output
             | "\($workspace)\t\($output | @base64)"

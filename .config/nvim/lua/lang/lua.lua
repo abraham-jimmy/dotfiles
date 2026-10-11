@@ -10,7 +10,7 @@ function M.tooling()
               callSnippet = "Replace",
             },
             diagnostics = {
-              globals = { "vim", "require", "pcall", "string", "table", "pairs" },
+              globals = { "vim", "require", "pcall", "string", "table", "pairs", "hl" },
             },
             runtime = {
               version = "LuaJIT",

@@ -16,10 +16,7 @@
       "custom/right-workspace-4",
       "custom/right-workspace-5",
       "custom/right-workspace-6",
-      "custom/right-workspace-7",
-      "custom/right-workspace-8",
-      "custom/right-workspace-9",
-      "custom/right-workspace-10"
+      "custom/right-workspace-7"
     ],
     "modules-right": [
       "custom/spotify",
@@ -94,27 +91,6 @@
       "exec-on-event": false,
       "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 7 })'"
     },
-    "custom/right-workspace-8": {
-      "exec": "bash ~/.config/waybar/modules/workspace-state.sh read 8",
-      "return-type": "json",
-      "signal": 8,
-      "exec-on-event": false,
-      "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 8 })'"
-    },
-    "custom/right-workspace-9": {
-      "exec": "bash ~/.config/waybar/modules/workspace-state.sh read 9",
-      "return-type": "json",
-      "signal": 8,
-      "exec-on-event": false,
-      "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 9 })'"
-    },
-    "custom/right-workspace-10": {
-      "exec": "bash ~/.config/waybar/modules/workspace-state.sh read 10",
-      "return-type": "json",
-      "signal": 8,
-      "exec-on-event": false,
-      "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 10 })'"
-    },
     "custom/spotify": {
       "exec": "/usr/bin/python3 ~/.config/waybar/mediaplayer.py --player spotify",
       "format": "{}  ",
@@ -159,6 +135,39 @@
       "tooltip": true,
       "tooltip-format": "Power menu",
       "on-click": "bash ~/.config/waybar/modules/power-menu.sh"
+    }
+  },
+  {
+    "name": "LeftMon",
+    "layer": "top",
+    "height": 28,
+    "spacing": 4,
+    "output": "ASUSTek COMPUTER INC VG27AQ1A LALMQS099884",
+    "modules-center": [
+      "custom/left-workspace-8",
+      "custom/left-workspace-9",
+      "custom/left-workspace-10"
+    ],
+    "custom/left-workspace-8": {
+      "exec": "bash ~/.config/waybar/modules/workspace-state.sh read 8",
+      "return-type": "json",
+      "signal": 8,
+      "exec-on-event": false,
+      "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 8 })'"
+    },
+    "custom/left-workspace-9": {
+      "exec": "bash ~/.config/waybar/modules/workspace-state.sh read 9",
+      "return-type": "json",
+      "signal": 8,
+      "exec-on-event": false,
+      "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 9 })'"
+    },
+    "custom/left-workspace-10": {
+      "exec": "bash ~/.config/waybar/modules/workspace-state.sh read 10",
+      "return-type": "json",
+      "signal": 8,
+      "exec-on-event": false,
+      "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 10 })'"
     }
   }
 ]

@@ -9,7 +9,8 @@
   font-weight: 600;
 }
 
-window.RightMon#waybar {
+window.RightMon#waybar,
+window.LeftMon#waybar {
   background: @base;
   color: @text;
 }
@@ -34,9 +35,9 @@ window.RightMon#waybar {
 #custom-right-workspace-5,
 #custom-right-workspace-6,
 #custom-right-workspace-7,
-#custom-right-workspace-8,
-#custom-right-workspace-9,
-#custom-right-workspace-10 {
+#custom-left-workspace-8,
+#custom-left-workspace-9,
+#custom-left-workspace-10 {
   background: transparent;
   border: 1px solid transparent;
   border-radius: 3px;
@@ -52,9 +53,9 @@ window.RightMon#waybar {
 #custom-right-workspace-5,
 #custom-right-workspace-6,
 #custom-right-workspace-7,
-#custom-right-workspace-8,
-#custom-right-workspace-9,
-#custom-right-workspace-10 {
+#custom-left-workspace-8,
+#custom-left-workspace-9,
+#custom-left-workspace-10 {
   color: @subtext1;
   padding: 0 3px;
 }
@@ -67,9 +68,9 @@ window.RightMon#waybar {
 #custom-right-workspace-5.empty,
 #custom-right-workspace-6.empty,
 #custom-right-workspace-7.empty,
-#custom-right-workspace-8.empty,
-#custom-right-workspace-9.empty,
-#custom-right-workspace-10.empty {
+#custom-left-workspace-8.empty,
+#custom-left-workspace-9.empty,
+#custom-left-workspace-10.empty {
   color: @overlay0;
 }
 
@@ -86,9 +87,9 @@ window.RightMon#waybar {
 #custom-right-workspace-5.occupied,
 #custom-right-workspace-6.occupied,
 #custom-right-workspace-7.occupied,
-#custom-right-workspace-8.occupied,
-#custom-right-workspace-9.occupied,
-#custom-right-workspace-10.occupied {
+#custom-left-workspace-8.occupied,
+#custom-left-workspace-9.occupied,
+#custom-left-workspace-10.occupied {
   border-color: @surface0;
 }
 
@@ -100,9 +101,9 @@ window.RightMon#waybar {
 #custom-right-workspace-5.active,
 #custom-right-workspace-6.active,
 #custom-right-workspace-7.active,
-#custom-right-workspace-8.active,
-#custom-right-workspace-9.active,
-#custom-right-workspace-10.active {
+#custom-left-workspace-8.active,
+#custom-left-workspace-9.active,
+#custom-left-workspace-10.active {
   color: @text;
   background: @surface1;
   font-weight: 900;
@@ -117,9 +118,9 @@ window.RightMon#waybar {
 #custom-right-workspace-5.active.occupied,
 #custom-right-workspace-6.active.occupied,
 #custom-right-workspace-7.active.occupied,
-#custom-right-workspace-8.active.occupied,
-#custom-right-workspace-9.active.occupied,
-#custom-right-workspace-10.active.occupied {
+#custom-left-workspace-8.active.occupied,
+#custom-left-workspace-9.active.occupied,
+#custom-left-workspace-10.active.occupied {
   border-color: @overlay0;
 }
 
