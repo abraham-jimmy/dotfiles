@@ -1,23 +1,16 @@
 return {
-  id = "kanagawa-dragon",
-  plugin = "kanagawa",
-  colorscheme = "kanagawa-dragon",
-  notify_background = "#181616",
+  id = "catppuccin",
+  plugin = "catppuccin",
+  colorscheme = "catppuccin",
+  notify_background = "#1e1e2e",
   apply = function()
-    local ok, kanagawa = pcall(require, "kanagawa")
+    local ok, catppuccin = pcall(require, "catppuccin")
     if not ok then
-      return false, "kanagawa.nvim is unavailable"
+      return false, "catppuccin.nvim is unavailable"
     end
 
-    kanagawa.setup({
-      theme = "dragon",
-      background = {
-        dark = "dragon",
-        light = "lotus",
-      },
-    })
-
-    vim.cmd.colorscheme("kanagawa-dragon")
+    catppuccin.setup({})
+    vim.cmd.colorscheme("catppuccin")
     return true
   end,
 }

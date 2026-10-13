@@ -11,7 +11,7 @@ alias gl10='git lol -10'
 alias glog='git lol2'
 
 # Status
-alias gst='git status'
+alias gst='git status -s'
 
 #########################
 # Diff helpers
