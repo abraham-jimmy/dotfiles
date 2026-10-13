@@ -23,6 +23,13 @@ map("n", "<leader>dh", "<cmd>diffget //2<cr>", { desc = "Diff get left" })
 map("n", "<leader>dl", "<cmd>diffget //3<cr>", { desc = "Diff get right" })
 map("n", "<leader>do", "<cmd>only<cr>", { desc = "Keep current window" })
 
+map("n", "<leader>lr", function()
+  for _, client in ipairs(vim.lsp.get_clients({ bufnr = 0 })) do
+    vim.cmd.LspRestart(client.name)
+  end
+end, { desc = "Restart current file LSPs" })
+map("n", "<leader>lR", "<cmd>LspRestart<cr>", { desc = "Restart all active LSPs" })
+
 map("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
 map("n", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })
 map("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease window width" })

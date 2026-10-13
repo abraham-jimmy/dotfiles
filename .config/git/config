@@ -1,4 +1,6 @@
 [user]
+
+
   # Forces you to update local gitconfig with name and mail
   useConfigOnly = true
 [alias]

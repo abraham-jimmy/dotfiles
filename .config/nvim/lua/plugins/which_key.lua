@@ -13,7 +13,7 @@ function M.setup()
 
   which_key.setup({ delay = 250 })
   which_key.add({
-    { "<leader>a", group = "AI / OpenCode", mode = { "n", "x" } },
+    { "<leader>a", group = "AI / Sidekick", mode = { "n", "x" } },
     { "<leader>f", group = "Files / Format", mode = { "n", "x" } },
     { "<leader>l", group = "Language / Lint" },
     { "<leader>n", group = "Notifications" },

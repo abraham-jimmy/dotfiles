@@ -25,7 +25,25 @@ function M.setup()
       enable = true,
       ignore = false,
     },
-    renderer = { group_empty = true },
+    renderer = {
+      group_empty = true,
+      highlight_git = "name",
+      icons = {
+        git_placement = "after",
+        show = { git = true },
+        glyphs = {
+          git = {
+            unstaged = "M",
+            staged = "S",
+            unmerged = "U",
+            renamed = "R",
+            untracked = "?",
+            deleted = "D",
+            ignored = "I",
+          },
+        },
+      },
+    },
     update_focused_file = {
       enable = true,
       update_root = false,
@@ -37,8 +55,13 @@ function M.setup()
   })
 
   vim.keymap.set("n", "<leader>o", function()
-    require("nvim-tree.api").tree.toggle({ find_file = true, focus = true })
-  end, { desc = "Tree toggle", silent = true })
+    local api = require("nvim-tree.api")
+    api.tree.toggle({ find_file = true, focus = true })
+    if api.tree.is_visible() then
+      -- Reopening should refresh even when filesystem watchers miss changes.
+      api.tree.reload()
+    end
+  end, { desc = "Tree toggle (refresh on open)", silent = true })
   vim.keymap.set("n", "<leader>O", function()
     require("nvim-tree.api").tree.open({
       current_window = false,
